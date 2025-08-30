@@ -1,5 +1,5 @@
-package frc.robot.subsystems.arm;
+package frc.robot.subsystems.Arm;
 
-public class arm {
+public class Arm {
 
 }
