@@ -25,7 +25,10 @@ public interface armIO {
     }
 
     public default void setSetpoint(double goal) {
-    }//
+    }
+
+    public default void setFeedForward(double velocity) {
+    }
 
     public default BooleanSupplier atGoal() {
         return () -> false;
@@ -46,8 +49,5 @@ public interface armIO {
     }
 
     public default void resetPID() {
-    }//
-
-    public default void resetPID(double newGoal) {
-    }//
+    }
 }

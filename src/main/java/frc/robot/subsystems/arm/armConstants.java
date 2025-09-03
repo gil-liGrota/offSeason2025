@@ -6,6 +6,10 @@ public class armConstants {
     public static final double KP = 0.0;
     public static final double KI = 0.0;
     public static final double KD = 0.0;
+    public static final double KS = 0.0;
+    public static final double KG = 0.0;
+    public static final double KV = 0.0;
+    public static final double KA = 0.0;
     public static final double TOLERANCE = 0.0;
     public static final boolean INVERTED = false;// TODO check
     public static final int CURRENT_LIMIT = 40;
