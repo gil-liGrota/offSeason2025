@@ -1,18 +1,6 @@
 package frc.robot.subsystems.arm;
 
-import static frc.robot.subsystems.arm.armConstants.ARM_ID;
-import static frc.robot.subsystems.arm.armConstants.CURRENT_LIMIT;
-import static frc.robot.subsystems.arm.armConstants.FOLD_SWITCH_ID;
-import static frc.robot.subsystems.arm.armConstants.INVERTED;
-import static frc.robot.subsystems.arm.armConstants.KA;
-import static frc.robot.subsystems.arm.armConstants.KD;
-import static frc.robot.subsystems.arm.armConstants.KG;
-import static frc.robot.subsystems.arm.armConstants.KI;
-import static frc.robot.subsystems.arm.armConstants.KP;
-import static frc.robot.subsystems.arm.armConstants.KS;
-import static frc.robot.subsystems.arm.armConstants.KV;
-import static frc.robot.subsystems.arm.armConstants.POSITION_CONVERSION_FACTOR;
-import static frc.robot.subsystems.arm.armConstants.VOLTAGE_COMPENSATION;
+import static frc.robot.subsystems.arm.armConstants.*;
 
 import java.util.function.BooleanSupplier;
 
@@ -24,7 +12,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.units.measure.Voltage;
 import frc.robot.POM_lib.Motors.POMSparkMax;
 import frc.robot.POM_lib.sensors.POMDigitalInput;
 
@@ -81,13 +68,14 @@ public class armIOReal implements armIO {
     @Override
     public void setSetpoint(double goal) {
         pidController.setSetpoint(goal);
-        setVoltage(ff.calculate(encoder.getPosition()/* TODO change to position rad */, encoder.getVelocity())
+        setVoltage(ff.calculate(encoder.getPosition(), encoder.getVelocity())
                 + pidController.calculate(getPosition()));
     }
 
     @Override
     public void setFeedForward(double velocity) {
-        double voltage = ff.calculate(encoder.getPosition()/* change to position rad */, velocity);
+        org.littletonrobotics.junction.Logger.recordOutput("arm kg", ff.getKg());
+        double voltage = ff.calculate(encoder.getPosition(), velocity);
         motor.setVoltage((voltage));
     }
 
@@ -98,7 +86,9 @@ public class armIOReal implements armIO {
 
     @Override
     public void stopMotor() {
-        motor.stopMotor();
+        double voltage = ff.calculate(encoder.getPosition(), 0);
+        motor.setVoltage(0 + voltage);
+        ;
     }
 
     @Override
@@ -115,6 +105,7 @@ public class armIOReal implements armIO {
 
     @Override
     public double getPosition() {
+        org.littletonrobotics.junction.Logger.recordOutput("arm Position", encoder.getPosition());
         return encoder.getPosition();
     }
 

@@ -15,6 +15,7 @@ public class armConstants {
     public static final int CURRENT_LIMIT = 40;
     public static final double VOLTAGE_COMPENSATION = 12.0;
     public static final double UPPER_POSITION = 20;
-    public static final double POSITION_CONVERSION_FACTOR = 1;
+    public static final double gearRatio = 20.0;
+    public static final double POSITION_CONVERSION_FACTOR = (2 * Math.PI) / gearRatio;
 
 }
