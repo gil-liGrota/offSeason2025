@@ -10,6 +10,8 @@ public class armConstants {
     public static final double KG = 0.0;
     public static final double KV = 0.0;
     public static final double KA = 0.0;
+    public static final double MAX_VELOCITY = 0.0;
+    public static final double MAX_ACCELERATION = 0.0;
     public static final double TOLERANCE = 0.0;
     public static final boolean INVERTED = false;// TODO check
     public static final int CURRENT_LIMIT = 40;

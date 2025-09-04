@@ -11,14 +11,15 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.controller.PIDController;
 import frc.robot.POM_lib.Motors.POMSparkMax;
 import frc.robot.POM_lib.sensors.POMDigitalInput;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class armIOReal implements armIO {
     POMSparkMax motor;
     RelativeEncoder encoder;
-    PIDController pidController;
+    ProfiledPIDController pidController;
     private POMDigitalInput foldSwitch;
     private ArmFeedforward ff;
 
@@ -26,7 +27,8 @@ public class armIOReal implements armIO {
         motor = new POMSparkMax(ARM_ID);
         encoder = motor.getEncoder();
         foldSwitch = new POMDigitalInput(FOLD_SWITCH_ID);
-        pidController = new PIDController(KP, KI, KD);
+        pidController = new ProfiledPIDController(KP, KI, KD,
+                new TrapezoidProfile.Constraints(MAX_VELOCITY, MAX_ACCELERATION));
         ff = new ArmFeedforward(KS, KG, KV, KA);
 
         SparkMaxConfig config = new SparkMaxConfig();
@@ -39,6 +41,7 @@ public class armIOReal implements armIO {
                 .velocityConversionFactor(POSITION_CONVERSION_FACTOR / 60.0);
         motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
+        pidController.setTolerance(TOLERANCE);
         encoder.setPosition(0);
         // encoder.getPosition(0); to the pid
 
@@ -67,7 +70,7 @@ public class armIOReal implements armIO {
 
     @Override
     public void setSetpoint(double goal) {
-        pidController.setSetpoint(goal);
+        pidController.setGoal(goal);
         setVoltage(ff.calculate(encoder.getPosition(), encoder.getVelocity())
                 + pidController.calculate(getPosition()));
     }
@@ -111,7 +114,7 @@ public class armIOReal implements armIO {
 
     @Override
     public void resetPID() {
-        pidController.reset();
+        pidController.reset(encoder.getPosition(), encoder.getVelocity());
     }
 
 }
