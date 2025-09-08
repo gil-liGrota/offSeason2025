@@ -100,6 +100,12 @@ public class RobotContainer {
                                 ElevatorCommands.goToPosition(elevator, ElevatorConstants.L2_POSITION));
                 operatorController.a().onTrue(ElevatorCommands.stopElevator(elevator));
 
+                operatorController.leftTrigger()
+                                .whileTrue(ElevatorCommands.closeElevatorManual(elevator, -3.5));
+
+                operatorController.rightTrigger()
+                                .whileTrue(ElevatorCommands.openElevatorManual(elevator, 3.0));
+
         }
 
         public void displaSimFieldToAdvantageScope() {
