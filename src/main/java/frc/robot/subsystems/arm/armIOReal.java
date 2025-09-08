@@ -2,11 +2,14 @@ package frc.robot.subsystems.arm;
 
 import static frc.robot.subsystems.arm.armConstants.*;
 
+import java.lang.management.MemoryType;
 import java.util.function.BooleanSupplier;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -17,14 +20,14 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class armIOReal implements armIO {
-    POMSparkMax motor;
+    SparkMax motor;
     RelativeEncoder encoder;
     ProfiledPIDController pidController;
     private POMDigitalInput foldSwitch;
     private ArmFeedforward ff;
 
     public armIOReal() {
-        motor = new POMSparkMax(ARM_ID);
+        motor = new SparkMax(ARM_ID, MotorType.kBrushless);
         encoder = motor.getEncoder();
         foldSwitch = new POMDigitalInput(FOLD_SWITCH_ID);
         pidController = new ProfiledPIDController(KP, KI, KD,
