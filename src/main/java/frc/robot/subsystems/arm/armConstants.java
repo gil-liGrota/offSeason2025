@@ -2,7 +2,7 @@ package frc.robot.subsystems.arm;
 
 public class armConstants {
     public static final int ARM_ID = 0;// TODO check id
-    public static final int FOLD_SWITCH_ID = 0;// TODO check id
+    public static final int FOLD_SWITCH_ID = 17;// TODO check id
     public static final double KP = 0.0;
     public static final double KI = 0.0;
     public static final double KD = 0.0;
