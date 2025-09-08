@@ -27,7 +27,7 @@ public class ElevatorReal implements ElevatorIO {
     private BooleanSupplier isCoralIn;
 
     public ElevatorReal(BooleanSupplier isCoralIn) {
-        motor = new POMSparkMax(ELEVATOR_ID);
+        motor = new POMSparkMax(ELEV A TOR_ID);
         feedforward = new ElevatorFeedforward(KS, KG, KV);
         pidController = new ProfiledPIDController(KP, KI, KD,
                 new TrapezoidProfile.Constraints(MAX_VELOCITY, MAX_ACCELERATION));
