@@ -4,7 +4,7 @@ import edu.wpi.first.math.util.Units;
 
 public class CoralArmConstants {
     public static final int CORAL_ARM_ID = 17;
-    public static final int FOLD_SWITCH = 3;
+    public static final int FOLD_SWITCH = 0;
 
     public static final double KP = 0;
     public static final double KI = 0;

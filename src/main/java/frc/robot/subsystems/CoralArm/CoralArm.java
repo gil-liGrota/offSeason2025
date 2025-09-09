@@ -4,6 +4,9 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CoralArm extends SubsystemBase {
@@ -16,6 +19,12 @@ public class CoralArm extends SubsystemBase {
         this.inputs = new CoralArmIOInputsAutoLogged();
 
         SmartDashboard.putData("Coral Arm", (CoralArmIOReal) io);
+
+
+        setDefaultCommand(new RepeatCommand(new ConditionalCommand(this.runOnce(() -> io.setVoltage(0)),
+                this.runOnce(io::resistGravity), elevatorIO::isPressed))
+                .beforeStarting(new PrintCommand("Elevator default command")));
+
     }
 
     @Override
