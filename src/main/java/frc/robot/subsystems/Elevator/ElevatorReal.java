@@ -71,6 +71,7 @@ public class ElevatorReal implements ElevatorIO {
         inputs.foldSwitch = foldSwitch.get();
         setPidValues();
         resetlfPressed();
+
     }
 
     private void resetEncoder() {
