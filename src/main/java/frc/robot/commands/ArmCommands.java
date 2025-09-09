@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.arm.arm;
 
 public class ArmCommands {
-    public Command SetVoltage(arm arm, double voltage){
-        return Commands.run(() -> arm.getIO().setVoltage(voltage), arm);
+    public Command SetVoltage(arm arm, double voltage)  {
+        return Commands.runEnd(() -> arm.getIO().setVoltage(voltage),  () -> arm.get, arm);
     }
 }

@@ -89,14 +89,16 @@ public class RobotContainer {
          * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
          */
         private void configureButtonBindings() {
+                operatorController.b().whileTrue(armCommands.SetVoltage(arm, -2));
                 operatorController.a().whileTrue(armCommands.SetVoltage(arm, -1));
-                operatorController.x().whileTrue(armCommands.SetVoltage(arm, -0.2));
+                operatorController.x().whileTrue(armCommands.SetVoltage(arm, -0.1));
 
         }
 
         public void displaSimFieldToAdvantageScope() {
                 if (Constants.currentMode != Constants.Mode.SIM)
                         return;
+
 
                 Logger.recordOutput(
                                 "FieldSimulation/RobotPosition", driveSimulation.getSimulatedDriveTrainPose());
