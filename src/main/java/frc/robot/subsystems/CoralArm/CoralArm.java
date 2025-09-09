@@ -20,10 +20,8 @@ public class CoralArm extends SubsystemBase {
 
         SmartDashboard.putData("Coral Arm", (CoralArmIOReal) io);
 
-
         setDefaultCommand(new RepeatCommand(new ConditionalCommand(this.runOnce(() -> io.setVoltage(0)),
-                this.runOnce(io::resistGravity), elevatorIO::isPressed))
-                .beforeStarting(new PrintCommand("Elevator default command")));
+                this.runOnce(io::resistGravity), io::isPressed)));
 
     }
 

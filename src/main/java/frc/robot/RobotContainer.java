@@ -93,7 +93,7 @@ public class RobotContainer {
         private void configureButtonBindings() {
                 operatorController.a().whileTrue(CoralArmCommands.goToPosition(coralArm, 0));
                 operatorController.b().whileTrue(CoralArmCommands.goToPosition(coralArm, 1.6));
-                operatorController.x().whileTrue(CoralArmCommands.goToPosition(coralArm, 2.85));
+                operatorController.y().whileTrue(CoralArmCommands.goToPosition(coralArm, 2.85));
         }
 
         public void displaSimFieldToAdvantageScope() {
