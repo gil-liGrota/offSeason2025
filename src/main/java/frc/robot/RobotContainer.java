@@ -91,9 +91,9 @@ public class RobotContainer {
          * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
          */
         private void configureButtonBindings() {
-                operatorController.a().whileTrue(CoralArmCommands.goToPosition(coralArm, 0));
-                operatorController.b().whileTrue(CoralArmCommands.goToPosition(coralArm, 1.6));
-                operatorController.y().whileTrue(CoralArmCommands.goToPosition(coralArm, 2.85));
+                operatorController.a().onTrue(CoralArmCommands.goToPosition(coralArm, -Math.PI / 2));
+                operatorController.b().onTrue(CoralArmCommands.goToPosition(coralArm, 0));
+                operatorController.y().onTrue(CoralArmCommands.goToPosition(coralArm, Math.PI / 2));
         }
 
         public void displaSimFieldToAdvantageScope() {

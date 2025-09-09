@@ -6,17 +6,17 @@ public class CoralArmConstants {
     public static final int CORAL_ARM_ID = 17;
     public static final int FOLD_SWITCH = 0;
 
-    public static final double KP = 0.2;
+    public static final double KP = 0.001;
     public static final double KI = 0;
-    public static final double KD = 0;
+    public static final double KD = 0.003;
     public static final double KS = 0;
-    public static final double KG = 1;
-    public static final double KV = 0;
+    public static final double KG = 0.7;
+    public static final double KV = 0.65;
     public static final double RESIST_GRAVITY = 0;
     public static final double TOLERANCE = Units.degreesToRadians(2);
 
-    public static final double MAX_ACCELERATION = 0;
-    public static final double MAX_VELOCITY = 0;
+    public static final double MAX_ACCELERATION = 5.0;
+    public static final double MAX_VELOCITY = 3.0;
 
     public static final double FORWARD_SOFT_LIMIT = 0;
     public static final double L2_POSITION = 0;

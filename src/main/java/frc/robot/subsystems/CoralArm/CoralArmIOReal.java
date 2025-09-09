@@ -81,7 +81,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
     }
 
     private void resetEncoder() {
-        encoder.setPosition(0);
+        encoder.setPosition(-Math.PI / 2);
     }
 
     @Override
