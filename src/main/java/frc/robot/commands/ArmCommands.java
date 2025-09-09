@@ -6,6 +6,6 @@ import frc.robot.subsystems.arm.arm;
 
 public class ArmCommands {
     public Command SetVoltage(arm arm, double voltage)  {
-        return Commands.runEnd(() -> arm.getIO().setVoltage(voltage),  () -> arm.get, arm);
+        return Commands.runEnd(() -> arm.getIO().setVoltage(voltage),() -> arm.getIO().setVoltage(-0.1), arm);
     }
 }
