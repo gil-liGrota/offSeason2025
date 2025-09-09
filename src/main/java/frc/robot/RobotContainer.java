@@ -93,7 +93,7 @@ public class RobotContainer {
          */
         private void configureButtonBindings() {
                 operatorController.y().onTrue(
-                                ElevatorCommands.goToPosition(elevator, ElevatorConstants.L3_POSITION));
+                                ElevatorCommands.goToPosition(elevator, 38.0));
                 operatorController.x()
                                 .onTrue(ElevatorCommands.closeElevator(elevator));
                 operatorController.b().onTrue(
