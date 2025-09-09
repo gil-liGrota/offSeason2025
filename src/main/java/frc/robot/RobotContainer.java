@@ -90,6 +90,7 @@ public class RobotContainer {
          */
         private void configureButtonBindings() {
                 operatorController.a().whileTrue(armCommands.SetVoltage(arm, -1));
+                operatorController.x().whileTrue(armCommands.SetVoltage(arm, -0.2));
 
         }
 
