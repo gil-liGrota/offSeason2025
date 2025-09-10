@@ -40,6 +40,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
     private ProfiledPIDController pidController;
     private ArmFeedforward feedforward;
     private POMDigitalInput foldSwitch;
+    private POMDigitalInput brakeSwitch;
     private BooleanSupplier isCoralIn;
 
     public CoralArmIOReal() {
@@ -51,7 +52,8 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
         encoder = motor.getEncoder();
         this.isCoralIn = isCoralIn;
 
-        foldSwitch = new POMDigitalInput(FOLD_SWITCH);
+        foldSwitch = new POMDigitalInput(3);
+        brakeSwitch = new POMDigitalInput(4);//
         pidController.setTolerance(TOLERANCE);// TODO check this
 
         SparkMaxConfig config = new SparkMaxConfig();
@@ -77,11 +79,17 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
         inputs.coralArmAppliedVolts = motor.getAppliedOutput() * motor.getBusVoltage(); // FIXME Wont Return Motor
                                                                                         // Voltage
         inputs.foldSwitch = foldSwitch.get();
+        inputs.brakeSwitch = brakeSwitch.get();
         resetIfPressed();
     }
 
     private void resetEncoder() {
-        encoder.setPosition(-Math.PI / 2);
+        if (brakeSwitch.get()) {
+            encoder.setPosition(Math.PI / 2);
+        }
+        if (foldSwitch.get()) {
+            encoder.setPosition(-Math.PI / 2);
+        }
     }
 
     @Override
@@ -127,9 +135,10 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
 
     @Override
     public void resetIfPressed() {
-        if (foldSwitch.get()) {
+        if (foldSwitch.get() || brakeSwitch.get()) {
             resetEncoder();
         }
+
     }
 
     private double getFeedForwardVelocity(double velocity) {
