@@ -22,6 +22,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
+import frc.robot.commands.ElevatorCommands;
+import frc.robot.subsystems.Elevator.Elevator;
+import frc.robot.subsystems.Elevator.ElevatorConstants;
+import frc.robot.subsystems.Elevator.ElevatorReal;
 
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
@@ -39,7 +43,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  */
 public class RobotContainer {
         // Subsystems
-
+        Elevator elevator;
         // Controller
         private final PomXboxController driverController = new PomXboxController(0);
         private final PomXboxController operatorController = new PomXboxController(1);
@@ -55,6 +59,7 @@ public class RobotContainer {
         public RobotContainer() {
                 switch (Constants.currentMode) {
                         case REAL:
+                                elevator = new Elevator(new ElevatorReal(() -> false));
                                 // Real robot, instantiate hardware IO implementations
                                 break;
 
@@ -87,6 +92,17 @@ public class RobotContainer {
          * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
          */
         private void configureButtonBindings() {
+                operatorController.x()
+                                .onTrue(ElevatorCommands.closeElevator(elevator));
+                operatorController.b().onTrue(
+                                ElevatorCommands.goToPosition(elevator, ElevatorConstants.L4_POSITION));
+                operatorController.a().onTrue(ElevatorCommands.stopElevator(elevator));
+
+                operatorController.leftTrigger()
+                                .whileTrue(ElevatorCommands.closeElevatorManual(elevator, -3.5));
+
+                operatorController.rightTrigger()
+                                .whileTrue(ElevatorCommands.openElevatorManual(elevator, 3.0));
 
         }
 
