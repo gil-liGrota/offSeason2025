@@ -155,19 +155,18 @@ public class ElevatorReal implements ElevatorIO {
                 motor.configure(new SparkMaxConfig().idleMode(IdleMode.kCoast), ResetMode.kNoResetSafeParameters,
                         PersistMode.kNoPersistParameters);
             }
+        } else {
+            if (brakeSwitch.get()) {
+                motor.configure(new SparkMaxConfig().idleMode(IdleMode.kCoast),
+                        ResetMode.kNoResetSafeParameters,
+                        PersistMode.kNoPersistParameters);
+                resetEncoder();
+            } else {
+                motor.configure(new SparkMaxConfig().idleMode(IdleMode.kBrake),
+                        ResetMode.kNoResetSafeParameters,
+                        PersistMode.kNoPersistParameters);
+            }
         }
-        // } else {
-        // if (brakeSwitch.get()) {
-        // motor.configure(new SparkMaxConfig().idleMode(IdleMode.kCoast),
-        // ResetMode.kNoResetSafeParameters,
-        // PersistMode.kNoPersistParameters);
-        // resetEncoder();
-        // } else {
-        // motor.configure(new SparkMaxConfig().idleMode(IdleMode.kBrake),
-        // ResetMode.kNoResetSafeParameters,
-        // PersistMode.kNoPersistParameters);
-        // }
-        // }
     }
 
     @Override
