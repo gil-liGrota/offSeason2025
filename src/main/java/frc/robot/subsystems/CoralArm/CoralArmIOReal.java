@@ -52,7 +52,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
         encoder = motor.getEncoder();
         this.isCoralIn = isCoralIn;
 
-        foldSwitch = new POMDigitalInput(3);
+        foldSwitch = new POMDigitalInput(1);
         brakeSwitch = new POMDigitalInput(4);//
         pidController.setTolerance(TOLERANCE);// TODO check this
 
