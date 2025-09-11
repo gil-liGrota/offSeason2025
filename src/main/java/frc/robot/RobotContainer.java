@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
-import frc.robot.commands.CoralArmCommands;
 import frc.robot.subsystems.CoralArm.CoralArm;
 import frc.robot.subsystems.CoralArm.CoralArmIOReal;
 
@@ -42,10 +41,12 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  */
 public class RobotContainer {
         // Subsystems
-        CoralArm coralArm;
+
         // Controller
         private final PomXboxController driverController = new PomXboxController(0);
         private final PomXboxController operatorController = new PomXboxController(1);
+
+        CoralArm coralArm;
 
         // Dashboard inputs
         private final LoggedDashboardChooser<Command> autoChooser;
@@ -58,7 +59,6 @@ public class RobotContainer {
         public RobotContainer() {
                 switch (Constants.currentMode) {
                         case REAL:
-                                coralArm = new CoralArm(new CoralArmIOReal());
                                 // Real robot, instantiate hardware IO implementations
                                 break;
 
@@ -91,9 +91,7 @@ public class RobotContainer {
          * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
          */
         private void configureButtonBindings() {
-                operatorController.a().onTrue(CoralArmCommands.goToPosition(coralArm, -Math.PI / 2));
-                operatorController.b().onTrue(CoralArmCommands.goToPosition(coralArm, 0));
-                operatorController.y().onTrue(CoralArmCommands.goToPosition(coralArm, Math.PI / 2));
+
         }
 
         public void displaSimFieldToAdvantageScope() {

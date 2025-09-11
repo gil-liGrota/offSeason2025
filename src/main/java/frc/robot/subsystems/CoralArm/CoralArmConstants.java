@@ -10,10 +10,19 @@ public class CoralArmConstants {
     public static final double KI = 0.0;
     public static final double KD = 0.003;
     public static final double KS = 0;
-    public static final double KG = 0.62;
-    public static final double KV = 0.55;
+    public static final double KG = 0; // gravity
+    public static final double KV = 0; //
+    // public static final double KP = 0.006;
+    // public static final double KI = 0;
+    // public static final double KD = 0.003;
+    // public static final double KS = 0;
+    // public static final double KG = 0.62;
+    // public static final double KV = 0.55;
     public static final double RESIST_GRAVITY = 0;
     public static final double TOLERANCE = Units.degreesToRadians(2);
+
+    // public static final double MAX_ACCELERATION = 1;
+    // public static final double MAX_VELOCITY = 1;
 
     public static final double MAX_ACCELERATION = 2.4;
     public static final double MAX_VELOCITY = 2.5;
