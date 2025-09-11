@@ -97,7 +97,8 @@ public class RobotContainer {
          * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
          */
         private void configureButtonBindings() {
-                operatorController.b().onTrue(ElevatorCommands.goToPosition(elevator, 35));
+                operatorController.b().onTrue(ElevatorCommands.goToPosition(elevator, 37));
+                operatorController.x().onTrue(ElevatorCommands.closeElevator(elevator));
                 operatorController.y().onTrue(CoralArmCommands.goToPosition(coralArm, Math.PI / 2)
                                 .until(() -> coralArm.getIO().getPosition() >= Math.PI / 2)
                                 .andThen(ElevatorCommands.goToPosition(elevator, 35)));
