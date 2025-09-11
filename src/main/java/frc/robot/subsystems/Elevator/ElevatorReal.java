@@ -44,10 +44,8 @@ public class ElevatorReal implements ElevatorIO {
         encoder = motor.getEncoder();
         this.isCoralIn = isCoralIn;
 
-        foldSwitch = new POMDigitalInput(1);
-        brakeSwitch = new POMDigitalInput(2);
-        port3 = new POMDigitalInput(3);
-        port4 = new POMDigitalInput(4);
+        foldSwitch = new POMDigitalInput(3);
+        brakeSwitch = new POMDigitalInput(4);
         pidController.setTolerance(TOLERANCE);// TODO chaeck this
 
         SparkMaxConfig config = new SparkMaxConfig();

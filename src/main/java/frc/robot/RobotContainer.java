@@ -92,12 +92,10 @@ public class RobotContainer {
          * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
          */
         private void configureButtonBindings() {
-                operatorController.y().onTrue(
-                                ElevatorCommands.goToPosition(elevator, 38.0));
                 operatorController.x()
                                 .onTrue(ElevatorCommands.closeElevator(elevator));
                 operatorController.b().onTrue(
-                                ElevatorCommands.goToPosition(elevator, ElevatorConstants.L2_POSITION));
+                                ElevatorCommands.goToPosition(elevator, ElevatorConstants.L4_POSITION));
                 operatorController.a().onTrue(ElevatorCommands.stopElevator(elevator));
 
                 operatorController.leftTrigger()
