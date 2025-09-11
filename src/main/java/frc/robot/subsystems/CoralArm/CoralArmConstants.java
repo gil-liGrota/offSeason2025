@@ -7,7 +7,7 @@ public class CoralArmConstants {
     public static final int FOLD_SWITCH = 0;
 
     public static final double KP = 0.006;
-    public static final double KI = 0;
+    public static final double KI = 0.0;
     public static final double KD = 0.003;
     public static final double KS = 0;
     public static final double KG = 0.62;
