@@ -44,7 +44,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
     private ArmFeedforward feedforward;
     private POMDigitalInput lowSwitch;
     private POMDigitalInput highSwitch;
-    private POMDigitalInput brakeSwitch;
+    // private POMDigitalInput brakeSwitch;
     private BooleanSupplier isCoralIn;
 
     public CoralArmIOReal() {
@@ -58,7 +58,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
 
         highSwitch = new POMDigitalInput(HIGH_SWITCH);
         lowSwitch = new POMDigitalInput(LOW_SWITCH);
-        brakeSwitch = new POMDigitalInput(BRAKE_SWITCH);
+        // brakeSwitch = new POMDigitalInput(BRAKE_SWITCH);
         pidController.setTolerance(TOLERANCE);// TODO check this
 
         SparkMaxConfig config = new SparkMaxConfig();
@@ -85,7 +85,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
                                                                                         // Voltage
         inputs.lowSwitch = lowSwitch.get();
         inputs.highSwitch = highSwitch.get();
-        inputs.brakeSwitch = brakeSwitch.get();
+        // inputs.brakeSwitch = brakeSwitch.get();
         resetIfPressed();
     }
 
@@ -144,13 +144,15 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
         if (lowSwitch.get() || highSwitch.get()) {
             resetEncoder();
         }
-        if (brakeSwitch.get()) {
-            motor.configure(new SparkMaxConfig().idleMode(IdleMode.kCoast), ResetMode.kNoResetSafeParameters,
-                    PersistMode.kNoPersistParameters);
-        } else {
-            motor.configure(new SparkMaxConfig().idleMode(IdleMode.kBrake), ResetMode.kNoResetSafeParameters,
-                    PersistMode.kNoPersistParameters);
-        }
+        // if (brakeSwitch.get()) {
+        // motor.configure(new SparkMaxConfig().idleMode(IdleMode.kCoast),
+        // ResetMode.kNoResetSafeParameters,
+        // PersistMode.kNoPersistParameters);
+        // } else {
+        // motor.configure(new SparkMaxConfig().idleMode(IdleMode.kBrake),
+        // ResetMode.kNoResetSafeParameters,
+        // PersistMode.kNoPersistParameters);
+        // }
 
     }
 
@@ -214,11 +216,11 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
             return new double[] { feedforward.getKg(), feedforward.getKs(),
                     feedforward.getKv() };
         },
-                /*(feedForwardArray) -> {
+                (feedForwardArray) -> {
                     feedforward.setKg(feedForwardArray[0]);
                     feedforward.setKs(feedForwardArray[1]);
                     feedforward.setKv(feedForwardArray[2]);
-                }*/);
+                });
     }
 
 }
