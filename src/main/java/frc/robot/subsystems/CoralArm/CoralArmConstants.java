@@ -6,6 +6,7 @@ public class CoralArmConstants {
     public static final int CORAL_ARM_ID = 17;
     public static final int HIGH_SWITCH = 1;
     public static final int LOW_SWITCH = 2;
+    public static final int BRAKE_SWITCH = 4;
 
     public static final double KP = 0.01;
     public static final double KI = 0.0;

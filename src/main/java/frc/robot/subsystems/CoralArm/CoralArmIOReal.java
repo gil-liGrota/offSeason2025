@@ -1,5 +1,6 @@
 package frc.robot.subsystems.CoralArm;
 
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.BRAKE_SWITCH;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.CORAL_ARM_ID;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.CURRENT_LIMIT;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.HIGH_SWITCH;
@@ -32,6 +33,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.POM_lib.Motors.POMSparkMax;
 import frc.robot.POM_lib.sensors.POMDigitalInput;
 
@@ -54,8 +56,9 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
         encoder = motor.getEncoder();
         this.isCoralIn = isCoralIn;
 
-        highSwitch = new POMDigitalInput(HIGH_SWITCH);//
+        highSwitch = new POMDigitalInput(HIGH_SWITCH);
         lowSwitch = new POMDigitalInput(LOW_SWITCH);
+        brakeSwitch = new POMDigitalInput(BRAKE_SWITCH);
         pidController.setTolerance(TOLERANCE);// TODO check this
 
         SparkMaxConfig config = new SparkMaxConfig();
@@ -141,6 +144,13 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
         if (lowSwitch.get() || highSwitch.get()) {
             resetEncoder();
         }
+        if (brakeSwitch.get()) {
+            motor.configure(new SparkMaxConfig().idleMode(IdleMode.kCoast), ResetMode.kNoResetSafeParameters,
+                    PersistMode.kNoPersistParameters);
+        } else {
+            motor.configure(new SparkMaxConfig().idleMode(IdleMode.kBrake), ResetMode.kNoResetSafeParameters,
+                    PersistMode.kNoPersistParameters);
+        }
 
     }
 
@@ -197,10 +207,12 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
             Constraints constraints = pidController.getConstraints();
             return new double[] { constraints.maxVelocity, constraints.maxAcceleration };
         },
-                (constraints) -> pidController.setConstraints(new Constraints(constraints[0], constraints[1])));
+                (constraints) -> pidController.setConstraints(new Constraints(constraints[0],
+                        constraints[1])));
 
         builder.addDoubleArrayProperty("FeedForward", () -> {
-            return new double[] { feedforward.getKg(), feedforward.getKs(), feedforward.getKv() };
+            return new double[] { feedforward.getKg(), feedforward.getKs(),
+                    feedforward.getKv() };
         },
                 (feedForwardArray) -> {
                     feedforward.setKg(feedForwardArray[0]);
