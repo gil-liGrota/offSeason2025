@@ -23,6 +23,8 @@ public class ElevatorReal implements ElevatorIO {
     private ElevatorFeedforward feedforward;
     private POMDigitalInput foldSwitch;
     private POMDigitalInput brakeSwitch;
+    private POMDigitalInput port3;
+    private POMDigitalInput port4;
     private ElevatorTuningPid pidConstants;
     private BooleanSupplier isCoralIn;
 
@@ -44,6 +46,8 @@ public class ElevatorReal implements ElevatorIO {
 
         foldSwitch = new POMDigitalInput(1);
         brakeSwitch = new POMDigitalInput(2);
+        port3 = new POMDigitalInput(3);
+        port4 = new POMDigitalInput(4);
         pidController.setTolerance(TOLERANCE);// TODO chaeck this
 
         SparkMaxConfig config = new SparkMaxConfig();
@@ -69,6 +73,8 @@ public class ElevatorReal implements ElevatorIO {
         inputs.elevatorAppliedVolts = motor.getAppliedOutput() * motor.getBusVoltage(); // FIXME Wont Return Motor
                                                                                         // Voltage
         inputs.foldSwitch = foldSwitch.get();
+        inputs.brakeSwitch = brakeSwitch.get();
+
         setPidValues();
         resetlfPressed();
 
