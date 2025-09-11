@@ -42,6 +42,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
     private ArmFeedforward feedforward;
     private POMDigitalInput lowSwitch;
     private POMDigitalInput highSwitch;
+    private POMDigitalInput brakeSwitch;
     private BooleanSupplier isCoralIn;
 
     public CoralArmIOReal() {
@@ -81,6 +82,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
                                                                                         // Voltage
         inputs.lowSwitch = lowSwitch.get();
         inputs.highSwitch = highSwitch.get();
+        inputs.brakeSwitch = brakeSwitch.get();
         resetIfPressed();
     }
 

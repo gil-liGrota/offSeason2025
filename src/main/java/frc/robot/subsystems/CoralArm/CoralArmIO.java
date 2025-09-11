@@ -15,6 +15,7 @@ public interface CoralArmIO {
         double coralArmAppliedVolts = 0.0;
         boolean lowSwitch = false;
         boolean highSwitch = false;
+        boolean brakeSwitch = false;
     }
 
     public default void updateInputs(CoralArmIOInputs inputs) {
