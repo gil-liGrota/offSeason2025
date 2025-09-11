@@ -53,7 +53,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
         this.isCoralIn = isCoralIn;
 
         foldSwitch = new POMDigitalInput(1);
-        brakeSwitch = new POMDigitalInput(4);//
+        brakeSwitch = new POMDigitalInput(2);//
         pidController.setTolerance(TOLERANCE);// TODO check this
 
         SparkMaxConfig config = new SparkMaxConfig();
