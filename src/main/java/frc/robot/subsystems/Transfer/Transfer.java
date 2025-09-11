@@ -17,26 +17,8 @@ public class Transfer extends SubsystemBase {
         Logger.processInputs("Transfer", transferInputs);
     }
 
-
-    public TransferIO getIO(){
+    public TransferIO getIO() {
         return transferIO;
     }
 
-    // public void setSpeed(double speed) {
-    //     transferIO.setSpeed(speed);
-    // }
-
-
-    // public void setVoltage(double voltage) {
-    //     transferIO.setVoltage(voltage);
-    // }
-
-    // public void stopMotor() {
-    //     transferIO.stopMotor();
-    // }
-
-    // public boolean isCoralIn(){
-    //     return transferIO.isCoralIn();
-    // }
-        
 }

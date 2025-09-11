@@ -50,28 +50,15 @@ public class TransferIOReal implements TransferIO {
 
     @Override
     public void updateInputs(TransferIOInputs inputs) {
-        inputs.velocity = motor.get();
+        inputs.velocity = encoder.getVelocity();
         inputs.voltage = (motor.getAppliedOutput() * motor.getBusVoltage());
         inputs.transferSensorInput = transferSensor.get();
-        setPidValues();
-        resetEncoder();
-        Logger.recordOutput("Transfer/Spark FW Switch", motor.getForwardLimitSwitch().isPressed());
-        Logger.recordOutput("Transfer/Spark RV Switch", motor.getReverseLimitSwitch().isPressed());
-    }
-
-    @Override
-    public void setGoal(double goal) {
-        pidController.setGoal(goal);
-        setVoltage(pidController.calculate(encoder.getPosition()));
-    }
-
-    @Override
-    public BooleanSupplier atGoal() {
-        return () -> pidController.atGoal();
-    }
-
-    private void resetEncoder() {
-        encoder.setPosition(0);
+        // setPidValues();
+        // resetEncoder();
+        // Logger.recordOutput("Transfer/Spark FW Switch",
+        // motor.getForwardLimitSwitch().isPressed());
+        // Logger.recordOutput("Transfer/Spark RV Switch",
+        // motor.getReverseLimitSwitch().isPressed());
     }
 
     @Override
@@ -93,26 +80,42 @@ public class TransferIOReal implements TransferIO {
         return transferSensor.get();
     }
 
-    public double getPosition() {
-        return encoder.getPosition();
-    }
+    // @Override
+    // public void setGoal(double goal) {
+    // pidController.setGoal(goal);
+    // setVoltage(pidController.calculate(encoder.getPosition()));
+    // }
 
-    public void resetPID() {
-        pidController.reset(encoder.getPosition(), encoder.getVelocity());
-    }
+    // @Override
+    // public BooleanSupplier atGoal() {
+    // return () -> pidController.atGoal();
+    // }
 
-    @Override
-    public void setPidValues() {
-        pidController.setP(pidConstants.getKp());
-        pidController.setI(pidConstants.getKi());
-        pidController.setD(pidConstants.getKd());
-        pidController.setConstraints(
-                new TrapezoidProfile.Constraints(pidConstants.getMaxVelocity(), pidConstants.getMaxAcceleration()));
-    }
+    // private void resetEncoder() {
+    // encoder.setPosition(0);
+    // }
 
-    @Override
-    public void setVoltageWithPid(double voltage) {
-        motor.setVoltage(pidController.calculate(voltage));
-    }
+    // public double getPosition() {
+    // return encoder.getPosition();
+    // }
+
+    // public void resetPID() {
+    // pidController.reset(encoder.getPosition(), encoder.getVelocity());
+    // }
+
+    // @Override
+    // public void setPidValues() {
+    // pidController.setP(pidConstants.getKp());
+    // pidController.setI(pidConstants.getKi());
+    // pidController.setD(pidConstants.getKd());
+    // pidController.setConstraints(
+    // new TrapezoidProfile.Constraints(pidConstants.getMaxVelocity(),
+    // pidConstants.getMaxAcceleration()));
+    // }
+
+    // @Override
+    // public void setVoltageWithPid(double voltage) {
+    // motor.setVoltage(pidController.calculate(voltage));
+    // }
 
 }
