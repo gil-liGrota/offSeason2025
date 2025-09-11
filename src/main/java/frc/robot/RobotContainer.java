@@ -30,6 +30,9 @@ import frc.robot.subsystems.Elevator.Elevator;
 import frc.robot.subsystems.Elevator.ElevatorConstants;
 import frc.robot.subsystems.Elevator.ElevatorReal;
 
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.L4_ARM_POSITION;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.L4_ELEVATOR_POSITION;
+
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import org.littletonrobotics.junction.Logger;
@@ -97,11 +100,11 @@ public class RobotContainer {
          * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
          */
         private void configureButtonBindings() {
-                operatorController.b().onTrue(ElevatorCommands.goToPosition(elevator, 37));
+                operatorController.b().onTrue(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION));
                 operatorController.x().onTrue(ElevatorCommands.closeElevator(elevator));
-                operatorController.y().onTrue(CoralArmCommands.goToPosition(coralArm, Math.PI / 2)
-                                .until(() -> coralArm.getIO().getPosition() >= Math.PI / 2)
-                                .andThen(ElevatorCommands.goToPosition(elevator, 35)));
+                operatorController.y().onTrue(CoralArmCommands.goToPosition(coralArm, L4_ARM_POSITION)
+                                .until(() -> coralArm.getIO().getPosition() >= L4_ARM_POSITION)
+                                .andThen(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)));
                 operatorController.a().onTrue(CoralArmCommands.goToPosition(coralArm, -Math.PI / 2)
                                 .andThen(ElevatorCommands.closeElevator(elevator)));
 

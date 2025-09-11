@@ -22,10 +22,10 @@ public class CoralArmConstants {
     public static final double TOLERANCE = Units.degreesToRadians(2);
 
     public static final double FORWARD_SOFT_LIMIT = 0;
-    public static final double L2_POSITION = 0;
-    public static final double L1_POSITION = 0;
-    public static final double L3_POSITION = 0;
-    public static final double L4_POSITION = 0;
+    public static final double L1_ARM_POSITION = 0;
+    public static final double L2_ARM_POSITION = 0;
+    public static final double L3_ARM_POSITION = 0;
+    public static final double L4_ARM_POSITION = Math.PI / 2;
 
     public static final double POSITION_CONVERSION_FACTOR = 1 / 40.0 /* versa */ * (2 * Math.PI) /* to radians */; // TODO
                                                                                                                    // verify
