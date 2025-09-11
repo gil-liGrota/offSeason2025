@@ -13,8 +13,8 @@ public interface CoralArmIO {
         double coralArmVelocity = 0.0;
         double coralArmPosition = 0.0;
         double coralArmAppliedVolts = 0.0;
-        boolean foldSwitch = false;
-        boolean brakeSwitch = false;
+        boolean lowSwitch = false;
+        boolean highSwitch = false;
     }
 
     public default void updateInputs(CoralArmIOInputs inputs) {

@@ -2,7 +2,7 @@ package frc.robot.subsystems.CoralArm;
 
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.CORAL_ARM_ID;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.CURRENT_LIMIT;
-import static frc.robot.subsystems.CoralArm.CoralArmConstants.FOLD_SWITCH;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.HIGH_SWITCH;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.INVERTED;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.KD;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.KG;
@@ -11,6 +11,7 @@ import static frc.robot.subsystems.CoralArm.CoralArmConstants.KI;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.KP;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.KS;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.KV;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.LOW_SWITCH;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.MAX_ACCELERATION;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.MAX_VELOCITY;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.POSITION_CONVERSION_FACTOR;
@@ -39,8 +40,8 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
     RelativeEncoder encoder;
     private ProfiledPIDController pidController;
     private ArmFeedforward feedforward;
-    private POMDigitalInput foldSwitch;
-    private POMDigitalInput brakeSwitch;
+    private POMDigitalInput lowSwitch;
+    private POMDigitalInput highSwitch;
     private BooleanSupplier isCoralIn;
 
     public CoralArmIOReal() {
@@ -52,8 +53,8 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
         encoder = motor.getEncoder();
         this.isCoralIn = isCoralIn;
 
-        foldSwitch = new POMDigitalInput(1);
-        brakeSwitch = new POMDigitalInput(2);//
+        highSwitch = new POMDigitalInput(HIGH_SWITCH);//
+        lowSwitch = new POMDigitalInput(LOW_SWITCH);
         pidController.setTolerance(TOLERANCE);// TODO check this
 
         SparkMaxConfig config = new SparkMaxConfig();
@@ -78,16 +79,16 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
         inputs.coralArmPosition = encoder.getPosition();
         inputs.coralArmAppliedVolts = motor.getAppliedOutput() * motor.getBusVoltage(); // FIXME Wont Return Motor
                                                                                         // Voltage
-        inputs.foldSwitch = foldSwitch.get();
-        inputs.brakeSwitch = brakeSwitch.get();
+        inputs.lowSwitch = lowSwitch.get();
+        inputs.highSwitch = highSwitch.get();
         resetIfPressed();
     }
 
     private void resetEncoder() {
-        if (brakeSwitch.get()) {
+        if (highSwitch.get()) {
             encoder.setPosition(Math.PI / 2);
         }
-        if (foldSwitch.get()) {
+        if (lowSwitch.get()) {
             encoder.setPosition(-Math.PI / 2);
         }
     }
@@ -135,7 +136,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
 
     @Override
     public void resetIfPressed() {
-        if (foldSwitch.get() || brakeSwitch.get()) {
+        if (lowSwitch.get() || highSwitch.get()) {
             resetEncoder();
         }
 
@@ -158,7 +159,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
 
     @Override
     public boolean isPressed() {
-        return foldSwitch.get();
+        return lowSwitch.get();
     }
 
     @Override

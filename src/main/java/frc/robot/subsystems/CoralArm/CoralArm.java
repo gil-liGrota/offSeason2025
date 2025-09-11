@@ -4,16 +4,21 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CoralArm extends SubsystemBase {
 
     private CoralArmIO io;
-    private CoralArmIOInputsAutoLogged inputs;
+    private CoralArmIOInputsAutoLogged inputs = new CoralArmIOInputsAutoLogged();
 
     public CoralArm(CoralArmIO io) {
-        this.io = RobotBase.isReal() ? new CoralArmIOReal() : null;
-        this.inputs = new CoralArmIOInputsAutoLogged();
+        this.io = io;
+        setDefaultCommand(new RepeatCommand(new ConditionalCommand(this.runOnce(() -> io.setVoltage(0)),
+                this.runOnce(io::resistGravity), io::isPressed))
+                .beforeStarting(new PrintCommand("arm default command")));
 
         SmartDashboard.putData("Coral Arm", (CoralArmIOReal) io);
     }
