@@ -2,7 +2,6 @@ package frc.robot.subsystems.CoralArm;
 
 import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -12,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class CoralArm extends SubsystemBase {
 
     private CoralArmIO io;
-    private CoralArmIOInputsAutoLogged inputs = new CoralArmIOInputsAutoLogged();
+    // private CoralArmIOInputsAutoLogged inputs = new CoralArmIOInputsAutoLogged();
 
     public CoralArm(CoralArmIO io) {
         this.io = io;
@@ -25,8 +24,8 @@ public class CoralArm extends SubsystemBase {
 
     @Override
     public void periodic() {
-        io.updateInputs(inputs);
-        Logger.processInputs("Coral Arm", inputs);
+        // io.updateInputs(inputs);
+        // Logger.processInputs("Coral Arm", inputs);
         Logger.recordOutput("Current command",
                 this.getCurrentCommand() == null ? "null" : this.getCurrentCommand().getName());
     }

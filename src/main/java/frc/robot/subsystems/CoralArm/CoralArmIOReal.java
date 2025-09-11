@@ -214,11 +214,11 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
             return new double[] { feedforward.getKg(), feedforward.getKs(),
                     feedforward.getKv() };
         },
-                (feedForwardArray) -> {
+                /*(feedForwardArray) -> {
                     feedforward.setKg(feedForwardArray[0]);
                     feedforward.setKs(feedForwardArray[1]);
                     feedforward.setKv(feedForwardArray[2]);
-                });
+                }*/);
     }
 
 }
