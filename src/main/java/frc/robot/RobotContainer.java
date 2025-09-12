@@ -111,7 +111,7 @@ public class RobotContainer {
                                 .andThen(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)));
 
                 // L3
-                operatorController.x().onTrue(CoralArmCommands.goToPosition(coralArm, L3_ELEVATOR_POSITION));
+                operatorController.x().onTrue(CoralArmCommands.goToPosition(coralArm, 0.95));
 
                 // L2
                 operatorController.a().onTrue(ElevatorCommands.goToPosition(elevator,
