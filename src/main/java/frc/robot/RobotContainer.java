@@ -53,6 +53,7 @@ public class RobotContainer {
         // Controller
         private final PomXboxController driverController = new PomXboxController(0);
         private final PomXboxController operatorController = new PomXboxController(1);
+        private final PomXboxController manualController = new PomXboxController(2);
 
         // Dashboard inputs
         private final LoggedDashboardChooser<Command> autoChooser;
@@ -109,32 +110,41 @@ public class RobotContainer {
                                 .until(() -> coralArm.getIO().getPosition() >= L4_ARM_POSITION)
                                 .andThen(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)));
 
+                // L3
+                operatorController.x().onTrue(CoralArmCommands.goToPosition(coralArm, L3_ELEVATOR_POSITION));
+
                 // L2
                 operatorController.a().onTrue(ElevatorCommands.goToPosition(elevator,
                                 L4_ELEVATOR_POSITION)
                                 .until(() -> elevator.getIO().getPosition() - 0.4 >= L2_ELEVATOR_POSITION)
                                 .andThen(CoralArmCommands.goToPosition(coralArm, L2_ARM_POSITION)));
-                // operatorController.a().onTrue(CoralArmCommands.goToPosition(coralArm, -1.1));
 
-                // intake,
-                operatorController.PovUp().whileTrue(TransferCommands.coralOutake(transfer));
+                // L1
+                operatorController.LB().onTrue(ElevatorCommands.goToPosition(elevator, L2_ELEVATOR_POSITION)
+                                .until(() -> elevator.getIO().getPosition() - 0.4 >= L1_ELEVATOR_POSITION)
+                                .andThen(CoralArmCommands.goToPosition(coralArm, L1_ARM_POSITION)));
 
-                // outake, l4
-                operatorController.PovDown().whileTrue(TransferCommands.intakeCoral(transfer));
+                // intake, l2, l1
+                operatorController.PovUp().whileTrue(TransferCommands.coralintake(transfer, 5));
+                operatorController.PovLeft().whileTrue(TransferCommands.coralintake(transfer, 12));
+
+                // outake, l4, l3
+                operatorController.PovDown().whileTrue(TransferCommands.coralintake(transfer, -5));
+                operatorController.PovRight().whileTrue(TransferCommands.coralintake(transfer, -12));
 
                 // manuale elevator
-                driverController.rightTrigger().whileTrue(ElevatorCommands.openElevatorManual(elevator, 4));
-                driverController.leftTrigger().whileTrue(ElevatorCommands.closeElevatorManual(elevator, -1));
+                manualController.rightTrigger().whileTrue(ElevatorCommands.openElevatorManual(elevator, 4));
+                manualController.leftTrigger().whileTrue(ElevatorCommands.closeElevatorManual(elevator, -1));
                 // elevator
-                driverController.a().onTrue(ElevatorCommands.closeElevator(elevator));
-                driverController.y().onTrue(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION));
+                manualController.a().onTrue(ElevatorCommands.closeElevator(elevator));
+                manualController.y().onTrue(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION));
 
                 // manuale coral arm
-                driverController.PovLeft().whileTrue(CoralArmCommands.setVoltage(coralArm, 1));
-                driverController.PovRight().whileTrue(CoralArmCommands.setVoltage(coralArm, -1));
+                manualController.PovLeft().whileTrue(CoralArmCommands.setVoltage(coralArm, 1));
+                manualController.PovRight().whileTrue(CoralArmCommands.setVoltage(coralArm, -1));
                 // coral arm
-                driverController.b().onTrue(CoralArmCommands.goToPosition(coralArm, L4_ARM_POSITION));
-                driverController.x().onTrue(CoralArmCommands.goToPosition(coralArm, CLOSE_ARM_POSITION));
+                manualController.b().onTrue(CoralArmCommands.goToPosition(coralArm, L4_ARM_POSITION));
+                manualController.x().onTrue(CoralArmCommands.goToPosition(coralArm, CLOSE_ARM_POSITION));
 
         }
 
