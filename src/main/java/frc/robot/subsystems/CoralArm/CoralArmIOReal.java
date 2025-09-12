@@ -44,21 +44,20 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
     private ArmFeedforward feedforward;
     private POMDigitalInput lowSwitch;
     private POMDigitalInput highSwitch;
-    // private POMDigitalInput brakeSwitch;
+    private POMDigitalInput brakeSwitch;
     private BooleanSupplier isCoralIn;
 
-    public CoralArmIOReal() {
+    public CoralArmIOReal(POMDigitalInput brakeSwitch) {
         motor = new POMSparkMax(CORAL_ARM_ID);
         feedforward = new ArmFeedforward(KS, KG, KV);
         pidController = new ProfiledPIDController(KP, KI, KD,
                 new TrapezoidProfile.Constraints(MAX_VELOCITY, MAX_ACCELERATION));
 
         encoder = motor.getEncoder();
-        this.isCoralIn = isCoralIn;
 
         highSwitch = new POMDigitalInput(HIGH_SWITCH);
         lowSwitch = new POMDigitalInput(LOW_SWITCH);
-        // brakeSwitch = new POMDigitalInput(BRAKE_SWITCH);
+        this.brakeSwitch = brakeSwitch;
         pidController.setTolerance(TOLERANCE);// TODO check this
 
         SparkMaxConfig config = new SparkMaxConfig();
@@ -85,7 +84,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
                                                                                         // Voltage
         inputs.lowSwitch = lowSwitch.get();
         inputs.highSwitch = highSwitch.get();
-        // inputs.brakeSwitch = brakeSwitch.get();
+        inputs.brakeSwitch = brakeSwitch.get();
         resetIfPressed();
     }
 
@@ -144,15 +143,15 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
         if (lowSwitch.get() || highSwitch.get()) {
             resetEncoder();
         }
-        // if (brakeSwitch.get()) {
-        // motor.configure(new SparkMaxConfig().idleMode(IdleMode.kCoast),
-        // ResetMode.kNoResetSafeParameters,
-        // PersistMode.kNoPersistParameters);
-        // } else {
-        // motor.configure(new SparkMaxConfig().idleMode(IdleMode.kBrake),
-        // ResetMode.kNoResetSafeParameters,
-        // PersistMode.kNoPersistParameters);
-        // }
+        if (brakeSwitch.get()) {
+        motor.configure(new SparkMaxConfig().idleMode(IdleMode.kCoast),
+        ResetMode.kNoResetSafeParameters,
+        PersistMode.kNoPersistParameters);
+        } else {
+        motor.configure(new SparkMaxConfig().idleMode(IdleMode.kBrake),
+        ResetMode.kNoResetSafeParameters,
+        PersistMode.kNoPersistParameters);
+        }
 
     }
 

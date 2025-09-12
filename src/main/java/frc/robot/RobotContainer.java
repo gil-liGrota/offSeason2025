@@ -13,6 +13,7 @@
 
 package frc.robot;
 
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.BRAKE_SWITCH;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.CLOSE_ARM_POSITION;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.L1_ARM_POSITION;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.L2_ARM_POSITION;
@@ -32,6 +33,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
+import frc.robot.POM_lib.sensors.POMDigitalInput;
 import frc.robot.commands.CoralArmCommands;
 import frc.robot.commands.ElevatorCommands;
 import frc.robot.commands.SwerveCommands;
@@ -70,6 +72,7 @@ public class RobotContainer {
         private final LoggedDashboardChooser<Command> autoChooser;
 
         private boolean isRelative;
+        private POMDigitalInput brakeSwitch = new POMDigitalInput(BRAKE_SWITCH);
 
         private SwerveDriveSimulation driveSimulation = null;
 
@@ -80,8 +83,8 @@ public class RobotContainer {
                 switch (Constants.currentMode) {
                         case REAL:
                                 // Real robot, instantiate hardware IO implementations
-                                elevator = new Elevator(new ElevatorReal(() -> false));
-                                coralArm = new CoralArm(new CoralArmIOReal());
+                                elevator = new Elevator(new ElevatorReal(() -> false, brakeSwitch));
+                                coralArm = new CoralArm(new CoralArmIOReal(brakeSwitch));
                                 transfer = new Transfer(new TransferIOReal());
                                 drive = new Swerve(new GyroIOPigeon(),
                                                 new ModuleIOReal(0),

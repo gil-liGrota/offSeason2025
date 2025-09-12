@@ -26,7 +26,7 @@ public class ElevatorReal implements ElevatorIO {
     private ElevatorTuningPid pidConstants;
     private BooleanSupplier isCoralIn;
 
-    public ElevatorReal(BooleanSupplier isCoralIn) {
+    public ElevatorReal(BooleanSupplier isCoralIn, POMDigitalInput brakeSwitch) {
         motor = new POMSparkMax(ELEVATOR_ID);
         feedforward = new ElevatorFeedforward(KS, KG, KV);
         pidController = new ProfiledPIDController(KP, KI, KD,
@@ -43,7 +43,7 @@ public class ElevatorReal implements ElevatorIO {
         this.isCoralIn = isCoralIn;
 
         foldSwitch = new POMDigitalInput(3);
-        brakeSwitch = new POMDigitalInput(4);
+        this.brakeSwitch = brakeSwitch;
         pidController.setTolerance(TOLERANCE);// TODO chaeck this
 
         SparkMaxConfig config = new SparkMaxConfig();
