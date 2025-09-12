@@ -63,6 +63,8 @@ public class RobotContainer {
         // Dashboard inputs
         private final LoggedDashboardChooser<Command> autoChooser;
 
+        private boolean isRelative;
+
         private SwerveDriveSimulation driveSimulation = null;
 
         /**
@@ -112,6 +114,7 @@ public class RobotContainer {
          */
         private void configureButtonBindings() {
                 // driver:
+                isRelative = true;
                 drive.setDefaultCommand(
                                 DriveCommands.joystickDriveClosedLoopVel(
                                                 drive,
