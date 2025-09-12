@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.commands.CoralArmCommands;
+import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ElevatorCommands;
 import frc.robot.commands.TransferCommands;
 import frc.robot.subsystems.CoralArm.CoralArm;
@@ -35,6 +36,9 @@ import frc.robot.subsystems.Elevator.Elevator;
 import frc.robot.subsystems.Elevator.ElevatorReal;
 import frc.robot.subsystems.Transfer.Transfer;
 import frc.robot.subsystems.Transfer.TransferIOReal;
+import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.drive.GyroIOPigeon;
+import frc.robot.subsystems.drive.ModuleIOSpark;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -50,6 +54,7 @@ public class RobotContainer {
         Elevator elevator;
         CoralArm coralArm;
         Transfer transfer;
+        Drive drive;
         // Controller
         private final PomXboxController driverController = new PomXboxController(0);
         private final PomXboxController operatorController = new PomXboxController(1);
@@ -70,6 +75,11 @@ public class RobotContainer {
                                 elevator = new Elevator(new ElevatorReal(() -> false));
                                 coralArm = new CoralArm(new CoralArmIOReal());
                                 transfer = new Transfer(new TransferIOReal());
+                                drive = new Drive(new GyroIOPigeon(),
+                                                new ModuleIOSpark(0),
+                                                new ModuleIOSpark(1),
+                                                new ModuleIOSpark(2),
+                                                new ModuleIOSpark(3));
                                 break;
 
                         case SIM:
@@ -101,6 +111,15 @@ public class RobotContainer {
          * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
          */
         private void configureButtonBindings() {
+                // driver:
+                drive.setDefaultCommand(
+                                DriveCommands.joystickDriveClosedLoopVel(
+                                                drive,
+                                                () -> driverController.getLeftY() * 0.6,
+                                                () -> driverController.getLeftX() * 0.6,
+                                                () -> driverController.getRightX() * 0.4));
+
+                // operator:
                 // coral intake position
                 operatorController.b().onTrue(ElevatorCommands.goToPosition(elevator, 2.0)
                                 .alongWith(CoralArmCommands.setVoltage(coralArm, -0.2)));
@@ -132,6 +151,7 @@ public class RobotContainer {
                 operatorController.PovDown().whileTrue(TransferCommands.coralintake(transfer, -5));
                 operatorController.PovRight().whileTrue(TransferCommands.coralintake(transfer, -12));
 
+                // manuale:
                 // manuale elevator
                 manualController.rightTrigger().whileTrue(ElevatorCommands.openElevatorManual(elevator, 4));
                 manualController.leftTrigger().whileTrue(ElevatorCommands.closeElevatorManual(elevator, -1));
