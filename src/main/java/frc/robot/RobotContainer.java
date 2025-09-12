@@ -13,8 +13,13 @@
 
 package frc.robot;
 
-import static frc.robot.subsystems.CoralArm.CoralArmConstants.*;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.*;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.CLOSE_ARM_POSITION;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.L1_ARM_POSITION;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.L2_ARM_POSITION;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.L4_ARM_POSITION;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.L1_ELEVATOR_POSITION;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.L2_ELEVATOR_POSITION;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.L4_ELEVATOR_POSITION;
 
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
@@ -27,8 +32,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.commands.CoralArmCommands;
-import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ElevatorCommands;
+import frc.robot.commands.SwerveCommands;
 import frc.robot.commands.TransferCommands;
 import frc.robot.subsystems.CoralArm.CoralArm;
 import frc.robot.subsystems.CoralArm.CoralArmIOReal;
@@ -36,9 +41,9 @@ import frc.robot.subsystems.Elevator.Elevator;
 import frc.robot.subsystems.Elevator.ElevatorReal;
 import frc.robot.subsystems.Transfer.Transfer;
 import frc.robot.subsystems.Transfer.TransferIOReal;
-import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIOPigeon;
-import frc.robot.subsystems.drive.ModuleIOSpark;
+import frc.robot.subsystems.drive.ModuleIOReal;
+import frc.robot.subsystems.drive.Swerve;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -51,10 +56,10 @@ import frc.robot.subsystems.drive.ModuleIOSpark;
  */
 public class RobotContainer {
         // Subsystems
-        // Elevator elevator;
-        // CoralArm coralArm;
-        // Transfer transfer;
-        Drive drive;
+        Elevator elevator;
+        CoralArm coralArm;
+        Transfer transfer;
+        Swerve drive;
         // Controller
         private final PomXboxController driverController = new PomXboxController(0);
         private final PomXboxController operatorController = new PomXboxController(1);
@@ -74,14 +79,14 @@ public class RobotContainer {
                 switch (Constants.currentMode) {
                         case REAL:
                                 // Real robot, instantiate hardware IO implementations
-                                // elevator = new Elevator(new ElevatorReal(() -> false));
-                                // coralArm = new CoralArm(new CoralArmIOReal());
-                                // transfer = new Transfer(new TransferIOReal());
-                                drive = new Drive(new GyroIOPigeon(),
-                                                new ModuleIOSpark(0),
-                                                new ModuleIOSpark(1),
-                                                new ModuleIOSpark(2),
-                                                new ModuleIOSpark(3));
+                                elevator = new Elevator(new ElevatorReal(() -> false));
+                                coralArm = new CoralArm(new CoralArmIOReal());
+                                transfer = new Transfer(new TransferIOReal());
+                                drive = new Swerve(new GyroIOPigeon(),
+                                                new ModuleIOReal(0),
+                                                new ModuleIOReal(1),
+                                                new ModuleIOReal(2),
+                                                new ModuleIOReal(3));
                                 break;
 
                         case SIM:
@@ -116,31 +121,37 @@ public class RobotContainer {
                 // driver:
                 isRelative = true;
                 drive.setDefaultCommand(
-                                DriveCommands.joystickDriveClosedLoopVel(
+                                SwerveCommands.joystickDrive(
                                                 drive,
-                                                () -> driverController.getLeftY() * 0.6,
-                                                () -> driverController.getLeftX() * 0.6,
-                                                () -> driverController.getRightX() * 0.4));
+                                                () -> driverController.getLeftY(),
+                                                () -> driverController.getLeftX(),
+                                                () -> driverController.getRightX()));
 
-                // // operator:
-                // // coral intake position
-                // operatorController.b().onTrue(ElevatorCommands.goToPosition(elevator, 2.0)
-                // .alongWith(CoralArmCommands.setVoltage(coralArm, -0.2)));
+                driverController.y().onTrue(drive.resetGyroCommand());
 
-                // // L4
-                // operatorController.y().onTrue(CoralArmCommands.goToPosition(coralArm,
-                // L4_ARM_POSITION)
-                // .until(() -> coralArm.getIO().getPosition() >= L4_ARM_POSITION)
-                // .andThen(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)));
+                // operator:
+                // close arm and elevator
+                operatorController.RB().onTrue(ElevatorCommands.closeElevator(elevator));
+                operatorController.LB().onTrue(CoralArmCommands.goToPosition(coralArm, CLOSE_ARM_POSITION));
 
-                // // L3
-                // operatorController.x().onTrue(CoralArmCommands.goToPosition(coralArm, 0.95));
+                // coral intake position
+                operatorController.b().onTrue(ElevatorCommands.goToPosition(elevator, 2.0)
+                                .alongWith(CoralArmCommands.setVoltage(coralArm, -0.2)));
 
-                // // L2
-                // operatorController.a().onTrue(ElevatorCommands.goToPosition(elevator,
-                // L4_ELEVATOR_POSITION)
-                // .until(() -> elevator.getIO().getPosition() - 0.4 >= L2_ELEVATOR_POSITION)
-                // .andThen(CoralArmCommands.goToPosition(coralArm, L2_ARM_POSITION)));
+                // L4
+                operatorController.y().onTrue(CoralArmCommands.goToPosition(coralArm,
+                                L4_ARM_POSITION)
+                                .until(() -> coralArm.getIO().getPosition() >= L4_ARM_POSITION)
+                                .andThen(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)));
+
+                // L3
+                operatorController.x().onTrue(CoralArmCommands.goToPosition(coralArm, 0.95));
+
+                // L2
+                operatorController.a().onTrue(ElevatorCommands.goToPosition(elevator,
+                                L4_ELEVATOR_POSITION)
+                                .until(() -> elevator.getIO().getPosition() - 0.4 >= L2_ELEVATOR_POSITION)
+                                .andThen(CoralArmCommands.goToPosition(coralArm, L2_ARM_POSITION)));
 
                 // // L1
                 // operatorController.LB().onTrue(ElevatorCommands.goToPosition(elevator,
@@ -148,39 +159,39 @@ public class RobotContainer {
                 // .until(() -> elevator.getIO().getPosition() - 0.4 >= L1_ELEVATOR_POSITION)
                 // .andThen(CoralArmCommands.goToPosition(coralArm, L1_ARM_POSITION)));
 
-                // // intake, l2, l1
-                // operatorController.PovUp().whileTrue(TransferCommands.coralintake(transfer,
-                // 5));
-                // operatorController.PovLeft().whileTrue(TransferCommands.coralintake(transfer,
-                // 12));
+                // intake, l2, l1
+                operatorController.PovUp().whileTrue(TransferCommands.coralintake(transfer,
+                                5));
+                operatorController.PovLeft().whileTrue(TransferCommands.coralintake(transfer,
+                                12));
 
-                // // outake, l4, l3
-                // operatorController.PovDown().whileTrue(TransferCommands.coralintake(transfer,
-                // -5));
-                // operatorController.PovRight().whileTrue(TransferCommands.coralintake(transfer,
-                // -12));
+                // outake, l4, l3
+                operatorController.PovDown().whileTrue(TransferCommands.coralintake(transfer,
+                                -5));
+                operatorController.PovRight().whileTrue(TransferCommands.coralintake(transfer,
+                                -12));
 
-                // // manuale:
-                // // manuale elevator
-                // manualController.rightTrigger().whileTrue(ElevatorCommands.openElevatorManual(elevator,
-                // 4));
-                // manualController.leftTrigger().whileTrue(ElevatorCommands.closeElevatorManual(elevator,
-                // -1));
-                // // elevator
-                // manualController.a().onTrue(ElevatorCommands.closeElevator(elevator));
-                // manualController.y().onTrue(ElevatorCommands.goToPosition(elevator,
-                // L4_ELEVATOR_POSITION));
+                // manuale:
+                // manuale elevator
+                manualController.rightTrigger().whileTrue(ElevatorCommands.openElevatorManual(elevator,
+                                4));
+                manualController.leftTrigger().whileTrue(ElevatorCommands.closeElevatorManual(elevator,
+                                -1));
+                // elevator
+                manualController.a().onTrue(ElevatorCommands.closeElevator(elevator));
+                manualController.y().onTrue(ElevatorCommands.goToPosition(elevator,
+                                L4_ELEVATOR_POSITION));
 
-                // // manuale coral arm
-                // manualController.PovLeft().whileTrue(CoralArmCommands.setVoltage(coralArm,
-                // 1));
-                // manualController.PovRight().whileTrue(CoralArmCommands.setVoltage(coralArm,
-                // -1));
-                // // coral arm
-                // manualController.b().onTrue(CoralArmCommands.goToPosition(coralArm,
-                // L4_ARM_POSITION));
-                // manualController.x().onTrue(CoralArmCommands.goToPosition(coralArm,
-                // CLOSE_ARM_POSITION));
+                // manuale coral arm
+                manualController.PovLeft().whileTrue(CoralArmCommands.setVoltage(coralArm,
+                                1));
+                manualController.PovRight().whileTrue(CoralArmCommands.setVoltage(coralArm,
+                                -1));
+                // coral arm
+                manualController.b().onTrue(CoralArmCommands.goToPosition(coralArm,
+                                L4_ARM_POSITION));
+                manualController.x().onTrue(CoralArmCommands.goToPosition(coralArm,
+                                CLOSE_ARM_POSITION));
 
         }
 
