@@ -101,12 +101,20 @@ public class RobotContainer {
          */
         private void configureButtonBindings() {
                 // coral intake position
-                operatorController.b().onTrue(ElevatorCommands.goToPosition(elevator, 2.2));
+                operatorController.b().onTrue(ElevatorCommands.goToPosition(elevator, 2.0)
+                                .alongWith(CoralArmCommands.setVoltage(coralArm, -0.2)));
 
                 // L4
                 operatorController.y().onTrue(CoralArmCommands.goToPosition(coralArm, L4_ARM_POSITION)
                                 .until(() -> coralArm.getIO().getPosition() >= L4_ARM_POSITION)
                                 .andThen(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)));
+
+                // L2
+                operatorController.a().onTrue(ElevatorCommands.goToPosition(elevator,
+                                L4_ELEVATOR_POSITION)
+                                .until(() -> elevator.getIO().getPosition() - 0.4 >= L2_ELEVATOR_POSITION)
+                                .andThen(CoralArmCommands.goToPosition(coralArm, L2_ARM_POSITION)));
+                // operatorController.a().onTrue(CoralArmCommands.goToPosition(coralArm, -1.1));
 
                 // intake,
                 operatorController.PovUp().whileTrue(TransferCommands.coralOutake(transfer));

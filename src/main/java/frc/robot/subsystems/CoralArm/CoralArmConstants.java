@@ -12,7 +12,7 @@ public class CoralArmConstants {
     public static final double KI = 0.0;
     public static final double KD = 0.003;
     public static final double KS = 0.03;
-    public static final double KG = 0.47;
+    public static final double KG = 0.6;
     public static final double KV = 0.89;
 
     public static final double MAX_ACCELERATION = 4.2;
@@ -23,7 +23,7 @@ public class CoralArmConstants {
 
     public static final double FORWARD_SOFT_LIMIT = 0;
     public static final double L1_ARM_POSITION = 0;
-    public static final double L2_ARM_POSITION = 0;
+    public static final double L2_ARM_POSITION = -1.15;
     public static final double L3_ARM_POSITION = 0;
     public static final double L4_ARM_POSITION = Math.PI / 2;
     public static final double CLOSE_ARM_POSITION = -Math.PI / 2;
