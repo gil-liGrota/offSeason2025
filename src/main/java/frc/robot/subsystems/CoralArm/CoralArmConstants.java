@@ -12,7 +12,7 @@ public class CoralArmConstants {
     public static final double KI = 0.0;
     public static final double KD = 0.005;
     public static final double KS = 0.05;
-    public static final double KG = 0.6;
+    public static final double KG = 0.55;
     public static final double KV = 0.925;
 
     public static final double MAX_ACCELERATION = 4.7;

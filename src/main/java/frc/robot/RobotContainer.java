@@ -19,6 +19,7 @@ import static frc.robot.subsystems.CoralArm.CoralArmConstants.L2_ARM_POSITION;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.L4_ARM_POSITION;
 import static frc.robot.subsystems.Elevator.ElevatorConstants.L1_ELEVATOR_POSITION;
 import static frc.robot.subsystems.Elevator.ElevatorConstants.L2_ELEVATOR_POSITION;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.L3_ELEVATOR_POSITION;
 import static frc.robot.subsystems.Elevator.ElevatorConstants.L4_ELEVATOR_POSITION;
 
 import org.ironmaple.simulation.SimulatedArena;
@@ -145,7 +146,7 @@ public class RobotContainer {
                                 .andThen(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)));
 
                 // L3
-                operatorController.x().onTrue(CoralArmCommands.goToPosition(coralArm, 0.95));
+                operatorController.x().onTrue(CoralArmCommands.goToPosition(coralArm, L3_ELEVATOR_POSITION));
 
                 // L2
                 operatorController.a().onTrue(ElevatorCommands.goToPosition(elevator,

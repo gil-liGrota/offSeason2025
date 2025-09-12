@@ -21,7 +21,7 @@ public class ElevatorConstants {
     public static final double FORWARD_SOFT_LIMIT = 0;
     public static final double L1_ELEVATOR_POSITION = 19.0;
     public static final double L2_ELEVATOR_POSITION = 21.76;
-    public static final double L3_ELEVATOR_POSITION = 0;
+    public static final double L3_ELEVATOR_POSITION = 0.70;
     public static final double L4_ELEVATOR_POSITION = 34;
     public static final double CORAL_INTAKE_POSITION = 2.2;
 
