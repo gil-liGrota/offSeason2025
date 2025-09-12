@@ -22,7 +22,8 @@ public class ElevatorConstants {
     public static final double L1_ELEVATOR_POSITION = 0;
     public static final double L2_ELEVATOR_POSITION = 0;
     public static final double L3_ELEVATOR_POSITION = 0;
-    public static final double L4_ELEVATOR_POSITION = 39;
+    public static final double L4_ELEVATOR_POSITION = 34;
+    public static final double CORAL_INTAKE_POSITION = 2.2;
 
     public static final double CLOSE_ELEVATOR_SPEED = -0.5;
 

@@ -9,8 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
     private ElevatorIO elevatorIO;
-    // public ElevatorIOInputsAutoLogged elevatorInputs = new
-    // ElevatorIOInputsAutoLogged();
+    public ElevatorIOInputsAutoLogged elevatorInputs = new ElevatorIOInputsAutoLogged();
 
     public Elevator(ElevatorIO elevatorIO) {
         this.elevatorIO = elevatorIO;
@@ -22,8 +21,8 @@ public class Elevator extends SubsystemBase {
     }
 
     public void periodic() {
-        // elevatorIO.updateInputs(elevatorInputs);
-        // Logger.processInputs("Elevator/elevator", elevatorInputs);
+        elevatorIO.updateInputs(elevatorInputs);
+        Logger.processInputs("Elevator/elevator", elevatorInputs);
 
     }
 

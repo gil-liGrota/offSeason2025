@@ -34,12 +34,12 @@ public class TransferCommands {
                 () -> transfer.getIO().stopMotor(), transfer);
     }
 
-    public static Command intakeCoral(Transfer transfer) {
+    public static Command outakeCoral(Transfer transfer) {
         return Commands.startEnd(() -> transfer.getIO().setVoltage(3), () -> transfer.getIO().stopMotor(), transfer);
     }
 
-    public static Command takeCoralIn(Transfer transfer) {
-        return Commands.startEnd(() -> transfer.getIO().setVoltage(-3), transfer.getIO()::stopMotor, transfer);
+    public static Command intakeCoral(Transfer transfer) {
+        return Commands.startEnd(() -> transfer.getIO().setVoltage(-12), transfer.getIO()::stopMotor, transfer);
     }
 
     // public static Command intakeCoralWithPid(Transfer transfer, double velocity){

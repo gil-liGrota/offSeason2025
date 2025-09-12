@@ -8,15 +8,15 @@ public class CoralArmConstants {
     public static final int LOW_SWITCH = 2;
     public static final int BRAKE_SWITCH = 4;
 
-    public static final double KP = 0.01;
+    public static final double KP = 0.016;
     public static final double KI = 0.0;
     public static final double KD = 0.003;
-    public static final double KS = 0.02;
-    public static final double KG = 0.5;
-    public static final double KV = 0.88;
+    public static final double KS = 0.03;
+    public static final double KG = 0.47;
+    public static final double KV = 0.89;
 
-    public static final double MAX_ACCELERATION = 4.5;
-    public static final double MAX_VELOCITY = 4.5;
+    public static final double MAX_ACCELERATION = 4.2;
+    public static final double MAX_VELOCITY = 4.2;
 
     public static final double RESIST_GRAVITY = 0;
     public static final double TOLERANCE = Units.degreesToRadians(2);
@@ -26,6 +26,7 @@ public class CoralArmConstants {
     public static final double L2_ARM_POSITION = 0;
     public static final double L3_ARM_POSITION = 0;
     public static final double L4_ARM_POSITION = Math.PI / 2;
+    public static final double CLOSE_ARM_POSITION = -Math.PI / 2;
 
     public static final double POSITION_CONVERSION_FACTOR = 1 / 40.0 /* versa */ * (2 * Math.PI) /* to radians */; // TODO
                                                                                                                    // verify

@@ -13,30 +13,28 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.POM_lib.Joysticks.PomXboxController;
-import frc.robot.commands.CoralArmCommands;
-import frc.robot.commands.ElevatorCommands;
-import frc.robot.subsystems.CoralArm.CoralArm;
-import frc.robot.subsystems.CoralArm.CoralArmIOReal;
-import frc.robot.subsystems.Elevator.Elevator;
-import frc.robot.subsystems.Elevator.ElevatorConstants;
-import frc.robot.subsystems.Elevator.ElevatorReal;
-
-import static frc.robot.subsystems.CoralArm.CoralArmConstants.L4_ARM_POSITION;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.L4_ELEVATOR_POSITION;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.*;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.*;
 
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.POM_lib.Joysticks.PomXboxController;
+import frc.robot.commands.CoralArmCommands;
+import frc.robot.commands.ElevatorCommands;
+import frc.robot.commands.TransferCommands;
+import frc.robot.subsystems.CoralArm.CoralArm;
+import frc.robot.subsystems.CoralArm.CoralArmIOReal;
+import frc.robot.subsystems.Elevator.Elevator;
+import frc.robot.subsystems.Elevator.ElevatorReal;
+import frc.robot.subsystems.Transfer.Transfer;
+import frc.robot.subsystems.Transfer.TransferIOReal;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -51,6 +49,7 @@ public class RobotContainer {
         // Subsystems
         Elevator elevator;
         CoralArm coralArm;
+        Transfer transfer;
         // Controller
         private final PomXboxController driverController = new PomXboxController(0);
         private final PomXboxController operatorController = new PomXboxController(1);
@@ -69,6 +68,7 @@ public class RobotContainer {
                                 // Real robot, instantiate hardware IO implementations
                                 elevator = new Elevator(new ElevatorReal(() -> false));
                                 coralArm = new CoralArm(new CoralArmIOReal());
+                                transfer = new Transfer(new TransferIOReal());
                                 break;
 
                         case SIM:
@@ -100,13 +100,33 @@ public class RobotContainer {
          * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
          */
         private void configureButtonBindings() {
-                operatorController.b().onTrue(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION));
-                operatorController.x().onTrue(ElevatorCommands.closeElevator(elevator));
+                // coral intake position
+                operatorController.b().onTrue(ElevatorCommands.goToPosition(elevator, 2.2));
+
+                // L4
                 operatorController.y().onTrue(CoralArmCommands.goToPosition(coralArm, L4_ARM_POSITION)
                                 .until(() -> coralArm.getIO().getPosition() >= L4_ARM_POSITION)
                                 .andThen(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)));
-                operatorController.a().onTrue(CoralArmCommands.goToPosition(coralArm, -Math.PI / 2)
-                                .andThen(ElevatorCommands.closeElevator(elevator)));
+
+                // intake,
+                operatorController.PovUp().whileTrue(TransferCommands.coralOutake(transfer));
+
+                // outake, l4
+                operatorController.PovDown().whileTrue(TransferCommands.intakeCoral(transfer));
+
+                // manuale elevator
+                driverController.rightTrigger().whileTrue(ElevatorCommands.openElevatorManual(elevator, 4));
+                driverController.leftTrigger().whileTrue(ElevatorCommands.closeElevatorManual(elevator, -1));
+                // elevator
+                driverController.a().onTrue(ElevatorCommands.closeElevator(elevator));
+                driverController.y().onTrue(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION));
+
+                // manuale coral arm
+                driverController.PovLeft().whileTrue(CoralArmCommands.setVoltage(coralArm, 1));
+                driverController.PovRight().whileTrue(CoralArmCommands.setVoltage(coralArm, -1));
+                // coral arm
+                driverController.b().onTrue(CoralArmCommands.goToPosition(coralArm, L4_ARM_POSITION));
+                driverController.x().onTrue(CoralArmCommands.goToPosition(coralArm, CLOSE_ARM_POSITION));
 
         }
 

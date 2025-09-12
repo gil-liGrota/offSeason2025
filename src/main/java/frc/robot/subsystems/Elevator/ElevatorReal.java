@@ -23,8 +23,6 @@ public class ElevatorReal implements ElevatorIO {
     private ElevatorFeedforward feedforward;
     private POMDigitalInput foldSwitch;
     private POMDigitalInput brakeSwitch;
-    private POMDigitalInput port3;
-    private POMDigitalInput port4;
     private ElevatorTuningPid pidConstants;
     private BooleanSupplier isCoralIn;
 
