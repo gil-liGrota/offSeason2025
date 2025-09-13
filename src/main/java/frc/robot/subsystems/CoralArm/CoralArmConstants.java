@@ -25,7 +25,7 @@ public class CoralArmConstants {
     public static final double L1_ARM_POSITION = -1.24;
     public static final double L2_ARM_POSITION = -1.15;
     public static final double L3_ARM_POSITION = 0.75;
-    public static final double L4_ARM_POSITION = Math.PI / 2;
+    public static final double L4_ARM_POSITION = 0.8;
     public static final double CLOSE_ARM_POSITION = -Math.PI / 2;
 
     public static final double POSITION_CONVERSION_FACTOR = 1 / 40.0 /* versa */ * (2 * Math.PI) /* to radians */; // TODO

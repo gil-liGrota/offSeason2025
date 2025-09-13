@@ -143,10 +143,17 @@ public class RobotContainer {
                                 .alongWith(CoralArmCommands.setVoltage(coralArm, -0.2)));
 
                 // L4
-                operatorController.y().onTrue(CoralArmCommands.goToPosition(coralArm,
-                                L4_ARM_POSITION)
-                                .until(() -> coralArm.getIO().getPosition() >= L4_ARM_POSITION)
-                                .andThen(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)));
+                // operatorController.y().onTrue(CoralArmCommands.goToPosition(coralArm,
+                // L4_ARM_POSITION)
+                // .until(() -> coralArm.getIO().getPosition() >= L4_ARM_POSITION)
+                // .andThen(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)));
+
+                operatorController.y()
+                                .onTrue(ElevatorCommands.goToPosition(elevator, 33.5)
+                                                .until(() -> elevator.getIO().getPosition()
+                                                                - 0.4 >= L4_ELEVATOR_POSITION)
+                                                .andThen(CoralArmCommands.goToPosition(coralArm,
+                                                                L4_ARM_POSITION)));
 
                 // L3
                 operatorController.x().onTrue(CoralArmCommands.goToPosition(coralArm, L3_ELEVATOR_POSITION));
