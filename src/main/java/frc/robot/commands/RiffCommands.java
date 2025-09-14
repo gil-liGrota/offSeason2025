@@ -22,7 +22,7 @@ public class RiffCommands {
         return ElevatorCommands.goToPosition(elevator,
                 L4_ELEVATOR_POSITION)
                 .until(() -> elevator.getIO().getPosition() - 0.4 >= L2_ELEVATOR_POSITION)
-                .andThen(CoralArmCommands.goToPosition(arm, L2_ARM_POSITION));
+                .alongWith(CoralArmCommands.goToPosition(arm, L2_ARM_POSITION));
     }
 
     public Command L3(Elevator elevator, CoralArm arm) {
@@ -31,8 +31,8 @@ public class RiffCommands {
 
     public Command L4(Elevator elevator, CoralArm arm) {
         return ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)
-                .until(() -> elevator.getIO().getPosition() - 0.4 >= L4_ELEVATOR_POSITION)
-                .andThen(CoralArmCommands.goToPosition(arm, L4_ARM_POSITION));
+                // .until(() -> elevator.getIO().getPosition() - 0.4 >= L4_ELEVATOR_POSITION)
+                .alongWith(CoralArmCommands.goToPosition(arm, L4_ARM_POSITION));
     }
 
     // L4

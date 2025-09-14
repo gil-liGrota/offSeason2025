@@ -15,12 +15,7 @@ package frc.robot;
 
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.BRAKE_SWITCH;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.CLOSE_ARM_POSITION;
-import static frc.robot.subsystems.CoralArm.CoralArmConstants.L1_ARM_POSITION;
-import static frc.robot.subsystems.CoralArm.CoralArmConstants.L2_ARM_POSITION;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.L4_ARM_POSITION;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.L1_ELEVATOR_POSITION;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.L2_ELEVATOR_POSITION;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.L3_ELEVATOR_POSITION;
 import static frc.robot.subsystems.Elevator.ElevatorConstants.L4_ELEVATOR_POSITION;
 
 import org.ironmaple.simulation.SimulatedArena;
@@ -36,6 +31,7 @@ import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.POM_lib.sensors.POMDigitalInput;
 import frc.robot.commands.CoralArmCommands;
 import frc.robot.commands.ElevatorCommands;
+import frc.robot.commands.RiffCommands;
 import frc.robot.commands.SwerveCommands;
 import frc.robot.commands.TransferCommands;
 import frc.robot.subsystems.CoralArm.CoralArm;
@@ -73,6 +69,7 @@ public class RobotContainer {
 
         private boolean isRelative;
         private POMDigitalInput brakeSwitch = new POMDigitalInput(BRAKE_SWITCH);
+        RiffCommands riffCommands = new RiffCommands();
 
         private SwerveDriveSimulation driveSimulation = null;
 
@@ -133,23 +130,37 @@ public class RobotContainer {
 
                 driverController.y().onTrue(drive.resetGyroCommand());
 
+                /*----------------------------------------------------------------------------------------------------*/
                 // operator:
-                // close arm and elevator
-                operatorController.RB().onTrue(ElevatorCommands.closeElevator(elevator));
-                operatorController.LB().onTrue(CoralArmCommands.goToPosition(coralArm, CLOSE_ARM_POSITION));
+                // close arm and elevator manual
+
+                operatorController.rightTrigger().whileTrue(CoralArmCommands.setVoltage(coralArm, 1));
+                operatorController.leftTrigger().whileTrue(CoralArmCommands.setVoltage(coralArm, -1));
+
+                operatorController.RB().whileTrue(ElevatorCommands.setVoltage(elevator, 4));
+                operatorController.LB().whileTrue(ElevatorCommands.setVoltage(elevator, -1));
 
                 // coral intake position
-                operatorController.b().onTrue(ElevatorCommands.goToPosition(elevator, 2.0)
+                operatorController.leftStickClick().onTrue(ElevatorCommands.goToPosition(elevator, 2.0)
                                 .alongWith(CoralArmCommands.setVoltage(coralArm, -0.2)));
 
+                operatorController.rightStickClick().onTrue(ElevatorCommands.closeElevator(elevator)
+                                .alongWith(CoralArmCommands.goToPosition(coralArm, CLOSE_ARM_POSITION)));
+
+                operatorController.y().onTrue(riffCommands.L4(elevator, coralArm));
+                operatorController.b().onTrue(riffCommands.L3(elevator, coralArm));
+                operatorController.x().onTrue(riffCommands.L2(elevator, coralArm));
+                operatorController.a().onTrue(riffCommands.L1(elevator, coralArm));
+
                 // intake, l2, l1
-                operatorController.PovUp().whileTrue(TransferCommands.coralintake(transfer, 5));
-                operatorController.PovLeft().whileTrue(TransferCommands.coralintake(transfer, 12));
+                operatorController.PovDown().whileTrue(TransferCommands.coralintake(transfer, 5));
+                operatorController.PovRight().whileTrue(TransferCommands.coralintake(transfer, 12));
 
                 // outake, l4, l3
-                operatorController.PovDown().whileTrue(TransferCommands.coralintake(transfer, -5));
-                operatorController.PovRight().whileTrue(TransferCommands.coralintake(transfer, -12));
+                operatorController.PovLeft().whileTrue(TransferCommands.coralintake(transfer, -5));
+                operatorController.PovUp().whileTrue(TransferCommands.coralintake(transfer, -12));
 
+                /*----------------------------------------------------------------------------------------------------*/
                 // manuale:
                 // manuale elevator
                 manualController.rightTrigger().whileTrue(ElevatorCommands.openElevatorManual(elevator, 5));

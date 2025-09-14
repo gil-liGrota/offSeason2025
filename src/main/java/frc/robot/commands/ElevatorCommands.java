@@ -63,4 +63,9 @@ public class ElevatorCommands {
         return Commands.run(() -> elevator.getIO().setVoltage(voltage), elevator);
     }
 
+    public static Command setVoltage(Elevator elevator, double voltage) {
+        return Commands.runEnd(() -> elevator.getIO().setVoltage(voltage), () -> elevator.getIO().stopMotor(),
+                elevator);
+    }
+
 }
