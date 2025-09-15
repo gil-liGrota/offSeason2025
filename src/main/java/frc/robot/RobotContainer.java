@@ -132,13 +132,20 @@ public class RobotContainer {
 
                 /*----------------------------------------------------------------------------------------------------*/
                 // operator:
-                // close arm and elevator manual
+                // open and close arm and elevator manual
 
                 operatorController.rightTrigger().whileTrue(CoralArmCommands.setVoltage(coralArm, 1));
                 operatorController.leftTrigger().whileTrue(CoralArmCommands.setVoltage(coralArm, -1));
 
                 operatorController.RB().whileTrue(ElevatorCommands.setVoltage(elevator, 4));
                 operatorController.LB().whileTrue(ElevatorCommands.setVoltage(elevator, -1));
+
+                // open and close arm and elevator
+
+                operatorController.PovUp().onTrue(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION));
+                operatorController.PovDown().onTrue(ElevatorCommands.closeElevator(elevator));
+                operatorController.PovLeft().onTrue(CoralArmCommands.goToPosition(coralArm, L4_ARM_POSITION));
+                operatorController.PovRight().onTrue(CoralArmCommands.goToPosition(coralArm, CLOSE_ARM_POSITION));
 
                 // coral intake position
                 operatorController.leftStickClick().onTrue(ElevatorCommands.goToPosition(elevator, 2.0)
@@ -153,12 +160,12 @@ public class RobotContainer {
                 operatorController.a().onTrue(riffCommands.L1(elevator, coralArm));
 
                 // intake, l2, l1
-                operatorController.PovDown().whileTrue(TransferCommands.coralintake(transfer, 5));
-                operatorController.PovRight().whileTrue(TransferCommands.coralintake(transfer, 12));
+                driverController.leftTrigger().whileTrue(TransferCommands.coralintake(transfer, 5));
+                driverController.LB().whileTrue(TransferCommands.coralintake(transfer, 12));
 
                 // outake, l4, l3
-                operatorController.PovLeft().whileTrue(TransferCommands.coralintake(transfer, -5));
-                operatorController.PovUp().whileTrue(TransferCommands.coralintake(transfer, -12));
+                driverController.rightTrigger().whileTrue(TransferCommands.coralintake(transfer, -5));
+                driverController.RB().whileTrue(TransferCommands.coralintake(transfer, -12));
 
                 /*----------------------------------------------------------------------------------------------------*/
                 // manuale:

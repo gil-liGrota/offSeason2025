@@ -12,27 +12,31 @@ public class RiffCommands {
     CoralArmCommands armCommands = new CoralArmCommands();
 
     public Command L1(Elevator elevator, CoralArm arm) {
-        return ElevatorCommands.goToPosition(elevator,
-                L2_ELEVATOR_POSITION)
-                .until(() -> elevator.getIO().getPosition() - 0.4 >= L1_ELEVATOR_POSITION)
-                .andThen(CoralArmCommands.goToPosition(arm, L1_ARM_POSITION));
+        // return ElevatorCommands.goToPosition(elevator,
+        // L2_ELEVATOR_POSITION)
+        // .until(() -> elevator.getIO().getPosition() - 0.4 >= L1_ELEVATOR_POSITION)
+        // .andThen(CoralArmCommands.goToPosition(arm, L1_ARM_POSITION));
+
+        return ElevatorCommands.goToPosition(elevator, 16.7);
     }
 
     public Command L2(Elevator elevator, CoralArm arm) {
         return ElevatorCommands.goToPosition(elevator,
                 L4_ELEVATOR_POSITION)
                 .until(() -> elevator.getIO().getPosition() - 0.4 >= L2_ELEVATOR_POSITION)
-                .alongWith(CoralArmCommands.goToPosition(arm, L2_ARM_POSITION));
+                .andThen(CoralArmCommands.goToPosition(arm, L2_ARM_POSITION));
     }
 
     public Command L3(Elevator elevator, CoralArm arm) {
-        return CoralArmCommands.goToPosition(arm, L3_ELEVATOR_POSITION);
+        return CoralArmCommands.goToPosition(arm, 1.1)
+                .alongWith(ElevatorCommands.closeElevator(elevator));// 1.189
     }
 
     public Command L4(Elevator elevator, CoralArm arm) {
         return ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)
-                // .until(() -> elevator.getIO().getPosition() - 0.4 >= L4_ELEVATOR_POSITION)
-                .alongWith(CoralArmCommands.goToPosition(arm, L4_ARM_POSITION));
+                .until(() -> elevator.getIO().getPosition() - 0.4 >= L4_ELEVATOR_POSITION)
+                .alongWith(CoralArmCommands.goToPosition(arm, L4_ARM_POSITION)
+                        .andThen(() -> arm.getIO().setVoltage(0.3)));
     }
 
     // L4
