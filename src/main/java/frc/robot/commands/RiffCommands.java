@@ -28,8 +28,7 @@ public class RiffCommands {
     }
 
     public Command L3(Elevator elevator, CoralArm arm) {
-        return CoralArmCommands.goToPosition(arm, 1.1)
-                .alongWith(ElevatorCommands.closeElevator(elevator));// 1.189
+        return CoralArmCommands.goToPosition(arm, 1.1);
     }
 
     public Command L4(Elevator elevator, CoralArm arm) {
