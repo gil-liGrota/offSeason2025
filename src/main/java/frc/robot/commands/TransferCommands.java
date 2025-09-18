@@ -19,7 +19,7 @@ public class TransferCommands {
 
     public static Command riffOutake(Transfer transfer, Elevator elevator) {
         double voltage;
-        if (elevator.getIO().getPosition() > 20) {
+        if (elevator.getIO().getPosition() > 30 || elevator.getIO().getPosition() < 5) {
             voltage = -12;
         } else {
             voltage = 12;
