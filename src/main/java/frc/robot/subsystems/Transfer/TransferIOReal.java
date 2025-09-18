@@ -17,15 +17,14 @@ import frc.robot.POM_lib.sensors.POMDigitalInput;
 
 import static frc.robot.subsystems.Transfer.TransferConstants.TOLERANCE;
 import static frc.robot.subsystems.Transfer.TransferConstants.TRANSFER_MOTOR_ID;
-// import static frc.robot.subsystems.Transfer.TransferConstants.TRANSFER_SENSOR_CHANNEL;
+import static frc.robot.subsystems.Transfer.TransferConstants.TRANSFER_SENSOR_CHANNEL;
 
 import java.util.function.BooleanSupplier;
 
 import org.littletonrobotics.junction.Logger;;
 
 public class TransferIOReal implements TransferIO {
-    // private final POMDigitalInput transferSensor = new
-    // POMDigitalInput(TRANSFER_SENSOR_CHANNEL);
+    private final POMDigitalInput transferSensor = new POMDigitalInput(TRANSFER_SENSOR_CHANNEL);
     private final POMSparkMax motor;
     private RelativeEncoder encoder;
     private final SparkMaxConfig config = new SparkMaxConfig();
@@ -44,7 +43,7 @@ public class TransferIOReal implements TransferIO {
     public void updateInputs(TransferIOInputs inputs) {
         inputs.velocity = encoder.getVelocity();
         inputs.voltage = (motor.getAppliedOutput() * motor.getBusVoltage());
-        // inputs.transferSensorInput = transferSensor.get();
+        inputs.transferSensorInput = transferSensor.get();
     }
 
     @Override
@@ -61,9 +60,9 @@ public class TransferIOReal implements TransferIO {
         motor.stopMotor();
     }
 
-    // @Override
-    // public boolean isCoralIn() {
-    // return transferSensor.get();
-    // }
+    @Override
+    public boolean isCoralIn() {
+        return transferSensor.get();
+    }
 
 }

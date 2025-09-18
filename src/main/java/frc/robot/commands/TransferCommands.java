@@ -29,9 +29,9 @@ public class TransferCommands {
                 () -> transfer.getIO().stopMotor(), transfer);
     }
 
-    // public static Command autoIntakeCoral(Transfer transfer) {
-    // return Commands.startEnd(() -> transfer.getIO().setVoltage(5),
-    // () -> transfer.getIO().stopMotor(),
-    // transfer).until(transfer.getIO()::isCoralIn);
-    // }
+    public static Command autoIntakeCoral(Transfer transfer) {
+        return Commands.startEnd(() -> transfer.getIO().setVoltage(5),
+                () -> transfer.getIO().stopMotor(),
+                transfer).until(transfer.getIO()::isCoralIn);
+    }
 }
