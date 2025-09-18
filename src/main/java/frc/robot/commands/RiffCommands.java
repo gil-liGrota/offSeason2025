@@ -27,15 +27,29 @@ public class RiffCommands {
                 .andThen(CoralArmCommands.goToPosition(arm, L2_ARM_POSITION));
     }
 
+    // public Command L3(Elevator elevator, CoralArm arm) {
+    // return CoralArmCommands.goToPosition(arm, 1.1);
+
+    // }
+
     public Command L3(Elevator elevator, CoralArm arm) {
-        return CoralArmCommands.goToPosition(arm, 1.1);
+        return CoralArmCommands.goToPosition(arm, L4_ARM_POSITION)
+                .alongWith(ElevatorCommands.closeElevator(elevator)
+                        .andThen(CoralArmCommands.goToPosition(arm, 1.1)));
     }
+
+    // public Command L4(Elevator elevator, CoralArm arm) {
+    // return ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)
+    // .until(() -> elevator.getIO().getPosition() - 0.4 >= L4_ELEVATOR_POSITION)
+    // .alongWith(CoralArmCommands.goToPosition(arm, L4_ARM_POSITION)
+    // .andThen(() -> arm.getIO().setVoltage(0.3)));
+    // }
 
     public Command L4(Elevator elevator, CoralArm arm) {
         return ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)
                 .until(() -> elevator.getIO().getPosition() - 0.4 >= L4_ELEVATOR_POSITION)
                 .alongWith(CoralArmCommands.goToPosition(arm, L4_ARM_POSITION)
-                        .andThen(() -> arm.getIO().setVoltage(0.3)));
+                        .andThen(CoralArmCommands.goToPosition(arm, 1.1)));
     }
 
     // L4
