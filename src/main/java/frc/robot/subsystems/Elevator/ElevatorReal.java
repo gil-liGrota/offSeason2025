@@ -42,7 +42,7 @@ public class ElevatorReal implements ElevatorIO {
         encoder = motor.getEncoder();
         this.isCoralIn = isCoralIn;
 
-        foldSwitch = new POMDigitalInput(3);
+        foldSwitch = new POMDigitalInput(FOLD_SWITCH);
         this.brakeSwitch = brakeSwitch;
         pidController.setTolerance(TOLERANCE);// TODO chaeck this
 

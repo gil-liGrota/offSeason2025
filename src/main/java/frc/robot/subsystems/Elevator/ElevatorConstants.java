@@ -2,7 +2,7 @@ package frc.robot.subsystems.Elevator;
 
 public class ElevatorConstants {
     public static final int ELEVATOR_ID = 16;
-    public static final int FOLD_SWITCH = 1;// id 1
+    public static final int FOLD_SWITCH = 3;
     public static final int BRAKE_SWITCH = 4;
 
     public static final double KP = 1.4;
