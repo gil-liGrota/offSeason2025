@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 import static frc.robot.subsystems.Transfer.TransferConstants.*;
 
+import frc.robot.subsystems.CoralArm.CoralArm;
 import frc.robot.subsystems.Elevator.Elevator;
 import frc.robot.subsystems.Transfer.Transfer;
 
@@ -17,20 +18,19 @@ public class TransferCommands {
                 () -> transfer.getIO().stopMotor(), transfer);
     }
 
-    public static Command riffOutake(Transfer transfer, Elevator elevator) {
+    public static Command riffOutake(Transfer transfer, double pose) {
         double voltage;
-        if (elevator.getIO().getPosition() > 30 || elevator.getIO().getPosition() < 5) {
-            voltage = -12;
-        } else {
+        if (pose < 1) {
             voltage = 12;
+        } else {
+            voltage = -12;
         }
-
         return Commands.startEnd(() -> transfer.getIO().setVoltage(voltage),
                 () -> transfer.getIO().stopMotor(), transfer);
     }
 
     public static Command autoIntakeCoral(Transfer transfer) {
-        return Commands.startEnd(() -> transfer.getIO().setVoltage(5),
+        return Commands.startEnd(() -> transfer.getIO().setVoltage(7),
                 () -> transfer.getIO().stopMotor(),
                 transfer).until(transfer.getIO()::isCoralIn);
     }

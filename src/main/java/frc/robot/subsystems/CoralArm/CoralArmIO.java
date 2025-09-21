@@ -66,4 +66,8 @@ public interface CoralArmIO {
     public default void resetPID(double newGoal) {
     }
 
+    public default boolean isHigh() {
+        return false;
+    }
+
 }

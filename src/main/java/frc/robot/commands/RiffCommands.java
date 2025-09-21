@@ -24,7 +24,7 @@ public class RiffCommands {
 
     public Command L3(Elevator elevator, CoralArm arm) {
         return CoralArmCommands.goToPosition(arm, L4_ARM_POSITION)
-                .alongWith(ElevatorCommands.closeElevator(elevator)
+                .andThen(ElevatorCommands.closeElevator(elevator)
                         .andThen(CoralArmCommands.goToPosition(arm, 1.1)));
     }
 

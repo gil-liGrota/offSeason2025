@@ -130,19 +130,19 @@ public class RobotContainer {
 
                 driverController.y().onTrue(drive.resetGyroCommand());
 
-                // intake, l2, l1
-                driverController.leftTrigger().whileTrue(TransferCommands.coralintake(transfer,
-                                5));
-                driverController.LB().whileTrue(TransferCommands.coralintake(transfer, 12));
+                // // intake, l2, l1
+                // driverController.leftTrigger().whileTrue(TransferCommands.coralintake(transfer,
+                // 5));
+                // driverController.LB().whileTrue(TransferCommands.coralintake(transfer, 12));
 
-                // outake, l4, l3
-                driverController.rightTrigger().whileTrue(TransferCommands.coralintake(transfer,
-                                -5));
-                driverController.RB().whileTrue(TransferCommands.coralintake(transfer, -12));
+                // // outake, l4, l3
+                // driverController.rightTrigger().whileTrue(TransferCommands.coralintake(transfer,
+                // -5));
+                // driverController.RB().whileTrue(TransferCommands.coralintake(transfer, -12));
 
-                // driverController.b().onTrue(TransferCommands.autoIntakeCoral(transfer));
-                // driverController.leftTrigger().whileTrue(TransferCommands.riffOutake(transfer,
-                // elevator));
+                driverController.b().onTrue(TransferCommands.autoIntakeCoral(transfer));
+                driverController.leftTrigger()
+                                .whileTrue(TransferCommands.riffOutake(transfer, coralArm.getIO().getPosition()));
                 /*----------------------------------------------------------------------------------------------------*/
                 // operator:
                 // open and close arm and elevator manual
@@ -168,9 +168,9 @@ public class RobotContainer {
                                 .alongWith(CoralArmCommands.goToPosition(coralArm, CLOSE_ARM_POSITION)));
 
                 operatorController.y().onTrue(riffCommands.L4(elevator, coralArm));
-                // operatorController.b().onTrue(riffCommands.L3(elevator, coralArm));
-                // operatorController.x().onTrue(riffCommands.L2(elevator, coralArm));
-                // operatorController.a().onTrue(riffCommands.L1(elevator, coralArm));
+                operatorController.b().onTrue(riffCommands.L3(elevator, coralArm));
+                operatorController.x().onTrue(riffCommands.L2(elevator, coralArm));
+                operatorController.a().onTrue(riffCommands.L1(elevator, coralArm));
 
                 /*----------------------------------------------------------------------------------------------------*/
                 // manuale:
