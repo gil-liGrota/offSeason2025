@@ -142,7 +142,7 @@ public class RobotContainer {
 
                 driverController.b().onTrue(TransferCommands.autoIntakeCoral(transfer));
                 driverController.leftTrigger()
-                                .whileTrue(TransferCommands.riffOutake(transfer, coralArm.getIO().getPosition()));
+                                .whileTrue(TransferCommands.riffOutake(transfer, coralArm));
                 /*----------------------------------------------------------------------------------------------------*/
                 // operator:
                 // open and close arm and elevator manual

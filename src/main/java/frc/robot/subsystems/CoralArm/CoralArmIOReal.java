@@ -198,7 +198,10 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
         }
     }
 
-    
+    @Override
+    public double isHighSpeed() {
+        return encoder.getPosition() > 0 ? -12.0 : 12.0;
+    }
 
     @Override
     public void initSendable(SendableBuilder builder) {
@@ -223,7 +226,5 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
                     // feedforward.setKv(feedForwardArray[2]);
                 });
     }
-
-    
 
 }

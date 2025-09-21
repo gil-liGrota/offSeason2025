@@ -18,14 +18,8 @@ public class TransferCommands {
                 () -> transfer.getIO().stopMotor(), transfer);
     }
 
-    public static Command riffOutake(Transfer transfer, double pose) {
-        double voltage;
-        if (pose < 1) {
-            voltage = 12;
-        } else {
-            voltage = -12;
-        }
-        return Commands.startEnd(() -> transfer.getIO().setVoltage(voltage),
+    public static Command riffOutake(Transfer transfer, CoralArm arm) {
+        return Commands.startEnd(() -> transfer.getIO().setVoltage(arm.getIO().isHighSpeed()),
                 () -> transfer.getIO().stopMotor(), transfer);
     }
 
