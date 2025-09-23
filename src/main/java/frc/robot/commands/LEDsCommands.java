@@ -1,14 +1,12 @@
 package frc.robot.commands;
 
-import frc.robot.subsystems.LEDs.LEDs;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
-
-
-
-
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.LEDs.LEDs;
 
 public class LEDsCommands {
 
@@ -27,5 +25,38 @@ public class LEDsCommands {
     public static Command blink(LEDs leds, LEDPattern pattern, double seconds) {
         return Commands.run(() -> leds.blink(pattern, seconds), leds);
     }
-    
+
+    public static Command rainbow(LEDs leds) {
+        return Commands.run(() -> leds.rainbow(), leds);
+
+    }
+
+    // Gil-li Commands
+
+    public static Command coralIn(LEDs leds) {
+        return setAll(leds, Color.kGreen);
+    }
+
+    public static Command visionActive(LEDs leds) {
+        return setAll(leds, Color.kYellow);
+    }
+
+    public static Command boost(LEDs leds) {
+        return rainbow(leds);
+    }
+
+    public static Command disable(LEDs leds) {
+
+        Alliance alliance = DriverStation.getAlliance().orElse(Alliance.Red);
+
+        Color color = switch (alliance) {
+            case Red -> Color.kRed;
+            case Blue -> Color.kBlue;
+            default -> Color.kPurple;
+        };
+
+        return setAll(leds, color);
+
+    }
+
 }
