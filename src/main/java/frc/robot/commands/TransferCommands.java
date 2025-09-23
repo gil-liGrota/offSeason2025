@@ -24,7 +24,7 @@ public class TransferCommands {
     }
 
     public static Command autoIntakeCoral(Transfer transfer) {
-        return Commands.startEnd(() -> transfer.getIO().setVoltage(7),
+        return Commands.startEnd(() -> transfer.getIO().setVoltage(5),
                 () -> transfer.getIO().stopMotor(),
                 transfer).until(transfer.getIO()::isCoralIn);
     }

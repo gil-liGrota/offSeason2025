@@ -24,15 +24,15 @@ public class RiffCommands {
 
     public Command L3(Elevator elevator, CoralArm arm) {
         return CoralArmCommands.goToPosition(arm, L4_ARM_POSITION)
-                .andThen(ElevatorCommands.closeElevator(elevator)
-                        .andThen(CoralArmCommands.goToPosition(arm, 1.1)));
+                // .andThen(ElevatorCommands.closeElevator(elevator)
+                .andThen(CoralArmCommands.goToPosition(arm, 1.1));
     }
 
     public Command L4(Elevator elevator, CoralArm arm) {
         return ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)
                 .until(() -> elevator.getIO().getPosition() - 0.4 >= L4_ELEVATOR_POSITION)
-                .alongWith(CoralArmCommands.goToPosition(arm, L4_ARM_POSITION));
-        // .andThen(CoralArmCommands.goToPosition(arm, 1.1)));
+                .alongWith(CoralArmCommands.goToPosition(arm, L4_ARM_POSITION)
+                        .andThen(CoralArmCommands.goToPosition(arm, 1.1)));
     }
 
 }
