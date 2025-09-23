@@ -40,6 +40,8 @@ import frc.robot.subsystems.Elevator.Elevator;
 import frc.robot.subsystems.Elevator.ElevatorReal;
 import frc.robot.subsystems.Transfer.Transfer;
 import frc.robot.subsystems.Transfer.TransferIOReal;
+import frc.robot.subsystems.Vision.VisionIOReal;
+import frc.robot.subsystems.Vision.VisionSubsystem;
 import frc.robot.subsystems.drive.GyroIOPigeon;
 import frc.robot.subsystems.drive.ModuleIOReal;
 import frc.robot.subsystems.drive.Swerve;
@@ -59,6 +61,8 @@ public class RobotContainer {
         CoralArm coralArm;
         Transfer transfer;
         Swerve drive;
+        VisionSubsystem vision;
+
         // Controller
         private final PomXboxController driverController = new PomXboxController(0);
         private final PomXboxController operatorController = new PomXboxController(1);
@@ -83,11 +87,20 @@ public class RobotContainer {
                                 elevator = new Elevator(new ElevatorReal(() -> false, brakeSwitch));
                                 coralArm = new CoralArm(new CoralArmIOReal(brakeSwitch));
                                 transfer = new Transfer(new TransferIOReal());
+                                VisionIOReal[] cameras = {
+                                                new VisionIOReal("Left Front Camera",
+                                                                Constants.VisionConstants.l_camera_transform),
+                                                new VisionIOReal("Right Front Camera",
+                                                                Constants.VisionConstants.r_camera_transform),
+                                };
+
                                 drive = new Swerve(new GyroIOPigeon(),
                                                 new ModuleIOReal(0),
                                                 new ModuleIOReal(1),
                                                 new ModuleIOReal(2),
                                                 new ModuleIOReal(3));
+                                vision = new VisionSubsystem(drive::addVisionMeasurement, cameras);
+
                                 break;
 
                         case SIM:
@@ -140,9 +153,23 @@ public class RobotContainer {
                 // -5));
                 // driverController.RB().whileTrue(TransferCommands.coralintake(transfer, -12));
 
-                driverController.b().onTrue(TransferCommands.autoIntakeCoral(transfer));
-                driverController.leftTrigger()
+                driverController.a().onTrue(TransferCommands.autoIntakeCoral(transfer));
+                driverController.PovDown()
                                 .whileTrue(TransferCommands.riffOutake(transfer, coralArm));
+
+                driverController.x().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
+                                driverController,
+                                true));
+                driverController.b().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
+                                driverController,
+                                false));
+
+                driverController.rightTrigger().whileTrue(ElevatorCommands.setVoltage(elevator, 4));
+                driverController.leftTrigger().whileTrue(ElevatorCommands.setVoltage(elevator, -1));
+                // driverController.x().onTrue(new SwerveCommands.DriveToReef(drive, vision,
+                // true));
+                // driverController.b().onTrue(new SwerveCommands.DriveToReef(drive, vision,
+                // false));
                 /*----------------------------------------------------------------------------------------------------*/
                 // operator:
                 // open and close arm and elevator manual
