@@ -173,7 +173,7 @@ public class RobotContainer {
                 // operator:
                 // open and close arm and elevator manual
 
-                operatorController.rightTrigger().whileTrue(CoralArmCommands.setVoltage(coralArm, 1));
+                operatorController.rightTrigger().whileTrue(CoralArmCommands.setVoltage(coralArm, 2));
                 operatorController.leftTrigger().whileTrue(CoralArmCommands.setVoltage(coralArm, -1));
 
                 operatorController.RB().whileTrue(ElevatorCommands.setVoltage(elevator, 4));
