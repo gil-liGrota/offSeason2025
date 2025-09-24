@@ -1,6 +1,7 @@
 package frc.robot.subsystems.CoralArm;
 
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.BRAKE_SWITCH;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.CLOSE_ARM_POSITION;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.CORAL_ARM_ID;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.CURRENT_LIMIT;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.HIGH_SWITCH;
@@ -46,6 +47,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
     private POMDigitalInput highSwitch;
     private POMDigitalInput brakeSwitch;
     private BooleanSupplier isCoralIn;
+    public double currentGoal = CLOSE_ARM_POSITION;
 
     public CoralArmIOReal(POMDigitalInput brakeSwitch) {
         motor = new POMSparkMax(CORAL_ARM_ID);
@@ -117,6 +119,8 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
         pidController.setGoal(goal);
         setVoltage(pidController.calculate(encoder.getPosition())
                 + getFeedForwardVelocity(pidController.getSetpoint().velocity));
+
+        currentGoal = goal;
     }
 
     @Override
@@ -162,6 +166,9 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
         // voltage += pidConstants.getKgOfCoral();
         // }
 
+        if (encoder.getPosition() < 0 && encoder.getPosition() > -1.35) {
+            voltage += 0.05;
+        }
         return voltage;
     }
 
@@ -199,7 +206,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
     }
 
     @Override
-    public double isHighSpeed() {
+    public double directionalHighSpeed() {
         return encoder.getPosition() > 0 ? -12.0 : 12.0;
     }
 
@@ -221,10 +228,19 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
                     feedforward.getKv() };
         },
                 (feedForwardArray) -> {
-                    // feedforward.setKg(feedForwardArray[0]);
-                    // feedforward.setKs(feedForwardArray[1]);
-                    // feedforward.setKv(feedForwardArray[2]);
+                    feedforward.setKg(feedForwardArray[0]);
+                    feedforward.setKs(feedForwardArray[1]);
+                    feedforward.setKv(feedForwardArray[2]);
                 });
+    }
+
+    @Override
+    public void stayInCurrentGoal() {
+        if (currentGoal == CLOSE_ARM_POSITION) {
+            stopMotor();
+        } else {
+            setGoal(this.currentGoal);
+        }
     }
 
 }

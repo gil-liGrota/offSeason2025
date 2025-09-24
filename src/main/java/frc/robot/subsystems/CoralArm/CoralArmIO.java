@@ -66,8 +66,12 @@ public interface CoralArmIO {
     public default void resetPID(double newGoal) {
     }
 
-    public default double isHighSpeed() {
+    public default double directionalHighSpeed() {
         return 0.0;
+    }
+
+    public default void stayInCurrentGoal() {
+
     }
 
 }

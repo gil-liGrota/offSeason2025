@@ -15,6 +15,8 @@ package frc.robot;
 
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.BRAKE_SWITCH;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.CLOSE_ARM_POSITION;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.L2_ARM_POSITION;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.L3_ARM_POSITION;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.L4_ARM_POSITION;
 import static frc.robot.subsystems.Elevator.ElevatorConstants.L4_ELEVATOR_POSITION;
 
@@ -73,7 +75,7 @@ public class RobotContainer {
 
         private boolean isRelative;
         private POMDigitalInput brakeSwitch = new POMDigitalInput(BRAKE_SWITCH);
-        RiffCommands riffCommands = new RiffCommands();
+        RiffCommands riffCommands;
 
         private SwerveDriveSimulation driveSimulation = null;
 
@@ -100,6 +102,7 @@ public class RobotContainer {
                                                 new ModuleIOReal(2),
                                                 new ModuleIOReal(3));
                                 vision = new VisionSubsystem(drive::addVisionMeasurement, cameras);
+                                riffCommands = new RiffCommands(elevator, coralArm, transfer);
 
                                 break;
 
@@ -143,6 +146,19 @@ public class RobotContainer {
 
                 driverController.y().onTrue(drive.resetGyroCommand());
 
+                driverController.x().onTrue(TransferCommands.autoIntakeCoral(transfer));
+                driverController.b().whileTrue(TransferCommands.riffOutake(transfer, coralArm));
+
+                driverController.LB().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
+                                driverController,
+                                true));
+                driverController.RB().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
+                                driverController,
+                                false));
+
+                // LeftTrigger - slow
+                // RightTrigger - fast
+
                 // // intake, l2, l1
                 // driverController.leftTrigger().whileTrue(TransferCommands.coralintake(transfer,
                 // 5));
@@ -153,23 +169,6 @@ public class RobotContainer {
                 // -5));
                 // driverController.RB().whileTrue(TransferCommands.coralintake(transfer, -12));
 
-                driverController.a().onTrue(TransferCommands.autoIntakeCoral(transfer));
-                driverController.PovDown()
-                                .whileTrue(TransferCommands.riffOutake(transfer, coralArm));
-
-                driverController.x().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
-                                driverController,
-                                true));
-                driverController.b().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
-                                driverController,
-                                false));
-
-                driverController.rightTrigger().whileTrue(ElevatorCommands.setVoltage(elevator, 4));
-                driverController.leftTrigger().whileTrue(ElevatorCommands.setVoltage(elevator, -1));
-                // driverController.x().onTrue(new SwerveCommands.DriveToReef(drive, vision,
-                // true));
-                // driverController.b().onTrue(new SwerveCommands.DriveToReef(drive, vision,
-                // false));
                 /*----------------------------------------------------------------------------------------------------*/
                 // operator:
                 // open and close arm and elevator manual
@@ -188,32 +187,42 @@ public class RobotContainer {
                 operatorController.PovRight().onTrue(CoralArmCommands.goToPosition(coralArm, CLOSE_ARM_POSITION));
 
                 // coral intake position
-                operatorController.leftStickClick().onTrue(ElevatorCommands.goToPosition(elevator, 2.0)
-                                .alongWith(CoralArmCommands.setVoltage(coralArm, -0.2)));
+                operatorController.leftStickClick().onTrue(riffCommands.coralIntakePos());
 
-                operatorController.rightStickClick().onTrue(ElevatorCommands.closeElevator(elevator)
-                                .alongWith(CoralArmCommands.goToPosition(coralArm, CLOSE_ARM_POSITION)));
-
-                operatorController.y().onTrue(riffCommands.L4(elevator, coralArm));
-                operatorController.b().onTrue(riffCommands.L3(elevator, coralArm));
-                operatorController.x().onTrue(riffCommands.L2(elevator, coralArm));
-                operatorController.a().onTrue(riffCommands.L1(elevator, coralArm));
+                operatorController.rightStickClick().onTrue(CoralArmCommands.closeArm(coralArm)
+                                .alongWith(ElevatorCommands.closeElevator(elevator)));
+                operatorController.y().onTrue(riffCommands.L4());
+                operatorController.b().onTrue(riffCommands.L3());
+                operatorController.x().onTrue(riffCommands.L2());
+                operatorController.a().onTrue(riffCommands.L1());
 
                 /*----------------------------------------------------------------------------------------------------*/
                 // manuale:
-                // manuale elevator
-                manualController.rightTrigger().whileTrue(ElevatorCommands.openElevatorManual(elevator, 5));
-                manualController.leftTrigger().whileTrue(ElevatorCommands.closeElevatorManual(elevator, -1));
-                // elevator
-                manualController.a().onTrue(ElevatorCommands.closeElevator(elevator));
-                manualController.y().onTrue(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION));
+                // // manuale elevator
+                // manualController.rightTrigger().whileTrue(ElevatorCommands.openElevatorManual(elevator,
+                // 5));
+                // manualController.leftTrigger().whileTrue(ElevatorCommands.closeElevatorManual(elevator,
+                // -1));
+                // // elevator
+                // manualController.a().onTrue(ElevatorCommands.closeElevator(elevator));
+                // manualController.y().onTrue(ElevatorCommands.goToPosition(elevator,
+                // L4_ELEVATOR_POSITION));
 
-                // manuale coral arm
-                manualController.PovLeft().whileTrue(CoralArmCommands.setVoltage(coralArm, 1));
-                manualController.PovRight().whileTrue(CoralArmCommands.setVoltage(coralArm, -1));
-                // coral arm
-                manualController.b().onTrue(CoralArmCommands.goToPosition(coralArm, L4_ARM_POSITION));
-                manualController.x().onTrue(CoralArmCommands.goToPosition(coralArm, CLOSE_ARM_POSITION));
+                // // manuale coral arm
+                // manualController.PovLeft().whileTrue(CoralArmCommands.setVoltage(coralArm,
+                // 1));
+                // manualController.PovRight().whileTrue(CoralArmCommands.setVoltage(coralArm,
+                // -1));
+                // // coral arm
+                // manualController.b().onTrue(CoralArmCommands.goToPosition(coralArm,
+                // L4_ARM_POSITION));
+                // manualController.x().onTrue(CoralArmCommands.goToPosition(coralArm,
+                // CLOSE_ARM_POSITION));
+
+                manualController.a().onTrue(CoralArmCommands.closeArm(coralArm));
+                manualController.b().onTrue(CoralArmCommands.goToPosition(coralArm, L3_ARM_POSITION));
+                manualController.x().onTrue(CoralArmCommands.goToPosition(coralArm, L2_ARM_POSITION));
+                manualController.y().onTrue(CoralArmCommands.goToPosition(coralArm, 1.5));
 
         }
 

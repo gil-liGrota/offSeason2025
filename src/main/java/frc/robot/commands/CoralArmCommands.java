@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.CLOSE_ARM_POSITION;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import frc.robot.subsystems.CoralArm.CoralArm;
@@ -10,7 +12,12 @@ public class CoralArmCommands {
     public static Command goToPosition(CoralArm coralArm, double goal) {
         CoralArmIO io = coralArm.getIO();
         return new FunctionalCommand(() -> io.resetPID(goal), () -> io.setGoal(goal),
-                (interrupted) -> io.resistGravity(), io.atGoal(), coralArm).withName("Move arm to " + goal);
+                (interrupted) -> io.resistGravity(), io.atGoal(), coralArm)
+                .withName("Move arm to " + goal);
+    }
+
+    public static Command closeArm(CoralArm coralArm) {
+        return goToPosition(coralArm, CLOSE_ARM_POSITION);
     }
 
     public static Command setVoltage(CoralArm coralArm, double voltage) {

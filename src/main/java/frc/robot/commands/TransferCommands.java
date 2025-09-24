@@ -19,7 +19,7 @@ public class TransferCommands {
     }
 
     public static Command riffOutake(Transfer transfer, CoralArm arm) {
-        return Commands.startEnd(() -> transfer.getIO().setVoltage(arm.getIO().isHighSpeed()),
+        return Commands.startEnd(() -> transfer.getIO().setVoltage(arm.getIO().directionalHighSpeed()),
                 () -> transfer.getIO().stopMotor(), transfer);
     }
 
