@@ -54,8 +54,8 @@ public class RiffCommands {
     public Command L4() {
         return Commands.sequence(
                 Commands.parallel(
-                        // ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION),
-                        CoralArmCommands.goToPosition(arm, L4_ARM_POSITION)),
+                        ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)),
+                // CoralArmCommands.goToPosition(arm, L4_ARM_POSITION)),
                 CoralArmCommands.goToPosition(arm, 1.1)).withName("L4");
 
         // return ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)
