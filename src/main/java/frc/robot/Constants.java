@@ -36,16 +36,19 @@ public final class Constants {
 
   public static class VisionConstants {
     // THE translations FOR THE LEFT AND RIGHT CAMERAS
-    public static Translation3d l_camera_translation = new Translation3d(0.055 - 0.02, -0.035 + 0.04, 0.263);
-    public static Translation3d r_camera_translation = new Translation3d(0.03, -0.033, 0.263);
+    public static Translation3d l_camera_translation = new Translation3d(0.025 - 0.03 + 0.05,
+        -0.25 + 0.07 - 0.06 + 0.04 - 0.03,
+        0.263);
+    public static Translation3d r_camera_translation = new Translation3d(0.03 - 0.01, 0.227 + 0.07 + 0.01, 0.263);
 
     // THE ROTATION FOR THE LEFT AND RIGHT CAMERAS
     public static Rotation3d l_camera_rotation = new Rotation3d(Degrees.of(0), Degrees.of(0),
-        Degrees.of(-16.7 + 31.6));
-    public static Rotation3d r_camera_rotation = new Rotation3d(Degrees.of(0), Degrees.of(0), Degrees.of(-14));
+        Degrees.of(-1.1 - 0.6 + 13 - 4.5 + 1));
+    public static Rotation3d r_camera_rotation = new Rotation3d(Degrees.of(0), Degrees.of(0),
+        Degrees.of(-14 - 6.6 - 6 - 2 - 4 + 10));
 
     // THE TRANSFORMATION FOR THE LEFT AND RIGHT CAMERAS
-    public static Transform3d l_camera_transform = new Transform3d(l_camera_translation, l_camera_rotation);
+    public static Transform3d l_camera_transform = new Transform3d(l_camera_translation, l_camera_rotation); // here
     public static Transform3d r_camera_transform = new Transform3d(r_camera_translation, r_camera_rotation);
 
     public static final Transform2d transformRightBranch = new Transform2d(0.384, 0.013, new Rotation2d(-0.1));
