@@ -173,24 +173,28 @@ public class RobotContainer {
                 // operator:
                 // open and close arm and elevator manual
 
-                operatorController.rightTrigger().whileTrue(CoralArmCommands.setVoltage(coralArm, 2));
+                operatorController.rightTrigger().whileTrue(CoralArmCommands.setVoltage(coralArm, 1));
                 operatorController.leftTrigger().whileTrue(CoralArmCommands.setVoltage(coralArm, -1));
 
                 operatorController.RB().whileTrue(ElevatorCommands.setVoltage(elevator, 4));
                 operatorController.LB().whileTrue(ElevatorCommands.setVoltage(elevator, -1));
 
-                // open and close arm and elevator
+                // // open and close arm and elevator
 
-                operatorController.PovUp().onTrue(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION));
-                operatorController.PovDown().onTrue(ElevatorCommands.closeElevator(elevator));
-                operatorController.PovLeft().onTrue(CoralArmCommands.goToPosition(coralArm, L4_ARM_POSITION));
-                operatorController.PovRight().onTrue(CoralArmCommands.goToPosition(coralArm, CLOSE_ARM_POSITION));
+                // operatorController.PovUp().onTrue(ElevatorCommands.goToPosition(elevator,
+                // L4_ELEVATOR_POSITION));
+                // operatorController.PovDown().onTrue(ElevatorCommands.closeElevator(elevator));
+                // operatorController.PovLeft().onTrue(CoralArmCommands.goToPosition(coralArm,
+                // L4_ARM_POSITION));
+                // operatorController.PovRight().onTrue(CoralArmCommands.goToPosition(coralArm,
+                // CLOSE_ARM_POSITION));
 
                 // coral intake position
-                operatorController.leftStickClick().onTrue(riffCommands.coralIntakePos());
+                operatorController.PovUp().onTrue(riffCommands.coralIntakePos());
 
-                operatorController.rightStickClick().onTrue(CoralArmCommands.closeArm(coralArm)
+                operatorController.PovDown().onTrue(CoralArmCommands.closeArm(coralArm)
                                 .alongWith(ElevatorCommands.closeElevator(elevator)));
+
                 operatorController.y().onTrue(riffCommands.L4());
                 operatorController.b().onTrue(riffCommands.L3());
                 operatorController.x().onTrue(riffCommands.L2());
