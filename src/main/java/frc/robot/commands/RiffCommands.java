@@ -117,4 +117,24 @@ public class RiffCommands {
                 .withName("closeAll");
     }
 
+    public Command HighAlgeOutake() {
+        return Commands.sequence(
+                ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION),
+                CoralArmCommands.goToPosition(arm, -1),
+                TransferCommands.coralintake(transfer, 12));
+    }
+
+    public Command LowAlgeOutake() {
+        return Commands.sequence(
+                ElevatorCommands.goToPosition(elevator, 16),
+                CoralArmCommands.goToPosition(arm, -1),
+                TransferCommands.coralintake(transfer, 12));
+    }
+
+    public Command holdAlage() {
+        return Commands.parallel(
+                ElevatorCommands.closeElevator(elevator),
+                CoralArmCommands.closeArm(arm),
+                TransferCommands.coralintake(transfer, 4));
+    }
 }

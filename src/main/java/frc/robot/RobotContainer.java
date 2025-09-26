@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.POM_lib.sensors.POMDigitalInput;
 import frc.robot.commands.CoralArmCommands;
@@ -67,7 +68,7 @@ public class RobotContainer {
         VisionSubsystem vision;
 
         // Controller
-        private final PomXboxController driverController = new PomXboxController(0);
+        private final CommandPS5Controller driverController = new CommandPS5Controller(0);
         private final PomXboxController operatorController = new PomXboxController(1);
         private final PomXboxController manualController = new PomXboxController(2);
 
@@ -141,34 +142,34 @@ public class RobotContainer {
                 drive.setDefaultCommand(
                                 SwerveCommands.joystickDrive(
                                                 drive,
-                                                () -> driverController.getLeftY() * 0.75,
-                                                () -> driverController.getLeftX() * 0.75,
-                                                () -> driverController.getRightX() * 0.75));
+                                                () -> driverController.getLeftY() * -0.75,
+                                                () -> driverController.getLeftX() * -0.75,
+                                                () -> driverController.getRightX() * -0.75));
 
-                driverController.y().onTrue(drive.resetGyroCommand());
+                driverController.triangle().onTrue(drive.resetGyroCommand());
 
-                driverController.x().onTrue(TransferCommands.autoIntakeCoral(transfer));
+                driverController.square().onTrue(TransferCommands.autoIntakeCoral(transfer));
 
-                driverController.RB().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
+                driverController.R1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
                                 driverController,
                                 false));
-                driverController.LB().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
+                driverController.L1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
                                 driverController,
                                 true));
-                driverController.LB().or(driverController.RB()).onFalse(new InstantCommand(drive::stop, drive));
+                driverController.L1().or(driverController.R1()).onFalse(new InstantCommand(drive::stop, drive));
 
-                driverController.b().whileTrue(TransferCommands.riffOutake(transfer, coralArm));
+                driverController.circle().whileTrue(TransferCommands.riffOutake(transfer, coralArm));
                 // LeftTrigger - slow
-                driverController.leftTrigger().whileTrue(SwerveCommands.joystickDrive(
+                driverController.L2().whileTrue(SwerveCommands.joystickDrive(
                                 drive,
-                                () -> driverController.getLeftY() * 0.4,
-                                () -> driverController.getLeftX() * 0.4,
-                                () -> driverController.getRightX() * 0.4));
-                driverController.rightTrigger().whileTrue(SwerveCommands.joystickDrive(
+                                () -> driverController.getLeftY() * -0.4,
+                                () -> driverController.getLeftX() * -0.4,
+                                () -> driverController.getRightX() * -0.4));
+                driverController.R2().whileTrue(SwerveCommands.joystickDrive(
                                 drive,
-                                () -> driverController.getLeftY() * 1,
-                                () -> driverController.getLeftX() * 1,
-                                () -> driverController.getRightX() * 1));
+                                () -> driverController.getLeftY() * -1,
+                                () -> driverController.getLeftX() * -1,
+                                () -> driverController.getRightX() * -1));
                 // RightTrigger - fast
 
                 // // intake, l2, l1
@@ -204,6 +205,12 @@ public class RobotContainer {
                 // CLOSE_ARM_POSITION));
 
                 // alage outake
+                // high
+                operatorController.start().onTrue(riffCommands.HighAlgeOutake());
+                operatorController.start().onFalse(riffCommands.holdAlage());
+                // low
+                operatorController.back().onTrue(riffCommands.LowAlgeOutake());
+                operatorController.back().onFalse(riffCommands.holdAlage());
 
                 // coral intake position
                 operatorController.PovUp().onTrue(riffCommands.coralIntakePos());

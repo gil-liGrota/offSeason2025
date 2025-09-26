@@ -976,6 +976,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.subsystems.Vision.VisionSubsystem;
@@ -1522,9 +1523,9 @@ public class SwerveCommands {
         public static class LocateToReefCommand extends Command {
                 Swerve drive;
                 boolean toLeft;
-                PomXboxController controller;
+                CommandPS5Controller controller;
 
-                public LocateToReefCommand(Swerve drive, PomXboxController controller, boolean toLeft) {
+                public LocateToReefCommand(Swerve drive, CommandPS5Controller controller, boolean toLeft) {
                         this.drive = drive;
                         this.controller = controller;
                         this.toLeft = toLeft;
@@ -1677,7 +1678,7 @@ public class SwerveCommands {
 
         }
 
-        public static Command locateToReefCommand(Swerve drive, PomXboxController controller, boolean toLeft) {
+        public static Command locateToReefCommand(Swerve drive, CommandPS5Controller controller, boolean toLeft) {
                 return new LocateToReefCommand(drive, controller, toLeft);
         }
 
