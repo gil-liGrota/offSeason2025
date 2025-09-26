@@ -74,4 +74,12 @@ public interface CoralArmIO {
 
     }
 
+    public default boolean getHighSwitch() {
+        return false;
+    }
+
+    public default boolean getLowSwitch() {
+        return false;
+    }
+
 }

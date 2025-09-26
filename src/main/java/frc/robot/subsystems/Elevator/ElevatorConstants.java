@@ -26,6 +26,7 @@ public class ElevatorConstants {
     public static final double CORAL_INTAKE_POSITION = 2.2;
 
     public static final double CLOSE_ELEVATOR_SPEED = -0.5;
+    public static final double CLOSE_ELEVATOR_POSITIOM = 0;
 
     public static final double POSITION_CONVERSION_FACTOR = 1;
 

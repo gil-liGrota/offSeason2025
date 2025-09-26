@@ -16,6 +16,7 @@ import static frc.robot.subsystems.CoralArm.CoralArmConstants.KV;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.LOW_SWITCH;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.MAX_ACCELERATION;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.MAX_VELOCITY;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.OPEN_ARM_POSITION;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.POSITION_CONVERSION_FACTOR;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.TOLERANCE;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.VOLTAGE_COMPENSATION;
@@ -48,6 +49,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
     private POMDigitalInput brakeSwitch;
     private BooleanSupplier isCoralIn;
     public double currentGoal = CLOSE_ARM_POSITION;
+    private boolean manual = false;
 
     public CoralArmIOReal(POMDigitalInput brakeSwitch) {
         motor = new POMSparkMax(CORAL_ARM_ID);
@@ -107,6 +109,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
     @Override
     public void setVoltage(double voltage) {
         motor.setVoltage(voltage);
+        manual = true;
     }
 
     @Override
@@ -121,6 +124,7 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
                 + getFeedForwardVelocity(pidController.getSetpoint().velocity));
 
         currentGoal = goal;
+        manual = false;
     }
 
     @Override
@@ -236,11 +240,27 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
 
     @Override
     public void stayInCurrentGoal() {
+        if (manual) {
+            currentGoal = getPosition();
+            resetPID();
+        }
         if (currentGoal == CLOSE_ARM_POSITION) {
-            stopMotor();
+            setVoltage(-1);
+        } else if (currentGoal == OPEN_ARM_POSITION) {
+            setVoltage(1);
         } else {
             setGoal(this.currentGoal);
         }
+    }
+
+    @Override
+    public boolean getHighSwitch() {
+        return highSwitch.get();
+    }
+
+    @Override
+    public boolean getLowSwitch() {
+        return lowSwitch.get();
     }
 
 }

@@ -17,7 +17,7 @@ import static frc.robot.subsystems.CoralArm.CoralArmConstants.BRAKE_SWITCH;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.CLOSE_ARM_POSITION;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.L2_ARM_POSITION;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.L3_ARM_POSITION;
-import static frc.robot.subsystems.CoralArm.CoralArmConstants.L4_ARM_POSITION;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.OPEN_ARM_POSITION;
 import static frc.robot.subsystems.Elevator.ElevatorConstants.L4_ELEVATOR_POSITION;
 
 import org.ironmaple.simulation.SimulatedArena;
@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.POM_lib.sensors.POMDigitalInput;
 import frc.robot.commands.CoralArmCommands;
@@ -140,23 +141,34 @@ public class RobotContainer {
                 drive.setDefaultCommand(
                                 SwerveCommands.joystickDrive(
                                                 drive,
-                                                () -> driverController.getLeftY(),
-                                                () -> driverController.getLeftX(),
-                                                () -> driverController.getRightX()));
+                                                () -> driverController.getLeftY() * 0.75,
+                                                () -> driverController.getLeftX() * 0.75,
+                                                () -> driverController.getRightX() * 0.75));
 
                 driverController.y().onTrue(drive.resetGyroCommand());
 
                 driverController.x().onTrue(TransferCommands.autoIntakeCoral(transfer));
-                driverController.b().whileTrue(TransferCommands.riffOutake(transfer, coralArm));
 
-                driverController.LB().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
-                                driverController,
-                                true));
                 driverController.RB().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
                                 driverController,
                                 false));
+                driverController.LB().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
+                                driverController,
+                                true));
+                driverController.LB().or(driverController.RB()).onFalse(new InstantCommand(drive::stop, drive));
 
+                driverController.b().whileTrue(TransferCommands.riffOutake(transfer, coralArm));
                 // LeftTrigger - slow
+                driverController.leftTrigger().whileTrue(SwerveCommands.joystickDrive(
+                                drive,
+                                () -> driverController.getLeftY() * 0.4,
+                                () -> driverController.getLeftX() * 0.4,
+                                () -> driverController.getRightX() * 0.4));
+                driverController.rightTrigger().whileTrue(SwerveCommands.joystickDrive(
+                                drive,
+                                () -> driverController.getLeftY() * 1,
+                                () -> driverController.getLeftX() * 1,
+                                () -> driverController.getRightX() * 1));
                 // RightTrigger - fast
 
                 // // intake, l2, l1
@@ -173,12 +185,14 @@ public class RobotContainer {
                 // operator:
                 // open and close arm and elevator manual
 
-                operatorController.rightTrigger().whileTrue(CoralArmCommands.setVoltage(coralArm, 1));
+                operatorController.rightTrigger().whileTrue(CoralArmCommands.setVoltage(coralArm, 1.5));
                 operatorController.leftTrigger().whileTrue(CoralArmCommands.setVoltage(coralArm, -1));
 
                 operatorController.RB().whileTrue(ElevatorCommands.setVoltage(elevator, 4));
                 operatorController.LB().whileTrue(ElevatorCommands.setVoltage(elevator, -1));
 
+                // outake
+                operatorController.PovLeft().whileTrue(TransferCommands.coralintake(transfer, -3));
                 // // open and close arm and elevator
 
                 // operatorController.PovUp().onTrue(ElevatorCommands.goToPosition(elevator,
@@ -188,6 +202,8 @@ public class RobotContainer {
                 // L4_ARM_POSITION));
                 // operatorController.PovRight().onTrue(CoralArmCommands.goToPosition(coralArm,
                 // CLOSE_ARM_POSITION));
+
+                // alage outake
 
                 // coral intake position
                 operatorController.PovUp().onTrue(riffCommands.coralIntakePos());

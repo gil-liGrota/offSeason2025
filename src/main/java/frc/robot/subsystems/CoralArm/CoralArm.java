@@ -15,11 +15,12 @@ public class CoralArm extends SubsystemBase {
 
     public CoralArm(CoralArmIO io) {
         this.io = io;
-        // setDefaultCommand(run(() -> io.stayInCurrentGoal()).withName("Default
-        // Command"));
-        setDefaultCommand(new RepeatCommand(new ConditionalCommand(this.runOnce(() -> io.setVoltage(0)),
-                this.runOnce(io::resistGravity), io::isPressed))
-                .beforeStarting(new PrintCommand("arm default command")));
+        setDefaultCommand(new ConditionalCommand(run(() -> io.setVoltage(-0.5)), run(() -> io.stayInCurrentGoal()),
+                io::getLowSwitch).withName("DefaultCommand"));
+        // setDefaultCommand(new RepeatCommand(new ConditionalCommand(this.runOnce(() ->
+        // io.setVoltage(0)),
+        // this.runOnce(io::resistGravity), io::isPressed))
+        // .beforeStarting(new PrintCommand("arm default command")));
 
         SmartDashboard.putData("Coral Arm", (CoralArmIOReal) io);
     }
