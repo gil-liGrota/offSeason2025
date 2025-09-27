@@ -135,6 +135,6 @@ public class RiffCommands {
         return Commands.parallel(
                 ElevatorCommands.closeElevator(elevator),
                 CoralArmCommands.closeArm(arm),
-                TransferCommands.coralintake(transfer, 4));
+                TransferCommands.coralintake(transfer, 5));
     }
 }

@@ -17,7 +17,7 @@ public class CoralArmCommands {
     }
 
     public static Command closeArm(CoralArm coralArm) {
-        return goToPosition(coralArm, CLOSE_ARM_POSITION);
+        return goToPosition(coralArm, CLOSE_ARM_POSITION).until(coralArm.getIO()::getLowSwitch);
     }
 
     public static Command setVoltage(CoralArm coralArm, double voltage) {

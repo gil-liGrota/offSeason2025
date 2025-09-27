@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
@@ -186,14 +187,15 @@ public class RobotContainer {
                 // operator:
                 // open and close arm and elevator manual
 
-                operatorController.rightTrigger().whileTrue(CoralArmCommands.setVoltage(coralArm, 1.5));
+                operatorController.rightTrigger().whileTrue(CoralArmCommands.setVoltage(coralArm, 1));
                 operatorController.leftTrigger().whileTrue(CoralArmCommands.setVoltage(coralArm, -1));
 
                 operatorController.RB().whileTrue(ElevatorCommands.setVoltage(elevator, 4));
                 operatorController.LB().whileTrue(ElevatorCommands.setVoltage(elevator, -1));
 
                 // outake
-                operatorController.PovLeft().whileTrue(TransferCommands.coralintake(transfer, -3));
+                operatorController.PovLeft().whileTrue(TransferCommands.coralintake(transfer, -12));
+                operatorController.PovRight().whileTrue(TransferCommands.coralintake(transfer, 3));
                 // // open and close arm and elevator
 
                 // operatorController.PovUp().onTrue(ElevatorCommands.goToPosition(elevator,
@@ -218,6 +220,15 @@ public class RobotContainer {
                 operatorController.PovDown().onTrue(CoralArmCommands.closeArm(coralArm)
                                 .alongWith(ElevatorCommands.closeElevator(elevator)));
 
+                // operatorController.y()
+                // .onTrue(CoralArmCommands.goToPosition(coralArm, 1)
+                // .alongWith(TransferCommands.coralintake(transfer, 2))
+                // .andThen(TransferCommands.coralintake(transfer, -12)));
+                // operatorController.y().onTrue(Commands.parallel(
+                // CoralArmCommands.goToPosition(coralArm, OPEN_ARM_POSITION),
+                // TransferCommands.coralintake(transfer, 2),
+                // ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)).andThen(
+                // TransferCommands.coralintake(transfer, -12)));
                 operatorController.y().onTrue(riffCommands.L4());
                 operatorController.b().onTrue(riffCommands.L3());
                 operatorController.x().onTrue(riffCommands.L2());
