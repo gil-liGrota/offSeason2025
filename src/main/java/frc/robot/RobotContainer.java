@@ -25,6 +25,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
@@ -32,6 +33,7 @@ import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.POM_lib.sensors.POMDigitalInput;
 import frc.robot.commands.CoralArmCommands;
 import frc.robot.commands.ElevatorCommands;
+import frc.robot.commands.LEDsCommands;
 import frc.robot.commands.RiffCommands;
 import frc.robot.commands.SwerveCommands;
 import frc.robot.commands.TransferCommands;
@@ -39,6 +41,8 @@ import frc.robot.subsystems.CoralArm.CoralArm;
 import frc.robot.subsystems.CoralArm.CoralArmIOReal;
 import frc.robot.subsystems.Elevator.Elevator;
 import frc.robot.subsystems.Elevator.ElevatorReal;
+import frc.robot.subsystems.LEDs.LEDs;
+import frc.robot.subsystems.LEDs.LEDsIOReal;
 import frc.robot.subsystems.Transfer.Transfer;
 import frc.robot.subsystems.Transfer.TransferIOReal;
 import frc.robot.subsystems.Vision.VisionIOReal;
@@ -77,6 +81,7 @@ public class RobotContainer {
         Transfer transfer;
         Swerve drive;
         VisionSubsystem vision;
+        LEDs leds;
 
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -102,6 +107,8 @@ public class RobotContainer {
                                                 new ModuleIOReal(3));
                                 vision = new VisionSubsystem(drive::addVisionMeasurement, cameras);
                                 riffCommands = new RiffCommands(elevator, coralArm, transfer);
+
+                                leds = new LEDs(new LEDsIOReal());
 
                                 break;
 
@@ -204,11 +211,11 @@ public class RobotContainer {
 
                 // alage outake
                 // high
-                operatorController.start().onTrue(riffCommands.HighAlgeOutake());
-                operatorController.start().onFalse(riffCommands.holdAlage());
-                // low
-                operatorController.back().onTrue(riffCommands.LowAlgeOutake());
-                operatorController.back().onFalse(riffCommands.holdAlage());
+                // operatorController.start().onTrue(riffCommands.HighAlgeOutake());
+                // operatorController.start().onFalse(riffCommands.holdAlage());
+                // // low
+                // operatorController.back().onTrue(riffCommands.LowAlgeOutake());
+                // operatorController.back().onFalse(riffCommands.holdAlage());
 
                 // coral intake position
                 operatorController.PovUp().onTrue(riffCommands.coralIntakePos());
@@ -229,6 +236,8 @@ public class RobotContainer {
                 operatorController.b().onTrue(riffCommands.L3());
                 operatorController.x().onTrue(riffCommands.L2());
                 operatorController.a().onTrue(riffCommands.L1());
+
+                driverController.povUp().whileTrue(LEDsCommands.setAll(leds, Color.kAntiqueWhite));
 
                 /*----------------------------------------------------------------------------------------------------*/
                 // manuale:
