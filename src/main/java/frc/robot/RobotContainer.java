@@ -237,7 +237,7 @@ public class RobotContainer {
                 operatorController.x().onTrue(riffCommands.L2());
                 operatorController.a().onTrue(riffCommands.L1());
 
-                driverController.povUp().whileTrue(LEDsCommands.setAll(leds, Color.kAntiqueWhite));
+                driverController.povUp().whileTrue(LEDsCommands.setAll(leds, Color.kPurple));
                 driverController.povDown().whileTrue(LEDsCommands.setAll(leds, Color.kBlack));
 
                 /*----------------------------------------------------------------------------------------------------*/
