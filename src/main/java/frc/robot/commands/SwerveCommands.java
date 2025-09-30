@@ -320,7 +320,7 @@
 //                                                                                         ? drive.getRotation().plus(
 //                                                                                                         new Rotation2d(Math.PI))
 //                                                                                         : drive.getRotation()),
-//                                                         true); // אותה בעיה, שוב שמתי ככה
+//                                                         true); // 
 //                                 },
 //                                 drive)
 
@@ -395,7 +395,7 @@
 //          * <p>
 //          * This command should only be used in voltage control mode.
 //          */
-//         public static Command feedforwardCharacterization(Swerve drive) {// לא הבנתי כלום
+//         public static Command feedforwardCharacterization(Swerve drive) {// 
 //                 List<Double> velocitySamples = new LinkedList<>();
 //                 List<Double> voltageSamples = new LinkedList<>();
 //                 Timer timer = new Timer();
@@ -462,7 +462,7 @@
 //                                                                 }));
 //         }
 
-//         public static Command wheelRadiusCharacterization(Swerve drive) {// לא הבנתי
+//         public static Command wheelRadiusCharacterization(Swerve drive) {//
 //                 SlewRateLimiter limiter = new SlewRateLimiter(0.05/* WHEEL_RADIUS_RAMP_RATE */);
 //                 WheelRadiusCharacterizationState state = new WheelRadiusCharacterizationState();
 
@@ -483,7 +483,7 @@
 //                                                                                              * WHEEL_RADIUS_MAX_VELOCITY
 //                                                                                              */);
 //                                                                         drive.runVelocity(new ChassisSpeeds(0.0, 0.0,
-//                                                                                         speed), true);// אותה בעיה...
+//                                                                                         speed), true);//
 //                                                                 },
 //                                                                 drive)),
 

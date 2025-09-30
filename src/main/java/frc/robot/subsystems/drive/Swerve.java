@@ -142,10 +142,9 @@ public class Swerve extends SubsystemBase { // ODED WAS HERE
         SmartDashboard.putData("Field", field);
     }
 
-    public static final DriveTrainSimulationConfig maplesimConfig = DriveTrainSimulationConfig.Default()// TODO יש פה
-                                                                                                        // המון מספרים
-                                                                                                        // שאני לא מבינה
-                                                                                                        // אותם
+    public static final DriveTrainSimulationConfig maplesimConfig = DriveTrainSimulationConfig.Default()//
+                                                                                                        //
+
             .withRobotMass(Kilograms.of(35.0))
             .withCustomModuleTranslations(moduleTranslations)
             .withGyro(COTS.ofPigeon2())
@@ -153,7 +152,7 @@ public class Swerve extends SubsystemBase { // ODED WAS HERE
                     DCMotor.getKrakenX60(1),
                     DCMotor.getNEO(1),
                     DriveConstants.driveMotorReduction,
-                    DriveConstants.turnMotorReduction, // זה כאילו פרמטרים לסימולציה? יעננו גבולות וכאלה?
+                    DriveConstants.turnMotorReduction,
                     Volts.of(0.2),
                     Volts.of(0.2),
                     Inches.of(2),
@@ -295,7 +294,7 @@ public class Swerve extends SubsystemBase { // ODED WAS HERE
     }
 
     /** Returns a command to run a quasistatic test in the specified direction. */
-    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {// TODO לא הבנתי עד ל
+    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
         return run(() -> runCharacterization(0.0))
                 .withTimeout(1.0)
                 .andThen(driveSysId.quasistatic(direction))
@@ -320,7 +319,7 @@ public class Swerve extends SubsystemBase { // ODED WAS HERE
     public Command sysIdSteerDynamic(SysIdRoutine.Direction direction) {
         return run(() -> runCharacterization(0.0)).withTimeout(1.0).andThen(steerSysId.dynamic(direction))
                 .andThen(this::stop);
-    }// TODO כאן
+    }
 
     /**
      * Returns the module states (turn angles and drive velocities) for all of the
@@ -455,7 +454,7 @@ public class Swerve extends SubsystemBase { // ODED WAS HERE
         return this.runOnce(() -> resetGyro(to.get())).ignoringDisable(true);
     }
 
-    public Command testSteeringCommand(DoubleSupplier x, DoubleSupplier y) {// מה לעזאזל קורה פה
+    public Command testSteeringCommand(DoubleSupplier x, DoubleSupplier y) {
         return this.run(() -> { // TODO
             Rotation2d angle = new Rotation2d(x.getAsDouble(), y.getAsDouble());
             double a = MathUtil.applyDeadband(Math.hypot(x.getAsDouble(), y.getAsDouble()), 0.15);
@@ -465,7 +464,7 @@ public class Swerve extends SubsystemBase { // ODED WAS HERE
         });
     }
 
-    public Command testSteeringAngleCommand(Rotation2d angle) {// גם פה
+    public Command testSteeringAngleCommand(Rotation2d angle) {
         return this.run(() -> {
 
             // double a = MathUtil.applyDeadband(Math.hypot(x.getAsDouble(),

@@ -14,11 +14,8 @@
 package frc.robot;
 
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.BRAKE_SWITCH;
-import static frc.robot.subsystems.CoralArm.CoralArmConstants.CLOSE_ARM_POSITION;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.L2_ARM_POSITION;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.L3_ARM_POSITION;
-import static frc.robot.subsystems.CoralArm.CoralArmConstants.OPEN_ARM_POSITION;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.L4_ELEVATOR_POSITION;
 
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
@@ -29,7 +26,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
@@ -62,12 +58,6 @@ import frc.robot.subsystems.drive.Swerve;
  */
 public class RobotContainer {
         // Subsystems
-        Elevator elevator;
-        CoralArm coralArm;
-        Transfer transfer;
-        Swerve drive;
-        VisionSubsystem vision;
-
         // Controller
         private final CommandPS5Controller driverController = new CommandPS5Controller(0);
         private final PomXboxController operatorController = new PomXboxController(1);
@@ -81,6 +71,12 @@ public class RobotContainer {
         RiffCommands riffCommands;
 
         private SwerveDriveSimulation driveSimulation = null;
+
+        Elevator elevator;
+        CoralArm coralArm;
+        Transfer transfer;
+        Swerve drive;
+        VisionSubsystem vision;
 
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
