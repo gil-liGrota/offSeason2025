@@ -17,7 +17,7 @@ import static frc.robot.subsystems.CoralArm.CoralArmConstants.BRAKE_SWITCH;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.CLOSE_ARM_POSITION;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.L2_ARM_POSITION;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.L3_ARM_POSITION;
-import static frc.robot.subsystems.CoralArm.CoralArmConstants.L4_ARM_POSITION;
+// import static frc.robot.subsystems.CoralArm.CoralArmConstants.OPEN_ARM_POSITION;//TODO remove //
 import static frc.robot.subsystems.Elevator.ElevatorConstants.L4_ELEVATOR_POSITION;
 
 import org.ironmaple.simulation.SimulatedArena;
@@ -29,8 +29,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.POM_lib.sensors.POMDigitalInput;
+import frc.robot.commands.AutonomousRoutines;
 import frc.robot.commands.CoralArmCommands;
 import frc.robot.commands.ElevatorCommands;
 import frc.robot.commands.RiffCommands;
@@ -66,7 +70,7 @@ public class RobotContainer {
         VisionSubsystem vision;
 
         // Controller
-        private final PomXboxController driverController = new PomXboxController(0);
+        private final CommandPS5Controller driverController = new CommandPS5Controller(0);
         private final PomXboxController operatorController = new PomXboxController(1);
         private final PomXboxController manualController = new PomXboxController(2);
 
@@ -121,6 +125,8 @@ public class RobotContainer {
                 autoChooser = new LoggedDashboardChooser<>("Auto Choices", c); // TODO use auto builder
 
                 autoChooser.addDefaultOption("none", null);
+                autoChooser.addOption("L2 red left-reef processor",
+                                AutonomousRoutines.putReef(2, drive, elevator, coralArm, transfer, true));
 
                 // Configure the button bindings
                 configureButtonBindings();
@@ -140,23 +146,35 @@ public class RobotContainer {
                 drive.setDefaultCommand(
                                 SwerveCommands.joystickDrive(
                                                 drive,
-                                                () -> driverController.getLeftY(),
-                                                () -> driverController.getLeftX(),
-                                                () -> driverController.getRightX()));
+                                                () -> driverController.getLeftY() * -0.75,
+                                                () -> driverController.getLeftX() * -0.75,
+                                                () -> driverController.getRightX() * -0.75));
 
-                driverController.y().onTrue(drive.resetGyroCommand());
+                driverController.triangle().onTrue(drive.resetGyroCommand());
 
-                driverController.x().onTrue(TransferCommands.autoIntakeCoral(transfer));
-                driverController.b().whileTrue(TransferCommands.riffOutake(transfer, coralArm));
+                driverController.square().onTrue(TransferCommands.autoIntakeCoral(transfer));
 
-                driverController.LB().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
-                                driverController,
-                                true));
-                driverController.RB().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
-                                driverController,
-                                false));
+                // driverController.R1().whileTrue(new
+                // SwerveCommands.LocateToReefCommand(drive,//TODO remove //
+                // driverController,
+                // false));
+                // driverController.L1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
+                // driverController,
+                // true));//TODO remove //
+                driverController.L1().or(driverController.R1()).onFalse(new InstantCommand(drive::stop, drive));
 
+                driverController.circle().whileTrue(TransferCommands.riffOutake(transfer, coralArm));
                 // LeftTrigger - slow
+                driverController.L2().whileTrue(SwerveCommands.joystickDrive(
+                                drive,
+                                () -> driverController.getLeftY() * -0.4,
+                                () -> driverController.getLeftX() * -0.4,
+                                () -> driverController.getRightX() * -0.4));
+                driverController.R2().whileTrue(SwerveCommands.joystickDrive(
+                                drive,
+                                () -> driverController.getLeftY() * -1,
+                                () -> driverController.getLeftX() * -1,
+                                () -> driverController.getRightX() * -1));
                 // RightTrigger - fast
 
                 // // intake, l2, l1
@@ -179,18 +197,42 @@ public class RobotContainer {
                 operatorController.RB().whileTrue(ElevatorCommands.setVoltage(elevator, 4));
                 operatorController.LB().whileTrue(ElevatorCommands.setVoltage(elevator, -1));
 
-                // open and close arm and elevator
+                // outake
+                operatorController.PovLeft().whileTrue(TransferCommands.coralintake(transfer, -12));
+                operatorController.PovRight().whileTrue(TransferCommands.coralintake(transfer, 3));
+                // // open and close arm and elevator
 
-                operatorController.PovUp().onTrue(ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION));
-                operatorController.PovDown().onTrue(ElevatorCommands.closeElevator(elevator));
-                operatorController.PovLeft().onTrue(CoralArmCommands.goToPosition(coralArm, L4_ARM_POSITION));
-                operatorController.PovRight().onTrue(CoralArmCommands.goToPosition(coralArm, CLOSE_ARM_POSITION));
+                // operatorController.PovUp().onTrue(ElevatorCommands.goToPosition(elevator,
+                // L4_ELEVATOR_POSITION));
+                // operatorController.PovDown().onTrue(ElevatorCommands.closeElevator(elevator));
+                // operatorController.PovLeft().onTrue(CoralArmCommands.goToPosition(coralArm,
+                // L4_ARM_POSITION));
+                // operatorController.PovRight().onTrue(CoralArmCommands.goToPosition(coralArm,
+                // CLOSE_ARM_POSITION));
+
+                // // alage outake //TODO remove //
+                // // high
+                // operatorController.start().onTrue(riffCommands.HighAlgeOutake());
+                // operatorController.start().onFalse(riffCommands.holdAlage());
+                // // low
+                // operatorController.back().onTrue(riffCommands.LowAlgeOutake());
+                // operatorController.back().onFalse(riffCommands.holdAlage()); //TODO remove //
 
                 // coral intake position
-                operatorController.leftStickClick().onTrue(riffCommands.coralIntakePos());
+                operatorController.PovUp().onTrue(riffCommands.coralIntakePos());
 
-                operatorController.rightStickClick().onTrue(CoralArmCommands.closeArm(coralArm)
+                operatorController.PovDown().onTrue(CoralArmCommands.closeArm(coralArm)
                                 .alongWith(ElevatorCommands.closeElevator(elevator)));
+
+                // operatorController.y()
+                // .onTrue(CoralArmCommands.goToPosition(coralArm, 1)
+                // .alongWith(TransferCommands.coralintake(transfer, 2))
+                // .andThen(TransferCommands.coralintake(transfer, -12)));
+                // operatorController.y().onTrue(Commands.parallel(
+                // CoralArmCommands.goToPosition(coralArm, OPEN_ARM_POSITION),
+                // TransferCommands.coralintake(transfer, 2),
+                // ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)).andThen(
+                // TransferCommands.coralintake(transfer, -12)));
                 operatorController.y().onTrue(riffCommands.L4());
                 operatorController.b().onTrue(riffCommands.L3());
                 operatorController.x().onTrue(riffCommands.L2());

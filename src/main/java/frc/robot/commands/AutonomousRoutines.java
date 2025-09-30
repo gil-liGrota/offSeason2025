@@ -33,17 +33,14 @@ public class AutonomousRoutines {
                         boolean proccessorSide) {
 
                 return Commands.sequence(
-                                driveToPoseInCorrectAlliance(drive, FieldConstants.Reef.redRightBranches[2], // Drive to
-                                                                                                             // reef
-                                                proccessorSide).withTimeout(4) // 4 second timeout
-                                                .alongWith(new RiffCommands(elevator, arm, transfer).Lx(level)), // Along
-                                                                                                                 // with
-                                                                                                                 // elevator
-                                                                                                                 // and
-                                                                                                                 // arm
-                                TransferCommands.riffOutake(transfer, arm).withTimeout(0.5) // Outake coral
+                                ElevatorCommands.goToPosition(elevator, 15.0),
+                                Commands.parallel(
+                                                driveToPoseInCorrectAlliance(drive,
+                                                                FieldConstants.Reef.redRightBranches[2],
+                                                                proccessorSide).withTimeout(4),
+                                                new RiffCommands(elevator, arm, transfer).Lx(level)),
+                                TransferCommands.riffOutake(transfer, arm).withTimeout(0.5));
 
-                );
         }
 
 }
