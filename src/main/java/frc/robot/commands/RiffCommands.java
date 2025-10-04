@@ -87,12 +87,24 @@ public class RiffCommands {
                 () -> arm.getIO().getHighSwitch() || arm.getIO().getPosition() > 1.5).withName("L4");
     }
 
+    // public Command coralIntakePos() {
+    // return (ElevatorCommands.goToPosition(elevator, 2.1)
+    // .alongWith(CoralArmCommands.closeArm(arm))
+    // .andThen(TransferCommands.autoIntakeCoral(transfer)))
+    // .unless(transfer.getIO()::isCoralIn)
+    // .andThen(ElevatorCommands.goToPosition(elevator, 15.0))
+    // .withName("coralIntakePos");
+    // }
+
     public Command coralIntakePos() {
-        return (ElevatorCommands.goToPosition(elevator, 2.1)
-                .alongWith(CoralArmCommands.closeArm(arm))
-                .andThen(TransferCommands.autoIntakeCoral(transfer)))
-                .unless(transfer.getIO()::isCoralIn)
-                .andThen(ElevatorCommands.goToPosition(elevator, 15.0))
+        return Commands.sequence(
+                Commands.parallel(
+                        ElevatorCommands.goToPosition(elevator, 2.5),
+                        CoralArmCommands.closeArm(arm)).unless(transfer.getIO()::isCoralIn),
+                Commands.race(
+                        TransferCommands.autoIntakeCoral(transfer),
+                        CoralArmCommands.setVoltage(arm, -0.5)),
+                ElevatorCommands.goToPosition(elevator, 15.0))
                 .withName("coralIntakePos");
     }
 

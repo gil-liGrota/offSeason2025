@@ -27,7 +27,10 @@ public class AutonomousRoutines {
                                                                 FieldConstants.fieldWidth - pose.getY(),
                                                                 Rotation2d.fromDegrees(180
                                                                                 + pose.getRotation().getDegrees()))),
-                                () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red);
+                                () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red)
+                                .finallyDo((a) -> {
+                                        drive.stop();
+                                });
         }
 
         public static Command putReef(int level, Swerve drive, Elevator elevator, CoralArm arm, Transfer transfer,
@@ -38,34 +41,58 @@ public class AutonomousRoutines {
 
                 RiffCommands riffCommands = new RiffCommands(elevator, arm, transfer);
                 return Commands.sequence(
-                                ElevatorCommands.goToPosition(elevator, 16.0).withTimeout(1),
+                                // ElevatorCommands.goToPosition(elevator, 16.0).withTimeout(1),
                                 Commands.parallel(
-                                                driveToPoseInCorrectAlliance(drive,
-                                                                FieldConstants.Reef.redRightBranches[2],
-                                                                proccessorSide).withTimeout(5),
-                                                new RiffCommands(elevator, arm, transfer).Lx(level).withTimeout(2)),
+                                                SwerveCommands.driveForwardSlowRight(drive).withTimeout(0.5),
+                                                new RiffCommands(elevator, arm, transfer).L4().withTimeout(2)),
+                                driveToPoseInCorrectAlliance(drive,
+                                                FieldConstants.Reef.redRightBranches[2], proccessorSide).withTimeout(5),
                                 Commands.race(
                                                 Commands.sequence(
-                                                                new RiffCommands(elevator, arm, transfer).Lx(level)
-                                                                                .unless(() -> level < 3)
-                                                                                .withTimeout(2),
+                                                                CoralArmCommands.goToPosition(arm, 1.1),
                                                                 TransferCommands.riffOutake(transfer, arm)
                                                                                 .withTimeout(0.5)),
                                                 SwerveCommands.joystickDriveRobotRelative(drive, () -> 0.4, () -> 0,
                                                                 () -> 0)),
+                                Commands.parallel(
+                                                CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION),
+                                                ElevatorCommands.closeElevator(elevator).withTimeout(1),
+                                                SwerveCommands.driveBackSlow(drive).withTimeout(2)),
+                                Commands.parallel(
+                                                riffCommands.coralIntakePos(),
+                                                driveToPoseInCorrectAlliance(drive,
+                                                                new Pose2d(16.6, 0.85, Rotation2d.fromDegrees(125)),
+                                                                false).until(transfer.getIO()::isCoralIn))
+                                                .until(() -> elevator.getIO().getPosition() > 13),
+                                Commands.parallel(
+                                                SwerveCommands.driveForwardSlowRight(drive).withTimeout(1),
+                                                riffCommands.L4()),
+                                driveToPoseInCorrectAlliance(drive,
+                                                FieldConstants.Reef.redRightBranches[1],
+                                                proccessorSide).withTimeout(5),
+                                CoralArmCommands.goToPosition(arm, 1.1),
+                                TransferCommands.coralintake(transfer, -12).withTimeout(0.5),
                                 CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION),
                                 Commands.parallel(
                                                 ElevatorCommands.closeElevator(elevator).withTimeout(1),
                                                 SwerveCommands.driveBackSlow(drive).withTimeout(1)),
                                 Commands.parallel(
                                                 riffCommands.coralIntakePos(),
-                                                /*
-                                                 * driveToPoseInCorrectAlliance(drive,
-                                                 * new Pose2d(16.4, 1.1, Rotation2d.fromDegrees(125)),
-                                                 * proccessorSide)
-                                                 */
-                                                SwerveCommands.joystickDriveRobotRelative(drive, () -> 0, () -> 0,
-                                                                () -> 0.5).withTimeout(1))
+                                                driveToPoseInCorrectAlliance(drive,
+                                                                new Pose2d(16.6, 0.85, Rotation2d.fromDegrees(125)),
+                                                                false).until(transfer.getIO()::isCoralIn))
+                                                .until(() -> elevator.getIO().getPosition() > 13),
+                                Commands.parallel(
+                                                SwerveCommands.driveForwardSlowLeft(drive).withTimeout(1),
+                                                riffCommands.L4()),
+                                driveToPoseInCorrectAlliance(drive,
+                                                FieldConstants.Reef.redLeftBranches[1],
+                                                proccessorSide).withTimeout(3),
+                                SwerveCommands.joystickDriveRobotRelative(drive, () -> 0.3, () -> 0,
+                                                () -> 0).withTimeout(1),
+                                CoralArmCommands.goToPosition(arm, 1.1),
+                                TransferCommands.coralintake(transfer, -12).withTimeout(0.5),
+                                CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION)
 
                 );
         }

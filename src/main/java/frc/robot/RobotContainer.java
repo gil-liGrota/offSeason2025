@@ -14,8 +14,6 @@
 package frc.robot;
 
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.BRAKE_SWITCH;
-import static frc.robot.subsystems.CoralArm.CoralArmConstants.L2_ARM_POSITION;
-import static frc.robot.subsystems.CoralArm.CoralArmConstants.L3_ARM_POSITION;
 
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
@@ -25,6 +23,8 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -183,7 +183,11 @@ public class RobotContainer {
                                 () -> driverController.getLeftX() * -1,
                                 () -> driverController.getRightX() * -1));
 
-                driverController.cross().whileTrue(pathPlanerCommand());
+                // driverController.cross().whileTrue(AutonomousRoutines.driveToPoseInCorrectAlliance(drive,
+                // new Pose2d(16.6, 0.85, Rotation2d.fromDegrees(125)),
+                // false));
+
+                driverController.cross().whileTrue(SwerveCommands.driveForwardSlowRight(drive));
 
                 /*----------------------------------------------------------------------------------------------------*/
                 // operator:

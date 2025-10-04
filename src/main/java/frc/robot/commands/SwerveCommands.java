@@ -1100,6 +1100,7 @@ public class SwerveCommands {
                                                         speeds,
                                                         isFlipped ? drive.getRotation().plus(new Rotation2d(Math.PI))
                                                                         : drive.getRotation());
+
                                         drive.runVelocity(speeds, true);
                                 },
                                 drive).beforeStarting(Commands.runOnce(drive::resetKinematics, drive));
@@ -1220,6 +1221,17 @@ public class SwerveCommands {
 
         public static Command driveBackSlow(Swerve drive) {
                 ChassisSpeeds speeds = new ChassisSpeeds(-ALGAE_OUTTAKE_DRIVE_BACK_SPEED, 0, 0.2);
+                return Commands.runEnd(() -> drive.runVelocity(speeds, true), () -> drive.stop(), drive);
+        }
+
+        public static Command driveForwardSlowRight(Swerve drive) {
+                ChassisSpeeds speeds = new ChassisSpeeds(0.75, 0, 0);
+                return Commands.runEnd(() -> drive.runVelocity(speeds, true), () -> drive.stop(), drive);
+
+        }
+
+        public static Command driveForwardSlowLeft(Swerve drive) {
+                ChassisSpeeds speeds = new ChassisSpeeds(0.9, 0.4, 0.2);
                 return Commands.runEnd(() -> drive.runVelocity(speeds, true), () -> drive.stop(), drive);
         }
 
@@ -1682,6 +1694,10 @@ public class SwerveCommands {
                 return new LocateToReefCommand(drive, controller, toLeft);
         }
 
+        public static Command stopDrive(Swerve m_drive) {
+                return Commands.runOnce(() -> m_drive.stop(), m_drive);
+        }
+
         public static class DriveToPosition extends Command {
                 private final Swerve m_drive;
                 private final Pose2d m_target;
@@ -1730,6 +1746,7 @@ public class SwerveCommands {
 
                 @Override
                 public void initialize() {
+                        Logger.recordOutput("pid target", m_target);
                         m_timer.reset();
                         m_timer.start();
                         var currPose = m_drive.getPose();

@@ -64,8 +64,6 @@ public class DriveConstants {
 
         // public static final int frontLeftDriveCanId = 3;
         // public static final int backLeftDriveCanId = 5;
-        // public static final int frontRightDriveCanId = 7;
-        // public static final int backRightDriveCanId = 9;
 
         // public static final int frontLeftTurnCanId = 4;
         // public static final int backLeftTurnCanId = 6;
