@@ -1,10 +1,15 @@
 package frc.robot.commands;
 
-import static frc.robot.subsystems.Elevator.ElevatorConstants.*;
-import static frc.robot.subsystems.CoralArm.CoralArmConstants.*;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.L2_ARM_POSITION;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.OPEN_ARM_POSITION;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.L1_ELEVATOR_POSITION;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.L2_ELEVATOR_POSITION;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.L4_ELEVATOR_POSITION;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.subsystems.CoralArm.CoralArm;
 import frc.robot.subsystems.Elevator.Elevator;
 import frc.robot.subsystems.Transfer.Transfer;
@@ -94,6 +99,18 @@ public class RiffCommands {
                 .alongWith(ElevatorCommands.closeElevator(elevator)
                         .andThen(ElevatorCommands.closeElevator(elevator)))
                 .withName("closeAll");
+    }
+
+    public Command throwToNet() {
+        return Commands.parallel(
+                ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION),
+                CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION),
+                Commands.sequence(
+                        new InstantCommand(() -> transfer.getIO().setVoltage(3)),
+                        new WaitUntilCommand(
+                                () -> elevator.getIO().getPosition() > 7 && arm.getIO().getPosition() > 0.5),
+                        new InstantCommand(() -> transfer.getIO().setVoltage(-12))));
+
     }
 
 }

@@ -33,7 +33,7 @@ public class TransferIOReal implements TransferIO {
         motor = new POMSparkMax(TRANSFER_MOTOR_ID, MotorType.kBrushless);
         encoder = motor.getEncoder();
         config
-                .idleMode(IdleMode.kCoast);
+                .idleMode(IdleMode.kBrake).smartCurrentLimit(20);
         motor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
 
         encoder.setPosition(0);
