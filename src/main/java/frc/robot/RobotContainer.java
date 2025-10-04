@@ -23,8 +23,6 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -134,7 +132,7 @@ public class RobotContainer {
 
                 autoChooser.addDefaultOption("none", null);
                 autoChooser.addDefaultOption("L4 RED NOT proccessor side",
-                                AutonomousRoutines.putL4NotProccessorSide(drive, elevator, coralArm, transfer));
+                                AutonomousRoutines.putL4NotProccessorSideRED(drive, elevator, coralArm, transfer));
 
                 // Configure the button bindings
                 configureButtonBindings();
@@ -149,6 +147,7 @@ public class RobotContainer {
          * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
          */
         private void configureButtonBindings() {
+                leds.setDefaultCommand(LEDsCommands.defult(leds, transfer));
                 // driver:
                 isRelative = true;
                 drive.setDefaultCommand(
@@ -164,10 +163,12 @@ public class RobotContainer {
 
                 driverController.R1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
                                 driverController,
-                                false));
+                                false).alongWith(LEDsCommands.visionActive(leds)));
+
                 driverController.L1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
                                 driverController,
-                                true));
+                                true).alongWith(LEDsCommands.visionActive(leds)));
+
                 driverController.L1().or(driverController.R1()).onFalse(new InstantCommand(drive::stop, drive));
 
                 driverController.circle().whileTrue(TransferCommands.riffOutake(transfer, coralArm));
@@ -182,7 +183,7 @@ public class RobotContainer {
                                 drive,
                                 () -> driverController.getLeftY() * -1,
                                 () -> driverController.getLeftX() * -1,
-                                () -> driverController.getRightX() * -1));
+                                () -> driverController.getRightX() * -1).alongWith(LEDsCommands.boost(leds)));
 
                 // driverController.cross().whileTrue(AutonomousRoutines.driveToPoseInCorrectAlliance(drive,
                 // new Pose2d(16.6, 0.85, Rotation2d.fromDegrees(125)),

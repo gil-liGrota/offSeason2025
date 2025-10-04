@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import frc.robot.subsystems.LEDs.LEDs;
+import frc.robot.subsystems.Transfer.Transfer;
 
 public class LEDsCommands {
 
@@ -51,6 +52,12 @@ public class LEDsCommands {
         return new ConditionalCommand(setAll(leds, Color.kRed), setAll(leds, Color.kBlue),
                 () -> (DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Red));
 
+    }
+
+    public static Command defult(LEDs leds, Transfer transfer) {
+        return new ConditionalCommand(coralIn(leds),
+                setAll(leds, Color.kPurple),
+                transfer.getIO()::isCoralIn);
     }
 
 }
