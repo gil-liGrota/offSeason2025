@@ -212,6 +212,11 @@ public class RobotContainer {
                 driverController.povUp().whileTrue(LEDsCommands.setAll(leds, Color.kPurple));
                 driverController.povDown().whileTrue(LEDsCommands.setAll(leds, Color.kBlack));
 
+                operatorController.start().onTrue(riffCommands.AlgaeIntakeHigh());
+                operatorController.start().onFalse(riffCommands.holdAlgae());
+                operatorController.back().onTrue(riffCommands.algaeIntakeLow());
+                operatorController.back().onFalse(riffCommands.holdAlgae());
+
         }
 
         public Command pathPlanerCommand() {

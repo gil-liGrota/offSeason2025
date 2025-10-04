@@ -118,4 +118,25 @@ public class RiffCommands {
                 .withName("closeAll");
     }
 
+    public Command AlgaeIntakeHigh() {
+        return Commands.parallel(
+                ElevatorCommands.goToPosition(elevator, 28.76),
+                CoralArmCommands.goToPosition(arm, -1.06),
+                TransferCommands.coralintake(transfer, 10));
+    }
+
+    public Command algaeIntakeLow() {
+        return Commands.parallel(
+                ElevatorCommands.goToPosition(elevator, 14.25),
+                CoralArmCommands.goToPosition(arm, -1.2),
+                TransferCommands.coralintake(transfer, 10));
+    }
+
+    public Command holdAlgae() {
+        return Commands.parallel(
+                ElevatorCommands.closeElevator(elevator),
+                CoralArmCommands.closeArm(arm),
+                TransferCommands.coralintake(transfer, 2));
+    }
+
 }
