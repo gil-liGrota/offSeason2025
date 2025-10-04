@@ -33,6 +33,9 @@ public class AutonomousRoutines {
         public static Command putReef(int level, Swerve drive, Elevator elevator, CoralArm arm, Transfer transfer,
                         boolean proccessorSide) {
 
+                Pose2d[] pose1 = new Pose2d[] { new Pose2d(13.5, 1.5, new Rotation2d(Math.PI)),
+                                new Pose2d(16.4, 1.1, Rotation2d.fromDegrees(125)) };
+
                 RiffCommands riffCommands = new RiffCommands(elevator, arm, transfer);
                 return Commands.sequence(
                                 ElevatorCommands.goToPosition(elevator, 16.0).withTimeout(1),
@@ -52,9 +55,17 @@ public class AutonomousRoutines {
                                                                 () -> 0)),
                                 CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION),
                                 Commands.parallel(
-                                                ElevatorCommands.closeElevator(elevator),
+                                                ElevatorCommands.closeElevator(elevator).withTimeout(1),
                                                 SwerveCommands.driveBackSlow(drive).withTimeout(1)),
-                                riffCommands.coralIntakePos()
+                                Commands.parallel(
+                                                riffCommands.coralIntakePos(),
+                                                /*
+                                                 * driveToPoseInCorrectAlliance(drive,
+                                                 * new Pose2d(16.4, 1.1, Rotation2d.fromDegrees(125)),
+                                                 * proccessorSide)
+                                                 */
+                                                SwerveCommands.joystickDriveRobotRelative(drive, () -> 0, () -> 0,
+                                                                () -> 0.5).withTimeout(1))
 
                 );
         }

@@ -183,7 +183,7 @@ public class RobotContainer {
                                 () -> driverController.getLeftX() * -1,
                                 () -> driverController.getRightX() * -1));
 
-                // driverController.cross().whileTrue(pathPlanerCommand());
+                driverController.cross().whileTrue(pathPlanerCommand());
 
                 /*----------------------------------------------------------------------------------------------------*/
                 // operator:
