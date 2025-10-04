@@ -76,13 +76,10 @@ public class RiffCommands {
 
     public Command L4() {
         return new ConditionalCommand(
-                CoralArmCommands.goToPosition(arm, 1.1),
-                Commands.sequence(
-                        Commands.parallel(
-                                CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION),
-                                ElevatorCommands.goToPosition(elevator, 33.5)),
-                        CoralArmCommands.setVoltage(arm, 0.5)),
-
+                CoralArmCommands.goToPosition(arm, 1.1), (Commands.parallel(
+                        CoralArmCommands.goToPosition(arm, 1.6).until(arm.getIO()::getHighSwitch),
+                        ElevatorCommands.goToPosition(elevator, 34)
+                                .until(() -> elevator.getIO().getPosition() > 33.1))),
                 arm.getIO()::getHighSwitch).withName("L4");
     }
 
