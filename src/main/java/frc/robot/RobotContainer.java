@@ -133,8 +133,8 @@ public class RobotContainer {
                 autoChooser = new LoggedDashboardChooser<>("Auto Choices", c); // TODO use auto builder
 
                 autoChooser.addDefaultOption("none", null);
-                autoChooser.addDefaultOption("otonomi",
-                                AutonomousRoutines.putReef(4, drive, elevator, coralArm, transfer, false));
+                autoChooser.addDefaultOption("L4 RED NOT proccessor side",
+                                AutonomousRoutines.putL4NotProccessorSide(drive, elevator, coralArm, transfer));
 
                 // Configure the button bindings
                 configureButtonBindings();

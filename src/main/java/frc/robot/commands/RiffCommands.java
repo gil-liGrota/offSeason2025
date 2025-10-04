@@ -1,11 +1,7 @@
 package frc.robot.commands;
 
-import static frc.robot.subsystems.CoralArm.CoralArmConstants.L2_ARM_POSITION;
-import static frc.robot.subsystems.CoralArm.CoralArmConstants.OPEN_ARM_POSITION;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.L1_ELEVATOR_POSITION;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.L2_ELEVATOR_POSITION;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.L3_ELEVATOR_POSITION;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.L4_ELEVATOR_POSITION;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.*;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -39,62 +35,22 @@ public class RiffCommands {
                 .withName("L2");
     }
 
-    // public Command L3() {
-    // return Commands.sequence(
-    // Commands.parallel(
-    // // CoralArmCommands.goToPosition(arm, L4_ARM_POSITION),
-    // ElevatorCommands.closeElevator(elevator)),
-    // Commands.parallel(
-    // ElevatorCommands.stopElevator(elevator),
-    // CoralArmCommands.goToPosition(arm, 1.1)))
-    // .withName("L3");
-    // // return CoralArmCommands.goToPosition(arm, L4_ARM_POSITION)
-    // // .andThen(ElevatorCommands.closeElevator(elevator)
-    // // .andThen(ElevatorCommands.stopElevator(elevator))
-    // // .andThen(CoralArmCommands.goToPosition(arm, 1.1)))
-    // // .withName("L3");
-
-    // }
-
     public Command L3() {
         return new ConditionalCommand(
-                CoralArmCommands.goToPosition(arm, 1.1), Commands.parallel(
+                CoralArmCommands.goToPosition(arm, L3_ARM_POSITION), Commands.parallel(
                         CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION),
                         ElevatorCommands.goToPosition(elevator, L3_ELEVATOR_POSITION)),
                 arm.getIO()::getHighSwitch).withName("L3");
     }
 
-    // public Command L4() {
-    // return Commands.sequence(
-    // Commands.parallel(
-    // ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION),
-    // CoralArmCommands.goToPosition(arm, L),
-    // CoralArmCommands.goToPosition(arm, 1.1))).withName("L4");
-
-    // // return ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)
-    // // .until(() -> elevator.getIO().getPosition() - 0.4 >= L4_ELEVATOR_POSITION)
-    // // .alongWith(CoralArmCommands.goToPosition(arm, L4_ARM_POSITION)
-    // // .andThen(CoralArmCommands.goToPosition(arm, 1.1)))
-    // // .withName("L4");
-    // }
-
     public Command L4() {
         return new ConditionalCommand(
-                CoralArmCommands.goToPosition(arm, 1.1), (Commands.parallel(
+                CoralArmCommands.goToPosition(arm, L4_ARM_POSITION), (Commands.parallel(
                         CoralArmCommands.goToPosition(arm, 1.6).until(arm.getIO()::getHighSwitch),
                         ElevatorCommands.goToPosition(elevator, 34)
                                 .until(() -> elevator.getIO().getPosition() > 33.1))),
                 () -> arm.getIO().getHighSwitch() || arm.getIO().getPosition() > 1.5).withName("L4");
     }
-
-    // public Command coralIntakePos() {
-    // return (ElevatorCommands.goToPosition(elevator, 2.1)
-    // .alongWith(CoralArmCommands.closeArm(arm))
-    // .andThen(TransferCommands.autoIntakeCoral(transfer)))
-    // .unless(transfer.getIO()::isCoralIn)
-    // .andThen(ElevatorCommands.goToPosition(elevator, 15.0))
-    // .withName("coralIntakePos");
-    // }
 
     public Command coralIntakePos() {
         return Commands.sequence(

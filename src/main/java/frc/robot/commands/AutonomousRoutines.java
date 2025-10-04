@@ -33,27 +33,28 @@ public class AutonomousRoutines {
                                 });
         }
 
-        public static Command putReef(int level, Swerve drive, Elevator elevator, CoralArm arm, Transfer transfer,
-                        boolean proccessorSide) {
+        public static Command putL4NotProccessorSide(Swerve drive, Elevator elevator, CoralArm arm, Transfer transfer) {
 
                 Pose2d[] pose1 = new Pose2d[] { new Pose2d(13.5, 1.5, new Rotation2d(Math.PI)),
                                 new Pose2d(16.4, 1.1, Rotation2d.fromDegrees(125)) };
 
+                boolean proccessorSide = false;
                 RiffCommands riffCommands = new RiffCommands(elevator, arm, transfer);
                 return Commands.sequence(
-                                // ElevatorCommands.goToPosition(elevator, 16.0).withTimeout(1),
+                                // 6 L4 right
                                 Commands.parallel(
                                                 SwerveCommands.driveForwardSlowRight(drive).withTimeout(0.5),
-                                                new RiffCommands(elevator, arm, transfer).L4().withTimeout(2)),
+                                                riffCommands.L4().withTimeout(2)),
                                 driveToPoseInCorrectAlliance(drive,
                                                 FieldConstants.Reef.redRightBranches[2], proccessorSide).withTimeout(5),
                                 Commands.race(
                                                 Commands.sequence(
-                                                                CoralArmCommands.goToPosition(arm, 1.1),
+                                                                CoralArmCommands.goToPosition(arm, L4_ARM_POSITION),
                                                                 TransferCommands.riffOutake(transfer, arm)
                                                                                 .withTimeout(0.5)),
                                                 SwerveCommands.joystickDriveRobotRelative(drive, () -> 0.4, () -> 0,
                                                                 () -> 0)),
+                                // go to coral station
                                 Commands.parallel(
                                                 CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION),
                                                 ElevatorCommands.closeElevator(elevator).withTimeout(1),
@@ -64,15 +65,17 @@ public class AutonomousRoutines {
                                                                 new Pose2d(16.6, 0.85, Rotation2d.fromDegrees(125)),
                                                                 false).until(transfer.getIO()::isCoralIn))
                                                 .until(() -> elevator.getIO().getPosition() > 13),
+                                // 5 L4 right
                                 Commands.parallel(
                                                 SwerveCommands.driveForwardSlowRight(drive).withTimeout(1),
                                                 riffCommands.L4()),
                                 driveToPoseInCorrectAlliance(drive,
                                                 FieldConstants.Reef.redRightBranches[1],
                                                 proccessorSide).withTimeout(5),
-                                CoralArmCommands.goToPosition(arm, 1.1),
-                                TransferCommands.coralintake(transfer, -12).withTimeout(0.5),
+                                CoralArmCommands.goToPosition(arm, L4_ARM_POSITION),
+                                TransferCommands.autoIntakeCoral(transfer).withTimeout(0.5),
                                 CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION),
+                                // go to coral station
                                 Commands.parallel(
                                                 ElevatorCommands.closeElevator(elevator).withTimeout(1),
                                                 SwerveCommands.driveBackSlow(drive).withTimeout(1)),
@@ -82,6 +85,7 @@ public class AutonomousRoutines {
                                                                 new Pose2d(16.6, 0.85, Rotation2d.fromDegrees(125)),
                                                                 false).until(transfer.getIO()::isCoralIn))
                                                 .until(() -> elevator.getIO().getPosition() > 13),
+                                // // 5 L4 left
                                 Commands.parallel(
                                                 SwerveCommands.driveForwardSlowLeft(drive).withTimeout(1),
                                                 riffCommands.L4()),
@@ -90,11 +94,78 @@ public class AutonomousRoutines {
                                                 proccessorSide).withTimeout(3),
                                 SwerveCommands.joystickDriveRobotRelative(drive, () -> 0.3, () -> 0,
                                                 () -> 0).withTimeout(1),
-                                CoralArmCommands.goToPosition(arm, 1.1),
-                                TransferCommands.coralintake(transfer, -12).withTimeout(0.5),
+                                CoralArmCommands.goToPosition(arm, L4_ARM_POSITION),
+                                TransferCommands.autoIntakeCoral(transfer).withTimeout(0.5),
                                 CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION)
 
                 );
         }
 
+        public static Command putL4ProccessorSide(Swerve drive, Elevator elevator, CoralArm arm, Transfer transfer) {
+
+                Pose2d[] pose1 = new Pose2d[] { new Pose2d(13.5, 1.5, new Rotation2d(Math.PI)),
+                                new Pose2d(16.4, 1.1, Rotation2d.fromDegrees(125)) };
+
+                boolean proccessorSide = true;
+                RiffCommands riffCommands = new RiffCommands(elevator, arm, transfer);
+                return Commands.sequence(
+                                // 2 L4 right
+                                Commands.parallel(
+                                                SwerveCommands.driveForwardSlowRight(drive).withTimeout(0.5),
+                                                riffCommands.L4().withTimeout(2)),
+                                driveToPoseInCorrectAlliance(drive,
+                                                FieldConstants.Reef.redRightBranches[4], proccessorSide).withTimeout(5),
+                                Commands.race(
+                                                Commands.sequence(
+                                                                CoralArmCommands.goToPosition(arm, L4_ARM_POSITION),
+                                                                TransferCommands.riffOutake(transfer, arm)
+                                                                                .withTimeout(0.5)),
+                                                SwerveCommands.joystickDriveRobotRelative(drive, () -> 0.4, () -> 0,
+                                                                () -> 0)),
+                                // go to coral station
+                                Commands.parallel(
+                                                CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION),
+                                                ElevatorCommands.closeElevator(elevator).withTimeout(1),
+                                                SwerveCommands.driveBackSlow(drive).withTimeout(2)),
+                                Commands.parallel(
+                                                riffCommands.coralIntakePos(),
+                                                driveToPoseInCorrectAlliance(drive,
+                                                                new Pose2d(16.6, 0.85, Rotation2d.fromDegrees(125)),
+                                                                false).until(transfer.getIO()::isCoralIn))
+                                                .until(() -> elevator.getIO().getPosition() > 13),
+                                // 5 L4 right
+                                Commands.parallel(
+                                                SwerveCommands.driveForwardSlowRight(drive).withTimeout(1),
+                                                riffCommands.L4()),
+                                driveToPoseInCorrectAlliance(drive,
+                                                FieldConstants.Reef.redRightBranches[5],
+                                                proccessorSide).withTimeout(5),
+                                CoralArmCommands.goToPosition(arm, L4_ARM_POSITION),
+                                TransferCommands.autoIntakeCoral(transfer).withTimeout(0.5),
+                                CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION),
+                                // go to coral station
+                                Commands.parallel(
+                                                ElevatorCommands.closeElevator(elevator).withTimeout(1),
+                                                SwerveCommands.driveBackSlow(drive).withTimeout(1)),
+                                Commands.parallel(
+                                                riffCommands.coralIntakePos(),
+                                                driveToPoseInCorrectAlliance(drive,
+                                                                new Pose2d(16.6, 0.85, Rotation2d.fromDegrees(125)),
+                                                                false).until(transfer.getIO()::isCoralIn))
+                                                .until(() -> elevator.getIO().getPosition() > 13),
+                                // // 5 L4 left
+                                Commands.parallel(
+                                                SwerveCommands.driveForwardSlowLeft(drive).withTimeout(1),
+                                                riffCommands.L4()),
+                                driveToPoseInCorrectAlliance(drive,
+                                                FieldConstants.Reef.redLeftBranches[5],
+                                                proccessorSide).withTimeout(3),
+                                SwerveCommands.joystickDriveRobotRelative(drive, () -> 0.3, () -> 0,
+                                                () -> 0).withTimeout(1),
+                                CoralArmCommands.goToPosition(arm, L4_ARM_POSITION),
+                                TransferCommands.autoIntakeCoral(transfer).withTimeout(0.5),
+                                CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION)
+
+                );
+        }
 }
