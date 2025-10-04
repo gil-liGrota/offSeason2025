@@ -9,7 +9,7 @@ public class ElevatorConstants {
     public static final double KI = 0;
     public static final double KD = 0;
     public static final double KS = 0.19;
-    public static final double KG = 0.31;
+    public static final double KG = 0.35;
     public static final double UPPER_KG = 0.15;
     public static final double KV = 0;
     public static final double RESIST_GRAVITY = 0;

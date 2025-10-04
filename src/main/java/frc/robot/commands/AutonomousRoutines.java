@@ -36,7 +36,7 @@ public class AutonomousRoutines {
                                 ElevatorCommands.goToPosition(elevator, 15.0),
                                 Commands.parallel(
                                                 driveToPoseInCorrectAlliance(drive,
-                                                                FieldConstants.Reef.redRightBranches[2],
+                                                                FieldConstants.Reef.redRightBranches[3],
                                                                 proccessorSide).withTimeout(4),
                                                 new RiffCommands(elevator, arm, transfer).Lx(level)),
                                 TransferCommands.riffOutake(transfer, arm).withTimeout(0.5));
