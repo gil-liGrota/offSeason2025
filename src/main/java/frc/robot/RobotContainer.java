@@ -189,7 +189,7 @@ public class RobotContainer {
                 // new Pose2d(16.6, 0.85, Rotation2d.fromDegrees(125)),
                 // false));
 
-                driverController.cross().whileTrue(SwerveCommands.driveForwardSlowRight(drive));
+                // driverController.cross().whileTrue(SwerveCommands.driveForwardSlowRight(drive));
 
                 /*----------------------------------------------------------------------------------------------------*/
                 // operator:
@@ -215,13 +215,13 @@ public class RobotContainer {
                 operatorController.x().onTrue(riffCommands.L2());
                 operatorController.a().onTrue(riffCommands.L1());
 
+                // algae outake
+                // high
                 operatorController.start().onTrue(riffCommands.AlgaeIntakeHigh());
-                operatorController.back().onTrue(riffCommands.algaeIntakeLow());
                 operatorController.start().onFalse(riffCommands.holdAlgae());
+                // low
+                operatorController.back().onTrue(riffCommands.algaeIntakeLow());
                 operatorController.back().onFalse(riffCommands.holdAlgae());
-
-                driverController.povUp().whileTrue(LEDsCommands.setAll(leds, Color.kPurple));
-                driverController.povDown().whileTrue(LEDsCommands.setAll(leds, Color.kBlack));
 
         }
 

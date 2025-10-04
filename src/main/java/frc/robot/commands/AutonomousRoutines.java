@@ -170,12 +170,40 @@ public class AutonomousRoutines {
                 );
         }
 
-        public static Command putL4ProccessorSideRED(Swerve drive, Elevator elevator, CoralArm arm, Transfer transfer) {
+        public static Command putL4MiddelRED(Swerve drive, Elevator elevator, CoralArm arm, Transfer transfer) {
                 Pose2d[] pose1 = new Pose2d[] { new Pose2d(13.5, 1.5, new Rotation2d(Math.PI)),
                                 new Pose2d(16.4, 1.1, Rotation2d.fromDegrees(125)) };
 
                 boolean proccessorSide = true;
                 RiffCommands riffCommands = new RiffCommands(elevator, arm, transfer);
 
+                return Commands.sequence(
+                                // 1 L4 right
+                                Commands.parallel(
+                                                SwerveCommands.driveForwardSlowRight(drive).withTimeout(0.5),
+                                                riffCommands.L4().withTimeout(2)),
+                                driveToPoseInCorrectAlliance(drive,
+                                                FieldConstants.Reef.redRightBranches[3], proccessorSide).withTimeout(5),
+                                Commands.race(
+                                                Commands.sequence(
+                                                                CoralArmCommands.goToPosition(arm, L4_ARM_POSITION),
+                                                                TransferCommands.riffOutake(transfer, arm)
+                                                                                .withTimeout(0.5)),
+                                                SwerveCommands.joystickDriveRobotRelative(drive, () -> 0.4, () -> 0,
+                                                                () -> 0)),
+                                Commands.parallel(
+                                                ElevatorCommands.closeElevator(elevator).withTimeout(1),
+                                                SwerveCommands.driveBackSlow(drive).withTimeout(1)),
+                                // 1 alage outake
+                                Commands.parallel(
+                                                riffCommands.AlgaeIntakeHigh().withTimeout(2)),
+                                driveToPoseInCorrectAlliance(drive,
+                                                FieldConstants.Reef.redRightBranches[3], proccessorSide).withTimeout(5)// FIXME
+                                                                                                                       // move
+                                                                                                                       // to
+                                                                                                                       // the
+                                                                                                                       // middel
+
+                );
         }
 }
