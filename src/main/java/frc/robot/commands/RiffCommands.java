@@ -1,7 +1,11 @@
 package frc.robot.commands;
 
-import static frc.robot.subsystems.Elevator.ElevatorConstants.*;
-import static frc.robot.subsystems.CoralArm.CoralArmConstants.*;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.L2_ARM_POSITION;
+import static frc.robot.subsystems.CoralArm.CoralArmConstants.OPEN_ARM_POSITION;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.L1_ELEVATOR_POSITION;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.L2_ELEVATOR_POSITION;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.L3_ELEVATOR_POSITION;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.L4_ELEVATOR_POSITION;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -56,7 +60,7 @@ public class RiffCommands {
         return new ConditionalCommand(
                 CoralArmCommands.goToPosition(arm, 1.1), Commands.parallel(
                         CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION),
-                        ElevatorCommands.goToPosition(elevator, CLOSE_ELEVATOR_POSITIOM)),
+                        ElevatorCommands.goToPosition(elevator, L3_ELEVATOR_POSITION)),
                 arm.getIO()::getHighSwitch).withName("L3");
     }
 
@@ -80,7 +84,7 @@ public class RiffCommands {
                         CoralArmCommands.goToPosition(arm, 1.6).until(arm.getIO()::getHighSwitch),
                         ElevatorCommands.goToPosition(elevator, 34)
                                 .until(() -> elevator.getIO().getPosition() > 33.1))),
-                arm.getIO()::getHighSwitch).withName("L4");
+                () -> arm.getIO().getHighSwitch() || arm.getIO().getPosition() > 1.5).withName("L4");
     }
 
     public Command coralIntakePos() {

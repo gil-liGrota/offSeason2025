@@ -1219,7 +1219,7 @@ public class SwerveCommands {
         }
 
         public static Command driveBackSlow(Swerve drive) {
-                ChassisSpeeds speeds = new ChassisSpeeds(ALGAE_OUTTAKE_DRIVE_BACK_SPEED, 0, 0);
+                ChassisSpeeds speeds = new ChassisSpeeds(-ALGAE_OUTTAKE_DRIVE_BACK_SPEED, 0, 0.2);
                 return Commands.runEnd(() -> drive.runVelocity(speeds, true), () -> drive.stop(), drive);
         }
 

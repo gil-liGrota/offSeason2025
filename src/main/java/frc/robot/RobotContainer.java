@@ -22,15 +22,21 @@ import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathPlannerPath;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.POM_lib.sensors.POMDigitalInput;
+import frc.robot.commands.AutonomousRoutines;
 import frc.robot.commands.CoralArmCommands;
 import frc.robot.commands.ElevatorCommands;
 import frc.robot.commands.LEDsCommands;
@@ -127,6 +133,8 @@ public class RobotContainer {
                 autoChooser = new LoggedDashboardChooser<>("Auto Choices", c); // TODO use auto builder
 
                 autoChooser.addDefaultOption("none", null);
+                autoChooser.addDefaultOption("otonomi",
+                                AutonomousRoutines.putReef(4, drive, elevator, coralArm, transfer, false));
 
                 // Configure the button bindings
                 configureButtonBindings();
@@ -175,6 +183,8 @@ public class RobotContainer {
                                 () -> driverController.getLeftX() * -1,
                                 () -> driverController.getRightX() * -1));
 
+                // driverController.cross().whileTrue(pathPlanerCommand());
+
                 /*----------------------------------------------------------------------------------------------------*/
                 // operator:
                 // open and close arm and elevator manual
@@ -202,6 +212,20 @@ public class RobotContainer {
                 driverController.povUp().whileTrue(LEDsCommands.setAll(leds, Color.kPurple));
                 driverController.povDown().whileTrue(LEDsCommands.setAll(leds, Color.kBlack));
 
+        }
+
+        public Command pathPlanerCommand() {
+                try {
+                        // Load the path you want to follow using its name in the GUI
+                        PathPlannerPath path = PathPlannerPath.fromPathFile("reefToStation");
+
+                        // Create a path following command using AutoBuilder. This will also trigger
+                        // event markers.
+                        return AutoBuilder.followPath(path);
+                } catch (Exception e) {
+                        DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+                        return Commands.none();
+                }
         }
 
         public void displaSimFieldToAdvantageScope() {
