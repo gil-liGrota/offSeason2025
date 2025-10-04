@@ -174,17 +174,6 @@ public class RobotContainer {
                                 () -> driverController.getLeftY() * -1,
                                 () -> driverController.getLeftX() * -1,
                                 () -> driverController.getRightX() * -1));
-                // RightTrigger - fast
-
-                // // intake, l2, l1
-                // driverController.leftTrigger().whileTrue(TransferCommands.coralintake(transfer,
-                // 5));
-                // driverController.LB().whileTrue(TransferCommands.coralintake(transfer, 12));
-
-                // // outake, l4, l3
-                // driverController.rightTrigger().whileTrue(TransferCommands.coralintake(transfer,
-                // -5));
-                // driverController.RB().whileTrue(TransferCommands.coralintake(transfer, -12));
 
                 /*----------------------------------------------------------------------------------------------------*/
                 // operator:
@@ -199,39 +188,12 @@ public class RobotContainer {
                 // outake
                 operatorController.PovLeft().whileTrue(TransferCommands.coralintake(transfer, -12));
                 operatorController.PovRight().whileTrue(TransferCommands.coralintake(transfer, 3));
-                // // open and close arm and elevator
-
-                // operatorController.PovUp().onTrue(ElevatorCommands.goToPosition(elevator,
-                // L4_ELEVATOR_POSITION));
-                // operatorController.PovDown().onTrue(ElevatorCommands.closeElevator(elevator));
-                // operatorController.PovLeft().onTrue(CoralArmCommands.goToPosition(coralArm,
-                // L4_ARM_POSITION));
-                // operatorController.PovRight().onTrue(CoralArmCommands.goToPosition(coralArm,
-                // CLOSE_ARM_POSITION));
-
-                // alage outake
-                // high
-                // operatorController.start().onTrue(riffCommands.HighAlgeOutake());
-                // operatorController.start().onFalse(riffCommands.holdAlage());
-                // // low
-                // operatorController.back().onTrue(riffCommands.LowAlgeOutake());
-                // operatorController.back().onFalse(riffCommands.holdAlage());
 
                 // coral intake position
                 operatorController.PovUp().onTrue(riffCommands.coralIntakePos());
 
-                operatorController.PovDown().onTrue(CoralArmCommands.closeArm(coralArm)
-                                .alongWith(ElevatorCommands.closeElevator(elevator)));
+                operatorController.PovDown().onTrue(riffCommands.closeAll());
 
-                // operatorController.y()
-                // .onTrue(CoralArmCommands.goToPosition(coralArm, 1)
-                // .alongWith(TransferCommands.coralintake(transfer, 2))
-                // .andThen(TransferCommands.coralintake(transfer, -12)));
-                // operatorController.y().onTrue(Commands.parallel(
-                // CoralArmCommands.goToPosition(coralArm, OPEN_ARM_POSITION),
-                // TransferCommands.coralintake(transfer, 2),
-                // ElevatorCommands.goToPosition(elevator, L4_ELEVATOR_POSITION)).andThen(
-                // TransferCommands.coralintake(transfer, -12)));
                 operatorController.y().onTrue(riffCommands.L4());
                 operatorController.b().onTrue(riffCommands.L3());
                 operatorController.x().onTrue(riffCommands.L2());
@@ -239,34 +201,6 @@ public class RobotContainer {
 
                 driverController.povUp().whileTrue(LEDsCommands.setAll(leds, Color.kPurple));
                 driverController.povDown().whileTrue(LEDsCommands.setAll(leds, Color.kBlack));
-
-                /*----------------------------------------------------------------------------------------------------*/
-                // manuale:
-                // // manuale elevator
-                // manualController.rightTrigger().whileTrue(ElevatorCommands.openElevatorManual(elevator,
-                // 5));
-                // manualController.leftTrigger().whileTrue(ElevatorCommands.closeElevatorManual(elevator,
-                // -1));
-                // // elevator
-                // manualController.a().onTrue(ElevatorCommands.closeElevator(elevator));
-                // manualController.y().onTrue(ElevatorCommands.goToPosition(elevator,
-                // L4_ELEVATOR_POSITION));
-
-                // // manuale coral arm
-                // manualController.PovLeft().whileTrue(CoralArmCommands.setVoltage(coralArm,
-                // 1));
-                // manualController.PovRight().whileTrue(CoralArmCommands.setVoltage(coralArm,
-                // -1));
-                // // coral arm
-                // manualController.b().onTrue(CoralArmCommands.goToPosition(coralArm,
-                // L4_ARM_POSITION));
-                // manualController.x().onTrue(CoralArmCommands.goToPosition(coralArm,
-                // CLOSE_ARM_POSITION));
-
-                manualController.a().onTrue(CoralArmCommands.closeArm(coralArm));
-                manualController.b().onTrue(CoralArmCommands.goToPosition(coralArm, L3_ARM_POSITION));
-                manualController.x().onTrue(CoralArmCommands.goToPosition(coralArm, L2_ARM_POSITION));
-                manualController.y().onTrue(CoralArmCommands.goToPosition(coralArm, 1.5));
 
         }
 

@@ -3,6 +3,7 @@ package frc.robot.commands;
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.CLOSE_ARM_POSITION;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import frc.robot.subsystems.CoralArm.CoralArm;
 import frc.robot.subsystems.CoralArm.CoralArmIO;
@@ -16,8 +17,15 @@ public class CoralArmCommands {
                 .withName("Move arm to " + goal);
     }
 
+    // public static Command closeArm(CoralArm coralArm) {
+    // return goToPosition(coralArm,
+    // CLOSE_ARM_POSITION).until(coralArm.getIO()::getLowSwitch);
+    // }
+
     public static Command closeArm(CoralArm coralArm) {
-        return goToPosition(coralArm, CLOSE_ARM_POSITION).until(coralArm.getIO()::getLowSwitch);
+        return Commands.sequence(
+                goToPosition(coralArm, CLOSE_ARM_POSITION),
+                setVoltage(coralArm, -0.5).until(coralArm.getIO()::getLowSwitch));
     }
 
     public static Command setVoltage(CoralArm coralArm, double voltage) {
