@@ -16,22 +16,6 @@ public class LEDs extends SubsystemBase {
 
     public LEDs(LEDsIO ledsIO) {
         this.ledsIO = ledsIO;
-
-        // setDefaultCommand(new Command() {
-        // {
-        // addRequirements(LEDs.this);
-        // }
-
-        // @Override
-        // public void initialize() {
-        // setAll(Color.kPurple);
-        // }
-
-        // @Override
-        // public boolean isFinished() {
-        // return true;
-        // }
-        // });
     }
 
     public void setAll(Color color) {

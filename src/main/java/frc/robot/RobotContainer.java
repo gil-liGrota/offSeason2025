@@ -171,12 +171,13 @@ public class RobotContainer {
                 driverController.L1().or(driverController.R1()).onFalse(new InstantCommand(drive::stop, drive));
 
                 driverController.circle().whileTrue(TransferCommands.riffOutake(transfer, coralArm));
-                // LeftTrigger - slow
+
                 driverController.L2().whileTrue(SwerveCommands.joystickDrive(
                                 drive,
                                 () -> driverController.getLeftY() * -0.4,
                                 () -> driverController.getLeftX() * -0.4,
                                 () -> driverController.getRightX() * -0.4));
+
                 driverController.R2().whileTrue(SwerveCommands.joystickDrive(
                                 drive,
                                 () -> driverController.getLeftY() * -1,
@@ -212,6 +213,11 @@ public class RobotContainer {
                 operatorController.b().onTrue(riffCommands.L3());
                 operatorController.x().onTrue(riffCommands.L2());
                 operatorController.a().onTrue(riffCommands.L1());
+
+                operatorController.start().onTrue(riffCommands.AlgaeIntakeHigh());
+                operatorController.back().onTrue(riffCommands.algaeIntakeLow());
+                operatorController.start().onFalse(riffCommands.holdAlgae());
+                operatorController.back().onFalse(riffCommands.holdAlgae());
 
                 driverController.povUp().whileTrue(LEDsCommands.setAll(leds, Color.kPurple));
                 driverController.povDown().whileTrue(LEDsCommands.setAll(leds, Color.kBlack));
