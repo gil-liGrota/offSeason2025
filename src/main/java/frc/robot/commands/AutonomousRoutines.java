@@ -44,31 +44,25 @@ public class AutonomousRoutines {
                 return Commands.sequence(
                                 // 6 L4 right
                                 Commands.parallel(
-                                                SwerveCommands.driveForwardSlowRight(drive).withTimeout(0.5),
+                                                Commands.sequence(
+                                                                SwerveCommands.driveForwardSlowRight(drive)
+                                                                                .withTimeout(0.5),
+                                                                driveToPoseInCorrectAlliance(drive,
+                                                                                FieldConstants.Reef.redRightBranches[2],
+                                                                                proccessorSide).withTimeout(3)),
                                                 riffCommands.L4().withTimeout(2)),
-                                driveToPoseInCorrectAlliance(drive,
-                                                FieldConstants.Reef.redRightBranches[2], proccessorSide).withTimeout(5),
                                 Commands.race(
                                                 Commands.sequence(
                                                                 CoralArmCommands.goToPosition(arm, L4_ARM_POSITION),
                                                                 TransferCommands.riffOutake(transfer, arm)
                                                                                 .withTimeout(0.5)),
-                                                SwerveCommands.joystickDriveRobotRelative(drive, () -> 0.4, () -> 0,
+                                                SwerveCommands.joystickDriveRobotRelative(drive, () -> 0.3, () -> 0,
                                                                 () -> 0)),
                                 // go to coral station
-                                Commands.parallel(
-                                                CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION),
-                                                ElevatorCommands.closeElevator(elevator).withTimeout(1),
-                                                SwerveCommands.driveBackSlow(drive).withTimeout(2)),
-                                Commands.parallel(
-                                                riffCommands.coralIntakePos(),
-                                                driveToPoseInCorrectAlliance(drive,
-                                                                new Pose2d(16.6, 0.85, Rotation2d.fromDegrees(125)),
-                                                                false).until(transfer.getIO()::isCoralIn))
-                                                .until(() -> elevator.getIO().getPosition() > 13),
+                                goToNoProccessorCoralStation(drive, elevator, arm, transfer),
                                 // 5 L4 right
                                 Commands.parallel(
-                                                SwerveCommands.driveForwardSlowRight(drive).withTimeout(1),
+                                                SwerveCommands.driveForwardSlowRight(drive).withTimeout(2.5),
                                                 riffCommands.L4()),
                                 driveToPoseInCorrectAlliance(drive,
                                                 FieldConstants.Reef.redRightBranches[1],
@@ -77,15 +71,7 @@ public class AutonomousRoutines {
                                 TransferCommands.autoIntakeCoral(transfer).withTimeout(0.5),
                                 CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION),
                                 // go to coral station
-                                Commands.parallel(
-                                                ElevatorCommands.closeElevator(elevator).withTimeout(1),
-                                                SwerveCommands.driveBackSlow(drive).withTimeout(1)),
-                                Commands.parallel(
-                                                riffCommands.coralIntakePos(),
-                                                driveToPoseInCorrectAlliance(drive,
-                                                                new Pose2d(16.6, 0.85, Rotation2d.fromDegrees(125)),
-                                                                false).until(transfer.getIO()::isCoralIn))
-                                                .until(() -> elevator.getIO().getPosition() > 13),
+                                goToNoProccessorCoralStation(drive, elevator, arm, transfer),
                                 // // 5 L4 left
                                 Commands.parallel(
                                                 SwerveCommands.driveForwardSlowLeft(drive).withTimeout(1),
@@ -100,6 +86,24 @@ public class AutonomousRoutines {
                                 CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION)
 
                 );
+        }
+
+        public static Command putL4FromCoralStation
+
+        public static Command goToNoProccessorCoralStation(Swerve drive, Elevator elevator, CoralArm arm,
+                        Transfer transfer) {
+                RiffCommands riffCommands = new RiffCommands(elevator, arm, transfer);
+                return Commands.sequence(
+                                Commands.parallel(
+                                                CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION),
+                                                ElevatorCommands.closeElevator(elevator).withTimeout(1),
+                                                SwerveCommands.driveBackSlow(drive).withTimeout(2)),
+                                Commands.parallel(
+                                                riffCommands.coralIntakePos(),
+                                                driveToPoseInCorrectAlliance(drive,
+                                                                new Pose2d(16.6, 0.85, Rotation2d.fromDegrees(125)),
+                                                                false).until(transfer.getIO()::isCoralIn))
+                                                .until(() -> elevator.getIO().getPosition() > 13));
         }
 
         public static Command putL4ProccessorSideRED(Swerve drive, Elevator elevator, CoralArm arm, Transfer transfer) {

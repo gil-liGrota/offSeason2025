@@ -190,6 +190,8 @@ public class RobotContainer {
                 // false));
 
                 // driverController.cross().whileTrue(SwerveCommands.driveForwardSlowRight(drive));
+                driverController.cross().whileTrue(
+                                AutonomousRoutines.goToNoProccessorCoralStation(drive, elevator, coralArm, transfer));
 
                 /*----------------------------------------------------------------------------------------------------*/
                 // operator:

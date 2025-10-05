@@ -90,15 +90,15 @@ public class RiffCommands {
     public Command AlgaeIntakeHigh() {
         return Commands.parallel(
                 ElevatorCommands.goToPosition(elevator, 28.76),
-                CoralArmCommands.goToPosition(arm, -1.06),
-                TransferCommands.coralintake(transfer, 10));
+                CoralArmCommands.goToPosition(arm, -0.92),
+                TransferCommands.coralintake(transfer, 4));
     }
 
     public Command algaeIntakeLow() {
         return Commands.parallel(
-                ElevatorCommands.goToPosition(elevator, 14.25),
-                CoralArmCommands.goToPosition(arm, -1.2),
-                TransferCommands.coralintake(transfer, 10));
+                ElevatorCommands.goToPosition(elevator, 10.5),
+                CoralArmCommands.goToPosition(arm, -0.95),
+                TransferCommands.coralintake(transfer, 4));
     }
 
     public Command holdAlgae() {
