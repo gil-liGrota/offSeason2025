@@ -54,10 +54,10 @@ public class LEDsCommands {
 
     }
 
-    public static Command defult(LEDs leds, Transfer transfer) {
-        return new ConditionalCommand(coralIn(leds),
-                setAll(leds, Color.kPurple),
-                transfer.getIO()::isCoralIn);
-    }
+    // public static Command defult(LEDs leds, Transfer transfer) {
+    // return new ConditionalCommand(coralIn(leds),
+    // setAll(leds, Color.kPurple),
+    // transfer.getIO()::isCoralIn);
+    // }
 
 }

@@ -147,7 +147,7 @@ public class RobotContainer {
          * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
          */
         private void configureButtonBindings() {
-                leds.setDefaultCommand(LEDsCommands.defult(leds, transfer));
+                leds.setDefaultCommand(LEDsCommands.setAll(leds, Color.kPurple));
                 // driver:
                 isRelative = true;
                 drive.setDefaultCommand(

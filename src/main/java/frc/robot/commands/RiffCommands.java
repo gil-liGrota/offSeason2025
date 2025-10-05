@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import frc.robot.subsystems.CoralArm.CoralArm;
 import frc.robot.subsystems.Elevator.Elevator;
+import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.Transfer.Transfer;
 
 public class RiffCommands {
