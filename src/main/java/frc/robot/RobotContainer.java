@@ -23,6 +23,8 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -191,7 +193,9 @@ public class RobotContainer {
 
                 // driverController.cross().whileTrue(SwerveCommands.driveForwardSlowRight(drive));
                 driverController.cross().whileTrue(
-                                AutonomousRoutines.goToNoProccessorCoralStation(drive, elevator, coralArm, transfer));
+                                AutonomousRoutines.driveToPoseInCorrectAlliance(drive,
+                                                new Pose2d(16.6, 0.85, Rotation2d.fromDegrees(125)),
+                                                false));
 
                 /*----------------------------------------------------------------------------------------------------*/
                 // operator:

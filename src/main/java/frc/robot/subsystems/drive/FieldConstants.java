@@ -51,6 +51,8 @@ public class FieldConstants {
         }
 
         public static class CoralStation {
+                public static final Pose2d redNoProccessorCoralStation = new Pose2d(16.6, 0.85,
+                                Rotation2d.fromDegrees(125));
                 public static final Pose2d leftCenterFace = new Pose2d(
                                 Units.inchesToMeters(33.526),
                                 Units.inchesToMeters(291.176),
@@ -81,12 +83,17 @@ public class FieldConstants {
                 public static final Pose2d[] blueRightBranches = new Pose2d[6]; // Starting facing the driver station in
                                                                                 // clockwise
                                                                                 // order
+                public static final Pose2d[] blueAttackPoses = new Pose2d[6];
+
                 public static final Pose2d[] redLeftBranches = new Pose2d[6]; // Starting facing the driver station in
                                                                               // clockwise
                                                                               // order
                 public static final Pose2d[] redRightBranches = new Pose2d[6]; // Starting facing the driver station in
                                                                                // clockwise
                                                                                // order
+
+                public static final Pose2d[] redAttackPoses = new Pose2d[6];
+
                 public static final List<Map<ReefHeight, Pose3d>> branchPositions = new ArrayList<>(); // Starting at
                                                                                                        // the right
                                                                                                        // branch facing
@@ -141,6 +148,7 @@ public class FieldConstants {
                                                                 * Math.cos(blueCenterFaces[i].getRotation()
                                                                                 .getRadians()),
                                                 Rotation2d.fromDegrees(-i * 60));
+                                // blueAttackPoses[i] = new Pose2d();
 
                         }
                         Logger.recordOutput("left branch blue", blueLeftBranches);
@@ -231,6 +239,8 @@ public class FieldConstants {
                                 branchPositions.add(fillRight);
                                 branchPositions.add(fillLeft);
                         }
+                        redAttackPoses[1] = new Pose2d(14.44, 2.01, Rotation2d.fromDegrees(130));
+                        redAttackPoses[2] = new Pose2d(11.72, 1.7, Rotation2d.fromDegrees(60.44));
                 }
 
                 public static class StagingPositions {
