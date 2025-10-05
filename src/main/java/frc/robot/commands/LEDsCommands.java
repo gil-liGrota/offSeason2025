@@ -13,11 +13,11 @@ import frc.robot.subsystems.Transfer.Transfer;
 public class LEDsCommands {
 
     public static Command setAll(LEDs leds, Color color) {
-        return Commands.runOnce(() -> leds.setAll(color), leds);
+        return Commands.run(() -> leds.setAll(color), leds);
     }
 
     public static Command setParts(LEDs leds, Color... colors) {
-        return Commands.runOnce(() -> leds.setParts(colors), leds);
+        return Commands.run(() -> leds.setParts(colors), leds);
     }
 
     public static Command blink(LEDs leds, Color color, double seconds) {
