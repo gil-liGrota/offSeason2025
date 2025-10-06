@@ -53,6 +53,8 @@ public class FieldConstants {
         public static class CoralStation {
                 public static final Pose2d redNoProccessorCoralStation = new Pose2d(16.66, 0.79,
                                 Rotation2d.fromDegrees(125));
+                public static final Pose2d redProccessorCoralStation = new Pose2d(16.73, 7.11,
+                                Rotation2d.fromDegrees(-126.36));
                 public static final Pose2d leftCenterFace = new Pose2d(
                                 Units.inchesToMeters(33.526),
                                 Units.inchesToMeters(291.176),
@@ -241,6 +243,7 @@ public class FieldConstants {
                         }
                         redAttackPoses[1] = new Pose2d(14.44, 2.01, Rotation2d.fromDegrees(130));
                         redAttackPoses[2] = new Pose2d(11.72, 1.7, Rotation2d.fromDegrees(60.44));
+
                 }
 
                 public static class StagingPositions {

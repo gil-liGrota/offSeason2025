@@ -135,6 +135,8 @@ public class RobotContainer {
                 autoChooser.addDefaultOption("none", null);
                 autoChooser.addDefaultOption("L4 RED NOT proccessor side",
                                 AutonomousRoutines.putL4NotProccessorSideRED(drive, elevator, coralArm, transfer));
+                autoChooser.addDefaultOption("L4 RED proccessor side",
+                                AutonomousRoutines.putL4ProccessorSideRED(drive, elevator, coralArm, transfer));
 
                 // Configure the button bindings
                 configureButtonBindings();
@@ -193,11 +195,9 @@ public class RobotContainer {
 
                 // driverController.cross().whileTrue(SwerveCommands.driveForwardSlowRight(drive));
                 driverController.cross().whileTrue(
-                                Commands.parallel(
-                                                AutonomousRoutines.driveToPoseInCorrectAlliance(drive,
-                                                                new Pose2d(14.44, 2.01, Rotation2d.fromDegrees(130)),
-                                                                false).withTimeout(2),
-                                                riffCommands.L4()));
+                                AutonomousRoutines.driveToPoseInCorrectAlliance(drive,
+                                                new Pose2d(11.13, 5.60, Rotation2d.fromDegrees(-23.82)),
+                                                true));
 
                 /*----------------------------------------------------------------------------------------------------*/
                 // operator:
