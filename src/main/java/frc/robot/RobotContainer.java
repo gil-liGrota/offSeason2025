@@ -36,7 +36,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.POM_lib.sensors.POMDigitalInput;
-import frc.robot.commands.AutonomousRoutines;
+import frc.robot.commands.AutonomousRoutinesRed;
 import frc.robot.commands.CoralArmCommands;
 import frc.robot.commands.ElevatorCommands;
 import frc.robot.commands.LEDsCommands;
@@ -134,9 +134,9 @@ public class RobotContainer {
 
                 autoChooser.addDefaultOption("none", null);
                 autoChooser.addDefaultOption("L4 RED NOT proccessor side",
-                                AutonomousRoutines.putL4NotProccessorSideRED(drive, elevator, coralArm, transfer));
+                                AutonomousRoutinesRed.putL4NotProccessorSideRED(drive, elevator, coralArm, transfer));
                 autoChooser.addDefaultOption("L4 RED proccessor side",
-                                AutonomousRoutines.putL4ProccessorSideRED(drive, elevator, coralArm, transfer));
+                                AutonomousRoutinesRed.putL4ProccessorSideRED(drive, elevator, coralArm, transfer));
 
                 // Configure the button bindings
                 configureButtonBindings();
@@ -195,7 +195,7 @@ public class RobotContainer {
 
                 // driverController.cross().whileTrue(SwerveCommands.driveForwardSlowRight(drive));
                 driverController.cross().whileTrue(
-                                AutonomousRoutines.driveToPoseInCorrectAlliance(drive,
+                                AutonomousRoutinesRed.driveToPoseInCorrectAlliance(drive,
                                                 new Pose2d(11.13, 5.60, Rotation2d.fromDegrees(-23.82)),
                                                 true));
 
