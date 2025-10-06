@@ -25,8 +25,8 @@ public class DriveConstants {
         public static final double KP_XY = 1.7;
         public static final double KI_XY = 0;
         public static final double KD_XY = 0;
-        public static final double MAX_ACCELERATION_XY = 2;
-        public static final double MAX_VELOCETY_XY = 2;
+        public static final double MAX_ACCELERATION_XY = 13;
+        public static final double MAX_VELOCETY_XY = 25;
         public static final double TRANSLATION_TOLERANCE = 0.03;
 
         public static final double KP_OMEGA = 2;

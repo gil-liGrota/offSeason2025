@@ -51,7 +51,7 @@ public class FieldConstants {
         }
 
         public static class CoralStation {
-                public static final Pose2d redNoProccessorCoralStation = new Pose2d(16.6, 0.85,
+                public static final Pose2d redNoProccessorCoralStation = new Pose2d(16.66, 0.79,
                                 Rotation2d.fromDegrees(125));
                 public static final Pose2d leftCenterFace = new Pose2d(
                                 Units.inchesToMeters(33.526),

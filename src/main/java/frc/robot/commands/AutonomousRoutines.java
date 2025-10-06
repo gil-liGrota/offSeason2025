@@ -47,24 +47,31 @@ public class AutonomousRoutines {
                 RiffCommands riffCommands = new RiffCommands(elevator, arm, transfer);
                 return Commands.sequence(
                                 // 6 L4 right
-                                SwerveCommands.driveForwardSlowRight(drive).withTimeout(0.5),
+                                Commands.parallel(
+                                                driveToPoseInCorrectAlliance(drive,
+                                                                new Pose2d(12.36, 2.00, Rotation2d.fromDegrees(59.12)),
+                                                                false)
+                                                                .withTimeout(2),
+                                                riffCommands.L4()),
                                 putL4(drive, elevator, arm, transfer, 2, true),
 
                                 // go to coral station
                                 goToNoProccessorCoralStation(drive, elevator, arm, transfer),
 
                                 // 5 L4 right
-                                driveToPoseInCorrectAlliance(drive,
-                                                new Pose2d(14.44, 2.01, Rotation2d.fromDegrees(130)),
-                                                false).withTimeout(2),
-                                putL4(drive, elevator, arm, transfer, 1, true),
-                                // go to coral station
-                                goToNoProccessorCoralStation(drive, elevator, arm, transfer),
-                                // // 5 L4 left
-                                driveToPoseInCorrectAlliance(drive,
-                                                new Pose2d(14.44, 2.01, Rotation2d.fromDegrees(130)),
-                                                false).withTimeout(2),
-                                putL4(drive, elevator, arm, transfer, 1, false));
+                                Commands.parallel(
+                                                driveToPoseInCorrectAlliance(drive,
+                                                                new Pose2d(14.55, 1.73, Rotation2d.fromDegrees(124)),
+                                                                false).withTimeout(2),
+                                                riffCommands.L4()),
+                                putL4(drive, elevator, arm, transfer, 1, true));
+                // // go to coral station
+                // goToNoProccessorCoralStation(drive, elevator, arm, transfer),
+                // // // 5 L4 left
+                // driveToPoseInCorrectAlliance(drive,
+                // new Pose2d(14.44, 2.01, Rotation2d.fromDegrees(130)),
+                // false).withTimeout(2),
+                // putL4(drive, elevator, arm, transfer, 1, false));
         }
 
         public static Command putL4(Swerve drive, Elevator elevator, CoralArm arm,
@@ -82,16 +89,21 @@ public class AutonomousRoutines {
                 }
 
                 return Commands.sequence(
+                                // Commands.parallel(
+                                // // driveToPoseInCorrectAlliance(drive, attackPose,
+                                // // false).withTimeout(2),
+                                // riffCommands.L4()),
+                                driveToPoseInCorrectAlliance(drive, targetPose, false).withTimeout(1.7),
                                 Commands.parallel(
-                                                // driveToPoseInCorrectAlliance(drive, attackPose,
-                                                // false).withTimeout(2),
-                                                riffCommands.L4()),
-                                driveToPoseInCorrectAlliance(drive, targetPose, false).withTimeout(3),
-                                SwerveCommands.joystickDriveRobotRelative(drive, () -> 0.3, () -> 0,
-                                                () -> 0).withTimeout(1),
-                                CoralArmCommands.goToPosition(arm, 1.2),
-                                TransferCommands.riffOutake(transfer, arm).withTimeout(0.5),
-                                CoralArmCommands.goToPosition(arm, OPEN_ARM_POSITION));
+                                                SwerveCommands.joystickDriveRobotRelative(drive, () -> 0.4, () -> 0.1,
+                                                                () -> 0).withTimeout(0.5),
+                                                Commands.sequence(
+                                                                CoralArmCommands.goToPosition(arm, 1.2),
+                                                                Commands.waitSeconds(0.2),
+                                                                TransferCommands.riffOutake(transfer, arm)
+                                                                                .withTimeout(0.5),
+                                                                CoralArmCommands.goToPosition(arm,
+                                                                                OPEN_ARM_POSITION))));
         }
 
         public static Command goToNoProccessorCoralStation(Swerve drive, Elevator elevator, CoralArm arm,
@@ -99,7 +111,7 @@ public class AutonomousRoutines {
                 RiffCommands riffCommands = new RiffCommands(elevator, arm, transfer);
                 return (Commands.parallel(
                                 Commands.sequence(
-                                                Commands.waitSeconds(1),
+                                                Commands.waitSeconds(0.5),
                                                 riffCommands.coralIntakePos()),
                                 driveToPoseInCorrectAlliance(drive,
                                                 redNoProccessorCoralStation,

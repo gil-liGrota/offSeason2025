@@ -200,7 +200,8 @@ public class LimelightHelpers {
     }
   }
 
-  public static class LimelightTarget_Barcode {}
+  public static class LimelightTarget_Barcode {
+  }
 
   public static class LimelightTarget_Classifier {
 
@@ -228,7 +229,8 @@ public class LimelightHelpers {
     @JsonProperty("typ")
     public double ty_pixels;
 
-    public LimelightTarget_Classifier() {}
+    public LimelightTarget_Classifier() {
+    }
   }
 
   public static class LimelightTarget_Detector {
@@ -257,7 +259,8 @@ public class LimelightHelpers {
     @JsonProperty("typ")
     public double ty_pixels;
 
-    public LimelightTarget_Detector() {}
+    public LimelightTarget_Detector() {
+    }
   }
 
   public static class Results {
@@ -602,10 +605,9 @@ public class LimelightHelpers {
       double corner3_X = extractArrayEntry(rawDetectionArray, baseIndex + 10);
       double corner3_Y = extractArrayEntry(rawDetectionArray, baseIndex + 11);
 
-      rawDetections[i] =
-          new RawDetection(
-              classId, txnc, tync, ta, corner0_X, corner0_Y, corner1_X, corner1_Y, corner2_X,
-              corner2_Y, corner3_X, corner3_Y);
+      rawDetections[i] = new RawDetection(
+          classId, txnc, tync, ta, corner0_X, corner0_Y, corner1_X, corner1_Y, corner2_X,
+          corner2_Y, corner3_X, corner3_Y);
     }
 
     return rawDetections;
@@ -617,33 +619,34 @@ public class LimelightHelpers {
       return;
     }
 
-    System.out.printf("Pose Estimate Information:%n");
-    System.out.printf("Timestamp (Seconds): %.3f%n", pose.timestampSeconds);
-    System.out.printf("Latency: %.3f ms%n", pose.latency);
-    System.out.printf("Tag Count: %d%n", pose.tagCount);
-    System.out.printf("Tag Span: %.2f meters%n", pose.tagSpan);
-    System.out.printf("Average Tag Distance: %.2f meters%n", pose.avgTagDist);
-    System.out.printf("Average Tag Area: %.2f%% of image%n", pose.avgTagArea);
-    System.out.println();
+    // System.out.printf("Pose Estimate Information:%n");
+    // System.out.printf("Timestamp (Seconds): %.3f%n", pose.timestampSeconds);
+    // System.out.printf("Latency: %.3f ms%n", pose.latency);
+    // System.out.printf("Tag Count: %d%n", pose.tagCount);
+    // System.out.printf("Tag Span: %.2f meters%n", pose.tagSpan);
+    // System.out.printf("Average Tag Distance: %.2f meters%n", pose.avgTagDist);
+    // System.out.printf("Average Tag Area: %.2f%% of image%n", pose.avgTagArea);
+    // System.out.println();
 
     if (pose.rawFiducials == null || pose.rawFiducials.length == 0) {
       System.out.println("No RawFiducials data available.");
       return;
     }
 
-    System.out.println("Raw Fiducials Details:");
-    for (int i = 0; i < pose.rawFiducials.length; i++) {
-      RawFiducial fiducial = pose.rawFiducials[i];
-      System.out.printf(" Fiducial #%d:%n", i + 1);
-      System.out.printf("  ID: %d%n", fiducial.id);
-      System.out.printf("  TXNC: %.2f%n", fiducial.txnc);
-      System.out.printf("  TYNC: %.2f%n", fiducial.tync);
-      System.out.printf("  TA: %.2f%n", fiducial.ta);
-      System.out.printf("  Distance to Camera: %.2f meters%n", fiducial.distToCamera);
-      System.out.printf("  Distance to Robot: %.2f meters%n", fiducial.distToRobot);
-      System.out.printf("  Ambiguity: %.2f%n", fiducial.ambiguity);
-      System.out.println();
-    }
+    // System.out.println("Raw Fiducials Details:");
+    // for (int i = 0; i < pose.rawFiducials.length; i++) {
+    // RawFiducial fiducial = pose.rawFiducials[i];
+    // System.out.printf(" Fiducial #%d:%n", i + 1);
+    // System.out.printf(" ID: %d%n", fiducial.id);
+    // System.out.printf(" TXNC: %.2f%n", fiducial.txnc);
+    // System.out.printf(" TYNC: %.2f%n", fiducial.tync);
+    // System.out.printf(" TA: %.2f%n", fiducial.ta);
+    // System.out.printf(" Distance to Camera: %.2f meters%n",
+    // fiducial.distToCamera);
+    // System.out.printf(" Distance to Robot: %.2f meters%n", fiducial.distToRobot);
+    // System.out.printf(" Ambiguity: %.2f%n", fiducial.ambiguity);
+    // System.out.println();
+    // }
   }
 
   public static NetworkTable getLimelightNTTable(String tableName) {
@@ -833,7 +836,8 @@ public class LimelightHelpers {
   }
 
   /**
-   * Gets the Pose2d for easy use with Odometry vision pose estimator (addVisionMeasurement)
+   * Gets the Pose2d for easy use with Odometry vision pose estimator
+   * (addVisionMeasurement)
    *
    * @param limelightName
    * @return
@@ -845,7 +849,8 @@ public class LimelightHelpers {
   }
 
   /**
-   * Gets the Pose2d and timestamp for use with WPILib pose estimator (addVisionMeasurement) when
+   * Gets the Pose2d and timestamp for use with WPILib pose estimator
+   * (addVisionMeasurement) when
    * you are on the BLUE alliance
    *
    * @param limelightName
@@ -856,7 +861,8 @@ public class LimelightHelpers {
   }
 
   /**
-   * Gets the Pose2d and timestamp for use with WPILib pose estimator (addVisionMeasurement) when
+   * Gets the Pose2d and timestamp for use with WPILib pose estimator
+   * (addVisionMeasurement) when
    * you are on the BLUE alliance
    *
    * @param limelightName
@@ -867,7 +873,8 @@ public class LimelightHelpers {
   }
 
   /**
-   * Gets the Pose2d for easy use with Odometry vision pose estimator (addVisionMeasurement)
+   * Gets the Pose2d for easy use with Odometry vision pose estimator
+   * (addVisionMeasurement)
    *
    * @param limelightName
    * @return
@@ -879,7 +886,8 @@ public class LimelightHelpers {
   }
 
   /**
-   * Gets the Pose2d and timestamp for use with WPILib pose estimator (addVisionMeasurement) when
+   * Gets the Pose2d and timestamp for use with WPILib pose estimator
+   * (addVisionMeasurement) when
    * you are on the RED alliance
    *
    * @param limelightName
@@ -890,7 +898,8 @@ public class LimelightHelpers {
   }
 
   /**
-   * Gets the Pose2d and timestamp for use with WPILib pose estimator (addVisionMeasurement) when
+   * Gets the Pose2d and timestamp for use with WPILib pose estimator
+   * (addVisionMeasurement) when
    * you are on the RED alliance
    *
    * @param limelightName
@@ -901,7 +910,8 @@ public class LimelightHelpers {
   }
 
   /**
-   * Gets the Pose2d for easy use with Odometry vision pose estimator (addVisionMeasurement)
+   * Gets the Pose2d for easy use with Odometry vision pose estimator
+   * (addVisionMeasurement)
    *
    * @param limelightName
    * @return
@@ -927,7 +937,10 @@ public class LimelightHelpers {
     setLimelightNTDouble(limelightName, "priorityid", ID);
   }
 
-  /** The LEDs will be controlled by Limelight pipeline settings, and not by robot code. */
+  /**
+   * The LEDs will be controlled by Limelight pipeline settings, and not by robot
+   * code.
+   */
   public static void setLEDMode_PipelineControl(String limelightName) {
     setLimelightNTDouble(limelightName, "ledMode", 0);
   }
@@ -965,7 +978,8 @@ public class LimelightHelpers {
   }
 
   /**
-   * Sets the crop window. The crop window in the UI must be completely open for dynamic cropping to
+   * Sets the crop window. The crop window in the UI must be completely open for
+   * dynamic cropping to
    * work.
    */
   public static void setCropWindow(
@@ -1092,8 +1106,7 @@ public class LimelightHelpers {
     long start = System.nanoTime();
     LimelightHelpers.LimelightResults results = new LimelightHelpers.LimelightResults();
     if (mapper == null) {
-      mapper =
-          new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+      mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     try {

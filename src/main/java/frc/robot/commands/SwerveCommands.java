@@ -1429,12 +1429,13 @@ public class SwerveCommands {
 
                                                                         NumberFormat formatter = new DecimalFormat(
                                                                                         "#0.00000");
-                                                                        System.out.println(
-                                                                                        "********** Drive FF Characterization Results **********");
-                                                                        System.out.println("\tkS: "
-                                                                                        + formatter.format(kS));
-                                                                        System.out.println("\tkV: "
-                                                                                        + formatter.format(kV));
+                                                                        // System.out.println(
+                                                                        // "********** Drive FF Characterization Results
+                                                                        // **********");
+                                                                        // System.out.println("\tkS: "
+                                                                        // + formatter.format(kS));
+                                                                        // System.out.println("\tkV: "
+                                                                        // + formatter.format(kV));
                                                                 }));
         }
 
@@ -1503,26 +1504,28 @@ public class SwerveCommands {
 
                                                                                         NumberFormat formatter = new DecimalFormat(
                                                                                                         "#0.000");
-                                                                                        System.out.println(
-                                                                                                        "********** Wheel Radius Characterization Results **********");
-                                                                                        System.out.println(
-                                                                                                        "\tWheel Delta: "
-                                                                                                                        + formatter.format(
-                                                                                                                                        wheelDelta)
-                                                                                                                        + " radians");
-                                                                                        System.out.println(
-                                                                                                        "\tGyro Delta: " + formatter
-                                                                                                                        .format(state.gyroDelta)
-                                                                                                                        + " radians");
-                                                                                        System.out.println(
-                                                                                                        "\tWheel Radius: "
-                                                                                                                        + formatter.format(
-                                                                                                                                        wheelRadius)
-                                                                                                                        + " meters, "
-                                                                                                                        + formatter.format(
-                                                                                                                                        Units.metersToInches(
-                                                                                                                                                        wheelRadius))
-                                                                                                                        + " inches");
+                                                                                        // System.out.println(
+                                                                                        // "********** Wheel Radius
+                                                                                        // Characterization Results
+                                                                                        // **********");
+                                                                                        // System.out.println(
+                                                                                        // "\tWheel Delta: "
+                                                                                        // + formatter.format(
+                                                                                        // wheelDelta)
+                                                                                        // + " radians");
+                                                                                        // System.out.println(
+                                                                                        // "\tGyro Delta: " + formatter
+                                                                                        // .format(state.gyroDelta)
+                                                                                        // + " radians");
+                                                                                        // System.out.println(
+                                                                                        // "\tWheel Radius: "
+                                                                                        // + formatter.format(
+                                                                                        // wheelRadius)
+                                                                                        // + " meters, "
+                                                                                        // + formatter.format(
+                                                                                        // Units.metersToInches(
+                                                                                        // wheelRadius))
+                                                                                        // + " inches");
                                                                                 })));
         }
 

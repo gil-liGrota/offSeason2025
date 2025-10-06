@@ -193,9 +193,11 @@ public class RobotContainer {
 
                 // driverController.cross().whileTrue(SwerveCommands.driveForwardSlowRight(drive));
                 driverController.cross().whileTrue(
-                                AutonomousRoutines.driveToPoseInCorrectAlliance(drive,
-                                                new Pose2d(16.6, 0.85, Rotation2d.fromDegrees(125)),
-                                                false));
+                                Commands.parallel(
+                                                AutonomousRoutines.driveToPoseInCorrectAlliance(drive,
+                                                                new Pose2d(14.44, 2.01, Rotation2d.fromDegrees(130)),
+                                                                false).withTimeout(2),
+                                                riffCommands.L4()));
 
                 /*----------------------------------------------------------------------------------------------------*/
                 // operator:
