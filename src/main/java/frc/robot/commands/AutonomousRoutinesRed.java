@@ -18,7 +18,7 @@ import frc.robot.subsystems.drive.FieldConstants;
 import static frc.robot.subsystems.drive.FieldConstants.CoralStation.*;
 import frc.robot.subsystems.drive.Swerve;
 
-public class AutonomousRoutines {
+public class AutonomousRoutinesRed {
 
         public static Command driveToPoseInCorrectAlliance(Swerve drive, Pose2d pose, boolean proccessorSide) {
                 // if (proccessorSide) {
@@ -131,6 +131,38 @@ public class AutonomousRoutines {
                                                                                 OPEN_ARM_POSITION))));
         }
 
+        public static Command putL4Middel(Swerve drive, Elevator elevator, CoralArm arm,
+                        Transfer transfer, int branch, boolean isRightBranch) {
+                Pose2d targetPose;
+                // Pose2d attackPose = FieldConstants.Reef.redAttackPoses[branch];
+
+                // SmartDashboard.putString("attackPose " + branch, attackPose.toString());
+                RiffCommands riffCommands = new RiffCommands(elevator, arm, transfer);
+
+                if (isRightBranch) {
+                        targetPose = FieldConstants.Reef.redRightBranches[branch];
+                } else {
+                        targetPose = FieldConstants.Reef.redLeftBranches[branch];
+                }
+
+                return Commands.sequence(
+                                // Commands.parallel(
+                                // // driveToPoseInCorrectAlliance(drive, attackPose,
+                                // // false).withTimeout(2),
+                                // riffCommands.L4()),
+                                driveToPoseInCorrectAlliance(drive, targetPose, false).withTimeout(2.5),
+                                Commands.parallel(
+                                                SwerveCommands.joystickDriveRobotRelative(drive, () -> 0, () -> 0,
+                                                                () -> 0).withTimeout(0.5),
+                                                Commands.sequence(
+                                                                CoralArmCommands.goToPosition(arm, 1.2),
+                                                                Commands.waitSeconds(0.2),
+                                                                TransferCommands.riffOutake(transfer, arm)
+                                                                                .withTimeout(0.5),
+                                                                CoralArmCommands.goToPosition(arm,
+                                                                                OPEN_ARM_POSITION))));
+        }
+
         public static Command goToNoProccessorCoralStation(Swerve drive, Elevator elevator, CoralArm arm,
                         Transfer transfer) {
                 RiffCommands riffCommands = new RiffCommands(elevator, arm, transfer);
@@ -157,10 +189,21 @@ public class AutonomousRoutines {
                                 .until(transfer.getIO()::isCoralIn));
         }
 
+        public static Command goToProccessor(Swerve drive, Elevator elevator, CoralArm arm,
+                        Transfer transfer) {
+                RiffCommands riffCommands = new RiffCommands(elevator, arm, transfer);
+                return (Commands.parallel(
+                                Commands.sequence(
+                                                Commands.waitSeconds(0.5),
+                                                riffCommands.coralIntakePos()),
+                                driveToPoseInCorrectAlliance(drive,
+                                                redProccessorCoralStation,
+                                                false))
+                                .until(transfer.getIO()::isCoralIn));
+        }
+
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public static Command putL4ProccessorSideRED(Swerve drive, Elevator elevator, CoralArm arm, Transfer transfer) {
-                Pose2d[] pose1 = new Pose2d[] { new Pose2d(13.5, 1.5, new Rotation2d(Math.PI)),
-                                new Pose2d(16.4, 1.1, Rotation2d.fromDegrees(125)) };
 
                 boolean proccessorSide = false;
                 RiffCommands riffCommands = new RiffCommands(elevator, arm, transfer);
@@ -189,7 +232,14 @@ public class AutonomousRoutines {
         }
 
         public static Command putL4MiddelRED(Swerve drive, Elevator elevator, CoralArm arm, Transfer transfer) {
-                return Commands.waitSeconds(1);
+                RiffCommands riffCommands = new RiffCommands(elevator, arm, transfer);
+
+                return Commands.sequence(
+                                riffCommands.L4(),
+                                putL4Middel(drive, elevator, arm, transfer, 3, true),
+                                SwerveCommands.driveBackSlow(drive).withTimeout(1)
+
+                );
 
         }
 }

@@ -36,6 +36,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.POM_lib.sensors.POMDigitalInput;
+import frc.robot.commands.AutonomousRoutinesBlue;
 import frc.robot.commands.AutonomousRoutinesRed;
 import frc.robot.commands.CoralArmCommands;
 import frc.robot.commands.ElevatorCommands;
@@ -133,11 +134,24 @@ public class RobotContainer {
                 autoChooser = new LoggedDashboardChooser<>("Auto Choices", c); // TODO use auto builder
 
                 autoChooser.addDefaultOption("none", null);
-                autoChooser.addDefaultOption("L4 RED NOT proccessor side",
+
+                autoChooser.addOption("L4 RED NOT proccessor side",
                                 AutonomousRoutinesRed.putL4NotProccessorSideRED(drive, elevator, coralArm, transfer));
-                autoChooser.addDefaultOption("L4 RED proccessor side",
+
+                autoChooser.addOption("L4 RED proccessor side",
                                 AutonomousRoutinesRed.putL4ProccessorSideRED(drive, elevator, coralArm, transfer));
 
+                autoChooser.addOption("L4 RED middel",
+                                AutonomousRoutinesRed.putL4MiddelRED(drive, elevator, coralArm, transfer));
+
+                autoChooser.addOption("L4 BLUE NOT proccessor side",
+                                AutonomousRoutinesBlue.putL4NotProccessorSideBLUE(drive, elevator, coralArm, transfer));
+
+                autoChooser.addOption("L4 BLUE proccessor side",
+                                AutonomousRoutinesBlue.putL4ProccessorSideBLUE(drive, elevator, coralArm, transfer));
+
+                autoChooser.addOption("L4 BLUE middel",
+                                AutonomousRoutinesBlue.putL4MiddelBLUE(drive, elevator, coralArm, transfer));
                 // Configure the button bindings
                 configureButtonBindings();
         }
