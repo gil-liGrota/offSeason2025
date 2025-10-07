@@ -245,9 +245,9 @@ public class CoralArmIOReal implements CoralArmIO, Sendable {
             resetPID();
         }
         if (getLowSwitch()) {
-            setVoltage(-1);
+            setVoltage(-0.5);
         } else if (getHighSwitch() || encoder.getPosition() > (Math.PI / 2) - 0.01) {
-            setVoltage(1);
+            setVoltage(0.5);
         } else {
             setGoal(this.currentGoal);
         }
