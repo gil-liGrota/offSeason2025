@@ -118,7 +118,8 @@ public class Robot extends LoggedRobot {
   public void disabledInit() {
     // POMTalonFX.DisableSound();
 
-    LEDsCommands.disable(robotContainer.leds).ignoringDisable(true).schedule();// TODO check
+    LEDsCommands.disable(robotContainer.leds).ignoringDisable(true).schedule();
+    // TODO check
   }
 
   /** This function is called periodically when disabled. */

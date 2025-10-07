@@ -39,6 +39,10 @@ public class LEDsCommands {
         return setAll(leds, Color.kGreen);
     }
 
+    public static Command coralIn(LEDs leds, Transfer transfer) {// TODO check
+        return setAll(leds, Color.kGreen).unless(() -> !transfer.getIO().isCoralIn());
+    }
+
     public static Command visionActive(LEDs leds) {
         return setAll(leds, Color.kYellow);
     }

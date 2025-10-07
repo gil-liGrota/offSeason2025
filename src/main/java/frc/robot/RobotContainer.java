@@ -165,7 +165,9 @@ public class RobotContainer {
          * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
          */
         private void configureButtonBindings() {
+
                 leds.setDefaultCommand(LEDsCommands.setAll(leds, Color.kPurple));
+
                 // driver:
                 isRelative = true;
                 drive.setDefaultCommand(
@@ -182,10 +184,15 @@ public class RobotContainer {
                 driverController.R1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
                                 driverController,
                                 false).alongWith(LEDsCommands.visionActive(leds)));
+                driverController.R1().onTrue(
+                                LEDsCommands.visionActive(leds).until(() -> !driverController.R1().getAsBoolean()));
 
                 driverController.L1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
                                 driverController,
-                                true).alongWith(LEDsCommands.visionActive(leds)));
+                                true));
+
+                driverController.L1().onTrue(
+                                LEDsCommands.visionActive(leds).until(() -> !driverController.L1().getAsBoolean()));
 
                 driverController.L1().or(driverController.R1()).onFalse(new InstantCommand(drive::stop, drive));
 
