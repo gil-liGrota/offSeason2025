@@ -87,11 +87,20 @@ public class RiffCommands {
                 .withName("closeAll");
     }
 
+    // public Command AlgaeIntakeHigh() {
+    // return Commands.parallel(
+    // ElevatorCommands.goToPosition(elevator, 28.76),
+    // CoralArmCommands.goToPosition(arm, -0.92),
+    // TransferCommands.coralintake(transfer, 4));
+    // }
+
     public Command AlgaeIntakeHigh() {
-        return Commands.parallel(
-                ElevatorCommands.goToPosition(elevator, 28.76),
-                CoralArmCommands.goToPosition(arm, -0.92),
-                TransferCommands.coralintake(transfer, 4));
+        return Commands.sequence(
+                ElevatorCommands.goToPosition(elevator, L2_ELEVATOR_POSITION),
+                Commands.parallel(
+                        ElevatorCommands.goToPosition(elevator, 30),
+                        CoralArmCommands.goToPosition(arm, -0.92),
+                        TransferCommands.coralintake(transfer, 4)));
     }
 
     public Command algaeIntakeLow() {

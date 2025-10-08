@@ -25,7 +25,7 @@ public class CoralArmConstants {
     public static final double L1_ARM_POSITION = -1.24;
     public static final double L2_ARM_POSITION = -1.2;
     public static final double L3_ARM_POSITION = 1.1;
-    public static final double L4_ARM_POSITION = 1.35;
+    public static final double L4_ARM_POSITION = 1.28;
     public static final double OPEN_ARM_POSITION = Math.PI / 2;
     public static final double CLOSE_ARM_POSITION = -Math.PI / 2;
 
