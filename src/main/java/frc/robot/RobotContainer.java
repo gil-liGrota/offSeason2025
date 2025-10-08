@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.POM_lib.sensors.POMDigitalInput;
@@ -164,7 +165,11 @@ public class RobotContainer {
          */
         private void configureButtonBindings() {
 
-                leds.setDefaultCommand(LEDsCommands.setAll(leds, Color.kPurple));
+                // leds.setDefaultCommand(LEDsCommands.setAll(leds, Color.kPurple));
+                // TODO check
+                leds.setDefaultCommand(new ConditionalCommand(
+                                LEDsCommands.coralIn(leds), LEDsCommands.setAll(leds, Color.kPurple),
+                                transfer.getIO()::isCoralIn));
 
                 // driver:
                 isRelative = true;
