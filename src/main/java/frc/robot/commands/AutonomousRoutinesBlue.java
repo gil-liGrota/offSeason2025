@@ -120,8 +120,8 @@ public class AutonomousRoutinesBlue {
                                 // riffCommands.L4()),
                                 driveToPoseInCorrectAlliance(drive, targetPose, false).withTimeout(2.5),
                                 Commands.parallel(
-                                                SwerveCommands.joystickDriveRobotRelative(drive, () -> 0, () -> 0,
-                                                                () -> 0).withTimeout(0.5),
+                                                // SwerveCommands.joystickDriveRobotRelative(drive, () -> 0, () -> 0,
+                                                // () -> 0).withTimeout(0.5),
                                                 Commands.sequence(
                                                                 CoralArmCommands.goToPosition(arm, 1.2),
                                                                 Commands.waitSeconds(0.2),
@@ -145,8 +145,8 @@ public class AutonomousRoutinesBlue {
                 return Commands.sequence(
                                 driveToPoseInCorrectAlliance(drive, targetPose, false).withTimeout(1.7),
                                 Commands.parallel(
-                                                SwerveCommands.joystickDriveRobotRelative(drive, () -> 0, () -> 0.4,
-                                                                () -> 0).withTimeout(0.5),
+                                                // SwerveCommands.joystickDriveRobotRelative(drive, () -> 0, () -> 0,
+                                                // () -> 0).withTimeout(0.5),
                                                 Commands.sequence(
                                                                 CoralArmCommands.goToPosition(arm, 1.2),
                                                                 Commands.waitSeconds(0.2),
@@ -170,7 +170,7 @@ public class AutonomousRoutinesBlue {
                 return Commands.sequence(
                                 driveToPoseInCorrectAlliance(drive, targetPose, false).withTimeout(1.7),
                                 Commands.parallel(
-                                                SwerveCommands.joystickDriveRobotRelative(drive, () -> 0, () -> 0.4,
+                                                SwerveCommands.joystickDriveRobotRelative(drive, () -> 0, () -> 0,
                                                                 () -> 0).withTimeout(0.5),
                                                 Commands.sequence(
                                                                 CoralArmCommands.goToPosition(arm, 1.2),

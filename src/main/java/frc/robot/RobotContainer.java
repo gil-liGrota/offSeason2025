@@ -165,11 +165,11 @@ public class RobotContainer {
          */
         private void configureButtonBindings() {
 
-                // leds.setDefaultCommand(LEDsCommands.setAll(leds, Color.kPurple));
-                // TODO check
-                leds.setDefaultCommand(new ConditionalCommand(
-                                LEDsCommands.coralIn(leds), LEDsCommands.setAll(leds, Color.kPurple),
-                                transfer.getIO()::isCoralIn));
+                leds.setDefaultCommand(LEDsCommands.setAll(leds, Color.kPurple));
+                // TODO check`
+                // leds.setDefaultCommand(new ConditionalCommand(
+                // LEDsCommands.coralIn(leds), LEDsCommands.setAll(leds, Color.kPurple),
+                // transfer.getIO()::isCoralIn));
 
                 // driver:
                 isRelative = true;

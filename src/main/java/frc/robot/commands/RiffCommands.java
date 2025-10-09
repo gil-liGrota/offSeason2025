@@ -96,7 +96,8 @@ public class RiffCommands {
 
     public Command AlgaeIntakeHigh() {
         return Commands.sequence(
-                ElevatorCommands.goToPosition(elevator, L2_ELEVATOR_POSITION),
+                ElevatorCommands.goToPosition(elevator, L2_ELEVATOR_POSITION)
+                        .until(() -> elevator.getIO().getPosition() - 0.4 >= 17.5),
                 Commands.parallel(
                         ElevatorCommands.goToPosition(elevator, 30),
                         CoralArmCommands.goToPosition(arm, -0.92),
@@ -105,7 +106,7 @@ public class RiffCommands {
 
     public Command algaeIntakeLow() {
         return Commands.parallel(
-                ElevatorCommands.goToPosition(elevator, 10.5),
+                ElevatorCommands.goToPosition(elevator, 12),
                 CoralArmCommands.goToPosition(arm, -0.95),
                 TransferCommands.coralintake(transfer, 4));
     }
