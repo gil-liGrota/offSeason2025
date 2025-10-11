@@ -132,7 +132,7 @@ public class RobotContainer {
                 // Set up auto routines
                 autoChooser = new LoggedDashboardChooser<>("Auto Choices", c); // TODO use auto builder
 
-                autoChooser.addDefaultOption("none", null);
+                autoChooser.addOption("none", null);
 
                 autoChooser.addOption("L4 RED NOT proccessor side",
                                 AutonomousRoutinesRed.putL4NotProccessorSideRED(drive, elevator, coralArm, transfer));
@@ -149,7 +149,7 @@ public class RobotContainer {
                 autoChooser.addOption("L4 BLUE proccessor side",
                                 AutonomousRoutinesBlue.putL4ProccessorSideBLUE(drive, elevator, coralArm, transfer));
 
-                autoChooser.addOption("L4 BLUE middel",
+                autoChooser.addDefaultOption("L4 BLUE middel",
                                 AutonomousRoutinesBlue.putL4MiddelBLUE(drive, elevator, coralArm, transfer));
                 // Configure the button bindings
                 configureButtonBindings();
