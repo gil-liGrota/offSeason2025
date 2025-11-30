@@ -176,9 +176,9 @@ public class RobotContainer {
                 drive.setDefaultCommand(
                                 SwerveCommands.joystickDrive(
                                                 drive,
-                                                () -> driverController.getLeftY() * -0.67,
-                                                () -> driverController.getLeftX() * -0.67,
-                                                () -> driverController.getRightX() * -0.67));
+                                                () -> driverController.getLeftY() * -0.35,
+                                                () -> driverController.getLeftX() * -0.35,
+                                                () -> driverController.getRightX() * -0.35));
 
                 // driverController.y().onTrue(drive.resetGyroCommand());
 
