@@ -11,14 +11,14 @@ import org.photonvision.simulation.VisionSystemSim;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
 
-public class VisionIOSim extends VisionIOReal {
+public class ApriltagVisionIOSim extends ApriltagVisionIOReal {
 
     private static VisionSystemSim visionSim;
 
   private final Supplier<Pose2d> poseSupplier;
   private final PhotonCameraSim cameraSim;
 
-    public VisionIOSim(String name, Transform3d robotToCamera, Supplier<Pose2d> poseSupplier){
+    public ApriltagVisionIOSim(String name, Transform3d robotToCamera, Supplier<Pose2d> poseSupplier){
         super(name, robotToCamera);
         this.poseSupplier = poseSupplier;
         if(visionSim == null){

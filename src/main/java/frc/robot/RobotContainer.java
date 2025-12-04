@@ -15,6 +15,7 @@ package frc.robot;
 
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.BRAKE_SWITCH;
 
+import frc.robot.subsystems.Vision.ApriltagVisionIOReal;
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import org.littletonrobotics.junction.Logger;
@@ -30,7 +31,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.POM_lib.sensors.POMDigitalInput;
@@ -40,7 +40,6 @@ import frc.robot.commands.CoralArmCommands;
 import frc.robot.commands.ElevatorCommands;
 import frc.robot.commands.LEDsCommands;
 import frc.robot.commands.RiffCommands;
-import frc.robot.commands.RumbleCommand;
 import frc.robot.commands.SwerveCommands;
 import frc.robot.commands.TransferCommands;
 import frc.robot.subsystems.CoralArm.CoralArm;
@@ -51,7 +50,6 @@ import frc.robot.subsystems.LEDs.LEDs;
 import frc.robot.subsystems.LEDs.LEDsIOReal;
 import frc.robot.subsystems.Transfer.Transfer;
 import frc.robot.subsystems.Transfer.TransferIOReal;
-import frc.robot.subsystems.Vision.VisionIOReal;
 import frc.robot.subsystems.Vision.VisionSubsystem;
 import frc.robot.subsystems.drive.GyroIOPigeon;
 import frc.robot.subsystems.drive.ModuleIOReal;
@@ -99,10 +97,10 @@ public class RobotContainer {
                                 elevator = new Elevator(new ElevatorReal(() -> false, brakeSwitch));
                                 coralArm = new CoralArm(new CoralArmIOReal(brakeSwitch));
                                 transfer = new Transfer(new TransferIOReal());
-                                VisionIOReal[] cameras = {
-                                                new VisionIOReal("Left Front Camera",
+                                ApriltagVisionIOReal[] cameras = {
+                                                new ApriltagVisionIOReal("Left Front Camera",
                                                                 Constants.VisionConstants.l_camera_transform),
-                                                new VisionIOReal("Right Front Camera",
+                                                new ApriltagVisionIOReal("Right Front Camera",
                                                                 Constants.VisionConstants.r_camera_transform),
                                 };
 
