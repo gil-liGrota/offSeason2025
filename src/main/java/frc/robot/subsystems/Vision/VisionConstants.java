@@ -57,6 +57,6 @@ public class VisionConstants {
     public static double angularStdDevMegatag2Factor = Double.POSITIVE_INFINITY; // No rotation data available
 
     public static class ObjectDetectionConstants {
-        public static double ALGAE_DIAMETER = 0.0; // TODO: update to the real values
+        public static double ALGAE_DIAMETER_METERS = 0.413;
     }
 }
