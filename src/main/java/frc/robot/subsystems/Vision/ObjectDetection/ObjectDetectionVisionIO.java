@@ -1,12 +1,12 @@
 package frc.robot.subsystems.Vision.ObjectDetection;
 
+import org.littletonrobotics.junction.AutoLog;
+
 public interface ObjectDetectionVisionIO {
+    @AutoLog
     public static class ObjectDetectionVisionIOInputs {
         public boolean connected = false;
-        public double targetXAngle = 0.0;
-        public double targetYAngle = 0.0;
-        public double targetDistance = 0.0;
-        public boolean targetDetected = false;
+        public Detection[] detections = new Detection[0];
     }
 
     public void updateInputs(ObjectDetectionVisionIOInputs inputs);
