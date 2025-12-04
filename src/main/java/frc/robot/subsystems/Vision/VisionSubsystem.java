@@ -28,7 +28,8 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.Vision.ApriltagVisionIO.PoseObservationType;
+import frc.robot.subsystems.Vision.Apriltag.ApriltagVisionIO;
+import frc.robot.subsystems.Vision.Apriltag.ApriltagVisionIO.PoseObservationType;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

@@ -15,7 +15,7 @@ package frc.robot;
 
 import static frc.robot.subsystems.CoralArm.CoralArmConstants.BRAKE_SWITCH;
 
-import frc.robot.subsystems.Vision.ApriltagVisionIOReal;
+import frc.robot.subsystems.Vision.Apriltag.ApriltagVisionIOReal;
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import org.littletonrobotics.junction.Logger;

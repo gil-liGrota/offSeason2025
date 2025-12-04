@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Vision;
+package frc.robot.subsystems.Vision.Apriltag;
 
 import static frc.robot.subsystems.Vision.VisionConstants.aprilTagLayout;
 
