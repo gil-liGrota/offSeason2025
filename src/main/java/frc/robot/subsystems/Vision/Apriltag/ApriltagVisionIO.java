@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 public interface ApriltagVisionIO {
   @AutoLog
   public static class VisionIOInputs {
+    public String pipelineName = "";
     public boolean connected = false;
     public TargetObservation latestTargetObservation =
         new TargetObservation(new Rotation2d(), new Rotation2d());

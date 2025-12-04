@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 public class ApriltagVisionIOReal implements ApriltagVisionIO {
   protected final PhotonCamera camera;
   protected final Transform3d robotToCamera;
+  final String name;
 
   /**
    * Creates a new VisionIOPhotonVision.
@@ -26,6 +27,7 @@ public class ApriltagVisionIOReal implements ApriltagVisionIO {
    * @param rotationSupplier The 3D position of the camera relative to the robot.
    */
   public ApriltagVisionIOReal(String name, Transform3d robotToCamera) {
+    this.name = name;
     camera = new PhotonCamera(name);
     this.robotToCamera = robotToCamera;
   }
@@ -33,6 +35,7 @@ public class ApriltagVisionIOReal implements ApriltagVisionIO {
   @Override
   public void updateInputs(VisionIOInputs inputs) {
     inputs.connected = camera.isConnected();
+    inputs.pipelineName = name;
 
     // Read new camera observations
     Set<Short> tagIds = new HashSet<>();
