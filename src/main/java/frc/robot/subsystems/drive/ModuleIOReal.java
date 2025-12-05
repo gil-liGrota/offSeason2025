@@ -94,7 +94,13 @@ public class ModuleIOReal implements ModuleIO {
         driveConfig.TorqueCurrent.PeakReverseTorqueCurrent = -driveSlipCurrent;
         driveConfig.CurrentLimits.StatorCurrentLimit = driveSlipCurrent;
         driveConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-        driveConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        driveConfig.MotorOutput.Inverted = switch (module) {
+            case 0 -> InvertedValue.CounterClockwise_Positive;
+            case 1 -> InvertedValue.CounterClockwise_Positive;
+            case 2 -> InvertedValue.Clockwise_Positive;
+            case 3 -> InvertedValue.Clockwise_Positive;
+            default -> InvertedValue.CounterClockwise_Positive;
+        };
         driveConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = driveRampRate;
         driveConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = driveRampRate;
         driveConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = driveRampRate;
