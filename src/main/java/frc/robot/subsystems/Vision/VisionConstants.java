@@ -21,6 +21,20 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 
 public class VisionConstants {
+
+    public static enum TargetType {
+        ALGAE(0), CORAL(1);
+
+        int classId;
+
+        private TargetType(int classId) {
+            this.classId = classId;
+        }
+
+        public int getClassId() {
+            return classId;
+        }
+    }
     // AprilTag layout
     public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 

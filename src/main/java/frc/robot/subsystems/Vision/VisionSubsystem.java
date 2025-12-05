@@ -34,6 +34,8 @@ import frc.robot.subsystems.Vision.Apriltag.ApriltagVisionIO.PoseObservationType
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import frc.robot.subsystems.Vision.Apriltag.VisionIOInputsAutoLogged;
 import org.littletonrobotics.junction.Logger;
 
 public class VisionSubsystem extends SubsystemBase {

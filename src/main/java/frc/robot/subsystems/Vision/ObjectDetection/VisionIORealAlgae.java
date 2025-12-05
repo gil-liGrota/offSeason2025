@@ -3,9 +3,11 @@ package frc.robot.subsystems.Vision.ObjectDetection;
 import frc.robot.subsystems.Vision.VisionConstants;
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class VisionIORealAlgae implements ObjectDetectionVisionIO {
     final PhotonCamera camera;
@@ -18,30 +20,16 @@ public class VisionIORealAlgae implements ObjectDetectionVisionIO {
 
     @Override
     public void updateInputs(ObjectDetectionVisionIOInputs inputs) {
-        ArrayList<PhotonTrackedTarget> detectedTargets = new ArrayList<>();
+        List<PhotonPipelineResult> allUnreadResults = camera.getAllUnreadResults();
+        PhotonPipelineResult latestResult = allUnreadResults.get(allUnreadResults.size() - 1);
 
-        for(var result : camera.getAllUnreadResults()) {
-            for(PhotonTrackedTarget target : result.getTargets()) {
-                boolean wasListed = false;
-                int targetToReplaceIndex = -1;
+        Detection[] detections = new Detection[latestResult.getTargets().size()];
+        for(int i = 0; i < detections.length; i++) {
+            PhotonTrackedTarget target = latestResult.getTargets().get(i);
 
-                for(int i = 0; i < detectedTargets.size(); i++) {
-                    if(isSameObject(target, detectedTargets.get(i))) {
-                        wasListed = true;
-                        targetToReplaceIndex = i;
-                        break;
-                    }
-                }
-                if(!wasListed)  {
-                    detectedTargets.add(target);
-                } else {
-                    detectedTargets.add(targetToReplaceIndex, target);
-                }
+            if(target.getDetectedObjectClassID() == VisionConstants.TargetType.ALGAE.getClassId()) {
+
             }
-        }
-
-        Detection[] detections = new Detection[detectedTargets.size()];
-        for(int i = 0; i < detectedTargets.size(); i++) {
             // TODO: Implement this properly
         }
 
