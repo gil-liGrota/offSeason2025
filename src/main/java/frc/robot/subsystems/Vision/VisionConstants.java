@@ -15,10 +15,7 @@ package frc.robot.subsystems.Vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.*;
 
 public class VisionConstants {
 
@@ -72,5 +69,8 @@ public class VisionConstants {
 
     public static class ObjectDetectionConstants {
         public static double ALGAE_DIAMETER_METERS = 0.413;
+
+        public static Pose3d OBJECT_DETECTION_CAMERA_RIGHT_POSE = null;
+        public static Pose3d OBJECT_DETECTION_CAMERA_LEFT_POSE = null;
     }
 }

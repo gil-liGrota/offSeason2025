@@ -32,7 +32,7 @@ public class ApriltagVisionIOSim extends ApriltagVisionIOReal {
     }
 
     @Override
-    public void updateInputs(VisionIOInputs inputs){
+    public void updateInputs(ApriltagVisionIOInputs inputs){
         visionSim.update(poseSupplier.get());
         super.updateInputs(inputs);
     }

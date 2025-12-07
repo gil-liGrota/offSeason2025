@@ -8,7 +8,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 
 public interface ApriltagVisionIO {
   @AutoLog
-  public static class VisionIOInputs {
+  public static class ApriltagVisionIOInputs {
     public String pipelineName = "";
     public boolean connected = false;
     public TargetObservation latestTargetObservation =
@@ -38,6 +38,6 @@ public interface ApriltagVisionIO {
     PHOTONVISION
   }
 
-  public default void updateInputs(VisionIOInputs inputs) {
+  public default void updateInputs(ApriltagVisionIOInputs inputs) {
   }
 }

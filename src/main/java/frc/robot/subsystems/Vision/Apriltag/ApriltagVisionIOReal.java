@@ -33,7 +33,7 @@ public class ApriltagVisionIOReal implements ApriltagVisionIO {
   }
 
   @Override
-  public void updateInputs(VisionIOInputs inputs) {
+  public void updateInputs(ApriltagVisionIOInputs inputs) {
     inputs.connected = camera.isConnected();
     inputs.pipelineName = name;
 
