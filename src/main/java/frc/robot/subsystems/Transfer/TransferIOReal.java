@@ -56,6 +56,7 @@ public class TransferIOReal implements TransferIO {
         motor.setVoltage(voltage);
     }
 
+    @Override
     public void stopMotor() {
         motor.stopMotor();
     }
