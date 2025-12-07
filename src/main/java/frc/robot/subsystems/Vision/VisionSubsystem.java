@@ -36,26 +36,29 @@ import java.util.LinkedList;
 import java.util.List;
 
 import frc.robot.subsystems.Vision.Apriltag.VisionIOInputsAutoLogged;
+import frc.robot.subsystems.Vision.ObjectDetection.ObjectDetectionVisionIO;
 import org.littletonrobotics.junction.Logger;
 
 public class VisionSubsystem extends SubsystemBase {
     private final VisionConsumer consumer;
-    private final ApriltagVisionIO[] io;
+    private final ApriltagVisionIO[] apriltagVisionIO;
+    private final ObjectDetectionVisionIO[] objectDetectionIO;
     private final VisionIOInputsAutoLogged[] inputs;
     private final Alert[] disconnectedAlerts;
 
-    public VisionSubsystem(VisionConsumer consumer, ApriltagVisionIO... io) {
+    public VisionSubsystem(VisionConsumer consumer, ApriltagVisionIO[] apriltagVisionIO, ObjectDetectionVisionIO[] objectDetectionIO) {
         this.consumer = consumer;
-        this.io = io;
+        this.apriltagVisionIO = apriltagVisionIO;
+        this.objectDetectionIO = objectDetectionIO;
 
         // Initialize inputs
-        this.inputs = new VisionIOInputsAutoLogged[io.length];
+        this.inputs = new VisionIOInputsAutoLogged[apriltagVisionIO.length];
         for (int i = 0; i < inputs.length; i++) {
             inputs[i] = new VisionIOInputsAutoLogged();
         }
 
         // Initialize disconnected alerts
-        this.disconnectedAlerts = new Alert[io.length];
+        this.disconnectedAlerts = new Alert[apriltagVisionIO.length];
         for (int i = 0; i < inputs.length; i++) {
             disconnectedAlerts[i] = new Alert(
                     "Vision camera " + Integer.toString(i) + " is disconnected.", AlertType.kWarning);
@@ -86,8 +89,8 @@ public class VisionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        for (int i = 0; i < io.length; i++) {
-            io[i].updateInputs(inputs[i]);
+        for (int i = 0; i < apriltagVisionIO.length; i++) {
+            apriltagVisionIO[i].updateInputs(inputs[i]);
             Logger.processInputs("Vision/Camera" + Integer.toString(i), inputs[i]);
         }
 
@@ -98,7 +101,7 @@ public class VisionSubsystem extends SubsystemBase {
         List<Pose3d> allRobotPosesRejected = new LinkedList<>();
 
         // Loop over cameras
-        for (int cameraIndex = 0; cameraIndex < io.length; cameraIndex++) {
+        for (int cameraIndex = 0; cameraIndex < apriltagVisionIO.length; cameraIndex++) {
             // Update disconnected alert
             disconnectedAlerts[cameraIndex].set(!inputs[cameraIndex].connected);
 

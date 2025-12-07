@@ -109,7 +109,7 @@ public class RobotContainer {
                                                 new ModuleIOReal(1),
                                                 new ModuleIOReal(2),
                                                 new ModuleIOReal(3));
-                                vision = new VisionSubsystem(drive::addVisionMeasurement, cameras);
+                                vision = new VisionSubsystem(drive::addVisionMeasurement, cameras, null);
                                 riffCommands = new RiffCommands(elevator, coralArm, transfer);
 
                                 leds = new LEDs(new LEDsIOReal());
