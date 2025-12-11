@@ -84,6 +84,7 @@ public class ModuleIOReal implements ModuleIO {
         tryUntilOk(5, () -> turnEncoder.getConfigurator().apply(encoderConfig, 0.25));
 
         // config drive motor
+
         var driveConfig = new TalonFXConfiguration();
         driveConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         Slot0Configs driveMotorGains = new Slot0Configs()
@@ -96,11 +97,13 @@ public class ModuleIOReal implements ModuleIO {
         driveConfig.CurrentLimits.StatorCurrentLimitEnable = true;
         driveConfig.MotorOutput.Inverted = switch (module) {
             case 0 -> InvertedValue.CounterClockwise_Positive;
-            case 1 -> InvertedValue.CounterClockwise_Positive;
-            case 2 -> InvertedValue.Clockwise_Positive;
+            case 1 -> InvertedValue.Clockwise_Positive;
+            case 2 -> InvertedValue.CounterClockwise_Positive;
             case 3 -> InvertedValue.Clockwise_Positive;
             default -> InvertedValue.CounterClockwise_Positive;
         };
+
+        // driveConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         driveConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = driveRampRate;
         driveConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = driveRampRate;
         driveConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = driveRampRate;
