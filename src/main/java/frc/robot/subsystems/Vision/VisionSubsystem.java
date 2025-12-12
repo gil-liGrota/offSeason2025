@@ -105,10 +105,13 @@ public class VisionSubsystem extends SubsystemBase {
             Logger.processInputs("Vision/ApriltagCamera" + Integer.toString(i), apriltagInputs[i]);
         }
 
-        for (int i = 0; i < objectDetectionIO.length; i++) {
-            objectDetectionIO[i].updateInputs(objectDetectionInputs[i]);
-            Logger.processInputs("Vision/ObjectDetectionCamera" + Integer.toString(i), objectDetectionInputs[i]);
+        if (objectDetectionIO != null) {
+            for (int i = 0; i < objectDetectionIO.length; i++) {
+                objectDetectionIO[i].updateInputs(objectDetectionInputs[i]);
+                Logger.processInputs("Vision/ObjectDetectionCamera" + Integer.toString(i), objectDetectionInputs[i]);
+            }
         }
+
 
         // Initialize logging values
         List<Pose3d> allTagPoses = new LinkedList<>();
