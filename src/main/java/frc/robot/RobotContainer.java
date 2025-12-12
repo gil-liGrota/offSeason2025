@@ -180,16 +180,12 @@ public class RobotContainer {
                                                 () -> driverController.getLeftX() * -0.35,
                                                 () -> driverController.getRightX() * -0.35));
 
-                // driverController.y().onTrue(drive.resetGyroCommand());
+                driverController.R2().whileTrue(SwerveCommands.joystickDrive(
+                                drive, () -> 0, () -> 0, () -> 0.5));
 
                 driverController.triangle().onTrue(drive.resetGyroCommand());
 
-                // driverController.x().onTrue(TransferCommands.autoIntakeCoral(transfer));
                 driverController.square().onTrue(TransferCommands.autoIntakeCoral(transfer));
-
-                // driverController.RB().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
-                // driverController,
-                // false).alongWith(LEDsCommands.visionActive(leds)));
 
                 driverController.R1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
                                 driverController,
@@ -197,71 +193,29 @@ public class RobotContainer {
                 driverController.R1().onTrue(
                                 LEDsCommands.visionActive(leds).until(() -> !driverController.R1().getAsBoolean()));
 
-                // driverController.RB().onTrue(
-                // LEDsCommands.visionActive(leds).until(() ->
-                // !driverController.RB().getAsBoolean()));
-
                 driverController.L1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
                                 driverController,
                                 true));
 
                 driverController.L1().onTrue(
                                 LEDsCommands.visionActive(leds).until(() -> !driverController.L1().getAsBoolean()));
-                // driverController.LB().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
-                // driverController,
-                // true));
-
-                // driverController.LB().onTrue(
-                // LEDsCommands.visionActive(leds).until(() ->
-                // !driverController.LB().getAsBoolean()));
-
-                // driverController.LB().or(driverController.RB()).onFalse(new
-                // InstantCommand(drive::stop, drive));
 
                 driverController.circle().whileTrue(TransferCommands.riffOutake(transfer,
                                 coralArm));
-
-                // driverController.b().whileTrue(TransferCommands.riffOutake(transfer,
-                // coralArm));
 
                 driverController.L2().whileTrue(SwerveCommands.joystickDrive(
                                 drive,
                                 () -> driverController.getLeftY() * -0.4,
                                 () -> driverController.getLeftX() * -0.4,
                                 () -> driverController.getRightX() * -0.4));
-                // driverController.leftTrigger().whileTrue(SwerveCommands.joystickDrive(
-                // drive,
-                // () -> driverController.getLeftY() * -0.4,
-                // () -> driverController.getLeftX() * -0.4,
-                // () -> driverController.getRightX() * -0.4));
 
-                driverController.R2().whileTrue(SwerveCommands.joystickDrive(
-                                drive,
-                                () -> driverController.getLeftY() * -1,
-                                () -> driverController.getLeftX() * -1,
-                                () -> driverController.getRightX() *
-                                                -1)
-                                .alongWith(LEDsCommands.boost(leds)));
-                // driverController.rightTrigger().whileTrue(SwerveCommands.joystickDrive(
+                // driverController.R2().whileTrue(SwerveCommands.joystickDrive(
                 // drive,
                 // () -> driverController.getLeftY() * -1,
                 // () -> driverController.getLeftX() * -1,
                 // () -> driverController.getRightX() *
-                // -1).alongWith(LEDsCommands.boost(leds)));
-
-                // driverController.cross().whileTrue(AutonomousRoutines.driveToPoseInCorrectAlliance(drive,
-                // new Pose2d(16.6, 0.85, Rotation2d.fromDegrees(125)),
-                // false));
-
-                // driverController.cross().whileTrue(SwerveCommands.driveForwardSlowRight(drive));
-                // driverController.cross().whileTrue(
-                // AutonomousRoutinesRed.driveToPoseInCorrectAlliance(drive,
-                // new Pose2d(11.13, 5.60, Rotation2d.fromDegrees(-23.82)),
-                // true));
-                // driverController.cross().whileTrue(
-                // AutonomousRoutinesRed.driveToPoseInCorrectAlliance(drive,
-                // new Pose2d(11.13, 5.60, Rotation2d.fromDegrees(-23.82)),
-                // true));
+                // -1)
+                // .alongWith(LEDsCommands.boost(leds)));
 
                 /*----------------------------------------------------------------------------------------------------*/
                 // operator:
