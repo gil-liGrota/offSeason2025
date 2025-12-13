@@ -96,10 +96,10 @@ public class ModuleIOReal implements ModuleIO {
         driveConfig.CurrentLimits.StatorCurrentLimit = driveSlipCurrent;
         driveConfig.CurrentLimits.StatorCurrentLimitEnable = true;
         driveConfig.MotorOutput.Inverted = switch (module) {
-            case 0 -> InvertedValue.Clockwise_Positive;
+            case 0 -> InvertedValue.CounterClockwise_Positive;
             case 1 -> InvertedValue.CounterClockwise_Positive;
             case 2 -> InvertedValue.CounterClockwise_Positive;
-            case 3 -> InvertedValue.Clockwise_Positive;
+            case 3 -> InvertedValue.CounterClockwise_Positive;
             default -> InvertedValue.CounterClockwise_Positive;
         };
 
@@ -197,10 +197,10 @@ public class ModuleIOReal implements ModuleIO {
         drivePositionQueue.clear();
         turnPositionQueue.clear();
 
-        // if (timer.get() >= 3) {
-        // turnMotor.getEncoder().setPosition(getAbsolutePosition());
-        // timer.restart();
-        // }
+        if (timer.get() >= 10) {
+            turnMotor.getEncoder().setPosition(getAbsolutePosition());
+            timer.restart();
+        }
     }
 
     @Override
