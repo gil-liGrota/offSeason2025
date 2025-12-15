@@ -100,9 +100,9 @@ public class RobotContainer {
                                 coralArm = new CoralArm(new CoralArmIOReal(brakeSwitch));
                                 transfer = new Transfer(new TransferIOReal());
                                 VisionIOReal[] cameras = {
-                                                new VisionIOReal("Left Front Camera",
+                                                new VisionIOReal("first_camera",
                                                                 Constants.VisionConstants.l_camera_transform),
-                                                new VisionIOReal("Right Front Camera",
+                                                new VisionIOReal("second_camera",
                                                                 Constants.VisionConstants.r_camera_transform),
                                 };
 

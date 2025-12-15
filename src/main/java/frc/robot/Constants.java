@@ -36,16 +36,14 @@ public final class Constants {
 
   public static class VisionConstants {
     // THE translations FOR THE LEFT AND RIGHT CAMERAS
-    public static Translation3d l_camera_translation = new Translation3d(0.2 - 0.19 + 0.02 + 0.01 - 0.04,
-        0.1 - 0.12 + 0.03 - 0.02, 0.263);
-    public static Translation3d r_camera_translation = new Translation3d(0.03 + 0.02 + 0.02, -0.24 + 0.29 + 0.08 - 0.04,
-        0.263);
+    public static Translation3d l_camera_translation = new Translation3d(10.9, -0.07, 0.263);
+    public static Translation3d r_camera_translation = new Translation3d(0, 0, 0.263);
 
     // THE ROTATION FOR THE LEFT AND RIGHT CAMERAS
     public static Rotation3d l_camera_rotation = new Rotation3d(Degrees.of(0), Degrees.of(0),
-        Degrees.of(-15.7 - 5.5 - 1.7));
+        Degrees.of(13.92));
     public static Rotation3d r_camera_rotation = new Rotation3d(Degrees.of(0), Degrees.of(0),
-        Degrees.of(19.9 - 13 + 5 + 10));
+        Degrees.of(0));
 
     // THE TRANSFORMATION FOR THE LEFT AND RIGHT CAM ERAS
     public static Transform3d l_camera_transform = new Transform3d(l_camera_translation, l_camera_rotation); // here
