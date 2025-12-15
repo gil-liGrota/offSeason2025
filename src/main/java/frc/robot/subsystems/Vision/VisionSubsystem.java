@@ -49,7 +49,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     private final ObjectDetectionVisionIO[] objectDetectionIO;
     private final ObjectDetectionVisionIOInputsAutoLogged[] objectDetectionInputs;
-    private volatile List<Detection> detections = new ArrayList<>();
+    private final List<Detection> detections = new ArrayList<>();
     private boolean updatingDetections = false;
 
     public VisionSubsystem(VisionConsumer consumer, ApriltagVisionIO[] apriltagVisionIO, ObjectDetectionVisionIO[] objectDetectionIO) {
@@ -63,9 +63,13 @@ public class VisionSubsystem extends SubsystemBase {
             apriltagInputs[i] = new ApriltagVisionIOInputsAutoLogged();
         }
 
-        this.objectDetectionInputs = new ObjectDetectionVisionIOInputsAutoLogged[objectDetectionIO.length];
-        for (int i = 0; i < objectDetectionInputs.length; i++) {
-            objectDetectionInputs[i] = new ObjectDetectionVisionIOInputsAutoLogged();
+        if (objectDetectionIO != null) {
+            this.objectDetectionInputs = new ObjectDetectionVisionIOInputsAutoLogged[objectDetectionIO.length];
+            for (int i = 0; i < objectDetectionInputs.length; i++) {
+                objectDetectionInputs[i] = new ObjectDetectionVisionIOInputsAutoLogged();
+            }
+        } else {
+            this.objectDetectionInputs = new ObjectDetectionVisionIOInputsAutoLogged[0];
         }
 
         // Initialize disconnected alerts
