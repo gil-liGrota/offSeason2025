@@ -97,10 +97,10 @@ public class RobotContainer {
                                 elevator = new Elevator(new ElevatorReal(() -> false, brakeSwitch));
                                 coralArm = new CoralArm(new CoralArmIOReal(brakeSwitch));
                                 transfer = new Transfer(new TransferIOReal());
-                                VisionIOReal[] cameras = {
-                                                new VisionIOReal("first_camera",
+                                ApriltagVisionIOReal[] cameras = {
+                                                new ApriltagVisionIOReal("first_camera",
                                                                 Constants.VisionConstants.l_camera_transform),
-                                                new VisionIOReal("second_camera",
+                                                new ApriltagVisionIOReal("second_camera",
                                                                 Constants.VisionConstants.r_camera_transform),
                                 };
 

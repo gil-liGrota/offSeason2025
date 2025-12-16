@@ -52,7 +52,8 @@ public class VisionSubsystem extends SubsystemBase {
     private final List<Detection> detections = new ArrayList<>();
     private boolean updatingDetections = false;
 
-    public VisionSubsystem(VisionConsumer consumer, ApriltagVisionIO[] apriltagVisionIO, ObjectDetectionVisionIO[] objectDetectionIO) {
+    public VisionSubsystem(VisionConsumer consumer, ApriltagVisionIO[] apriltagVisionIO,
+            ObjectDetectionVisionIO[] objectDetectionIO) {
         this.consumer = consumer;
         this.apriltagVisionIO = apriltagVisionIO;
         this.objectDetectionIO = objectDetectionIO;
@@ -115,7 +116,6 @@ public class VisionSubsystem extends SubsystemBase {
                 Logger.processInputs("Vision/ObjectDetectionCamera" + Integer.toString(i), objectDetectionInputs[i]);
             }
         }
-
 
         // Initialize logging values
         List<Pose3d> allTagPoses = new LinkedList<>();
@@ -211,7 +211,7 @@ public class VisionSubsystem extends SubsystemBase {
         // loop over all object detection cameras
         updatingDetections = true;
         detections.clear();
-        for(var detectionInput : objectDetectionInputs) {
+        for (var detectionInput : objectDetectionInputs) {
             detections.addAll(List.of(detectionInput.detections));
         }
         updatingDetections = false;
@@ -232,7 +232,8 @@ public class VisionSubsystem extends SubsystemBase {
     // returns all the objects the cameras can see
     // TODO: Add logic to compare results between both cameras and find duplicates
     public List<Detection> getAllObjectDetections() {
-        while(updatingDetections);
+        while (updatingDetections)
+            ;
         return detections;
     }
 
