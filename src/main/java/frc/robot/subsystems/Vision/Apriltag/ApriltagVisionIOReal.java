@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Vision;
+package frc.robot.subsystems.Vision.Apriltag;
 
 import static frc.robot.subsystems.Vision.VisionConstants.aprilTagLayout;
 
@@ -15,9 +15,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 
 /** IO implementation for real PhotonVision hardware. */
-public class VisionIOReal implements VisionIO {
+public class ApriltagVisionIOReal implements ApriltagVisionIO {
   protected final PhotonCamera camera;
   protected final Transform3d robotToCamera;
+  final String name;
 
   /**
    * Creates a new VisionIOPhotonVision.
@@ -25,14 +26,16 @@ public class VisionIOReal implements VisionIO {
    * @param name             The configured name of the camera.
    * @param rotationSupplier The 3D position of the camera relative to the robot.
    */
-  public VisionIOReal(String name, Transform3d robotToCamera) {
+  public ApriltagVisionIOReal(String name, Transform3d robotToCamera) {
+    this.name = name;
     camera = new PhotonCamera(name);
     this.robotToCamera = robotToCamera;
   }
 
   @Override
-  public void updateInputs(VisionIOInputs inputs) {
+  public void updateInputs(ApriltagVisionIOInputs inputs) {
     inputs.connected = camera.isConnected();
+    inputs.pipelineName = name;
 
     // Read new camera observations
     Set<Short> tagIds = new HashSet<>();

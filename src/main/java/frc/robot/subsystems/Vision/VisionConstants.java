@@ -15,12 +15,23 @@ package frc.robot.subsystems.Vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.*;
 
 public class VisionConstants {
+
+    public static enum TargetType {
+        ALGAE(0), CORAL(1);
+
+        int classId;
+
+        private TargetType(int classId) {
+            this.classId = classId;
+        }
+
+        public int getClassId() {
+            return classId;
+        }
+    }
     // AprilTag layout
     public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
@@ -56,4 +67,10 @@ public class VisionConstants {
     public static double linearStdDevMegatag2Factor = 0.5; // More stable than full 3D solve
     public static double angularStdDevMegatag2Factor = Double.POSITIVE_INFINITY; // No rotation data available
 
+    public static class ObjectDetectionConstants {
+        public static double ALGAE_DIAMETER_METERS = 0.413;
+
+        public static Pose3d OBJECT_DETECTION_CAMERA_RIGHT_POSE = null;
+        public static Pose3d OBJECT_DETECTION_CAMERA_LEFT_POSE = null;
+    }
 }

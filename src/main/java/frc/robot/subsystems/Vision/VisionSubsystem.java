@@ -28,32 +28,53 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.Vision.VisionIO.PoseObservationType;
+import frc.robot.subsystems.Vision.Apriltag.ApriltagVisionIO;
+import frc.robot.subsystems.Vision.Apriltag.ApriltagVisionIO.PoseObservationType;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import frc.robot.subsystems.Vision.Apriltag.ApriltagVisionIOInputsAutoLogged;
+import frc.robot.subsystems.Vision.ObjectDetection.Detection;
+import frc.robot.subsystems.Vision.ObjectDetection.ObjectDetectionVisionIO;
+import frc.robot.subsystems.Vision.ObjectDetection.ObjectDetectionVisionIOInputsAutoLogged;
 import org.littletonrobotics.junction.Logger;
 
 public class VisionSubsystem extends SubsystemBase {
     private final VisionConsumer consumer;
-    private final VisionIO[] io;
-    private final VisionIOInputsAutoLogged[] inputs;
+    private final ApriltagVisionIO[] apriltagVisionIO;
+    private final ApriltagVisionIOInputsAutoLogged[] apriltagInputs;
     private final Alert[] disconnectedAlerts;
 
-    public VisionSubsystem(VisionConsumer consumer, VisionIO... io) {
+    private final ObjectDetectionVisionIO[] objectDetectionIO;
+    private final ObjectDetectionVisionIOInputsAutoLogged[] objectDetectionInputs;
+    private final List<Detection> detections = new ArrayList<>();
+    private boolean updatingDetections = false;
+
+    public VisionSubsystem(VisionConsumer consumer, ApriltagVisionIO[] apriltagVisionIO, ObjectDetectionVisionIO[] objectDetectionIO) {
         this.consumer = consumer;
-        this.io = io;
+        this.apriltagVisionIO = apriltagVisionIO;
+        this.objectDetectionIO = objectDetectionIO;
 
         // Initialize inputs
-        this.inputs = new VisionIOInputsAutoLogged[io.length];
-        for (int i = 0; i < inputs.length; i++) {
-            inputs[i] = new VisionIOInputsAutoLogged();
+        this.apriltagInputs = new ApriltagVisionIOInputsAutoLogged[apriltagVisionIO.length];
+        for (int i = 0; i < apriltagInputs.length; i++) {
+            apriltagInputs[i] = new ApriltagVisionIOInputsAutoLogged();
+        }
+
+        if (objectDetectionIO != null) {
+            this.objectDetectionInputs = new ObjectDetectionVisionIOInputsAutoLogged[objectDetectionIO.length];
+            for (int i = 0; i < objectDetectionInputs.length; i++) {
+                objectDetectionInputs[i] = new ObjectDetectionVisionIOInputsAutoLogged();
+            }
+        } else {
+            this.objectDetectionInputs = new ObjectDetectionVisionIOInputsAutoLogged[0];
         }
 
         // Initialize disconnected alerts
-        this.disconnectedAlerts = new Alert[io.length];
-        for (int i = 0; i < inputs.length; i++) {
+        this.disconnectedAlerts = new Alert[apriltagVisionIO.length];
+        for (int i = 0; i < apriltagInputs.length; i++) {
             disconnectedAlerts[i] = new Alert(
                     "Vision camera " + Integer.toString(i) + " is disconnected.", AlertType.kWarning);
         }
@@ -66,7 +87,7 @@ public class VisionSubsystem extends SubsystemBase {
      * @param cameraIndex The index of the camera to use.
      */
     public Rotation2d getTargetX(int cameraIndex) {
-        return inputs[cameraIndex].latestTargetObservation.tx();
+        return apriltagInputs[cameraIndex].latestTargetObservation.tx();
     }
 
     public ArrayList<Pair<Integer, Transform3d>> getReefTagsPositions() {
@@ -78,15 +99,23 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     public Transform3d getBestTarget(int camera) {
-        return inputs[camera].cameraToBestTarget;
+        return apriltagInputs[camera].cameraToBestTarget;
     }
 
     @Override
     public void periodic() {
-        for (int i = 0; i < io.length; i++) {
-            io[i].updateInputs(inputs[i]);
-            Logger.processInputs("Vision/Camera" + Integer.toString(i), inputs[i]);
+        for (int i = 0; i < apriltagVisionIO.length; i++) {
+            apriltagVisionIO[i].updateInputs(apriltagInputs[i]);
+            Logger.processInputs("Vision/ApriltagCamera" + Integer.toString(i), apriltagInputs[i]);
         }
+
+        if (objectDetectionIO != null) {
+            for (int i = 0; i < objectDetectionIO.length; i++) {
+                objectDetectionIO[i].updateInputs(objectDetectionInputs[i]);
+                Logger.processInputs("Vision/ObjectDetectionCamera" + Integer.toString(i), objectDetectionInputs[i]);
+            }
+        }
+
 
         // Initialize logging values
         List<Pose3d> allTagPoses = new LinkedList<>();
@@ -94,10 +123,10 @@ public class VisionSubsystem extends SubsystemBase {
         List<Pose3d> allRobotPosesAccepted = new LinkedList<>();
         List<Pose3d> allRobotPosesRejected = new LinkedList<>();
 
-        // Loop over cameras
-        for (int cameraIndex = 0; cameraIndex < io.length; cameraIndex++) {
+        // Loop over all apriltag cameras
+        for (int cameraIndex = 0; cameraIndex < apriltagVisionIO.length; cameraIndex++) {
             // Update disconnected alert
-            disconnectedAlerts[cameraIndex].set(!inputs[cameraIndex].connected);
+            disconnectedAlerts[cameraIndex].set(!apriltagInputs[cameraIndex].connected);
 
             // Initialize logging values
             List<Pose3d> tagPoses = new LinkedList<>();
@@ -106,7 +135,7 @@ public class VisionSubsystem extends SubsystemBase {
             List<Pose3d> robotPosesRejected = new LinkedList<>();
 
             // Add tag poses
-            for (int tagId : inputs[cameraIndex].tagIds) {
+            for (int tagId : apriltagInputs[cameraIndex].tagIds) {
                 var tagPose = aprilTagLayout.getTagPose(tagId);
                 if (tagPose.isPresent()) {
                     tagPoses.add(tagPose.get());
@@ -114,7 +143,7 @@ public class VisionSubsystem extends SubsystemBase {
             }
 
             // Loop over pose observations
-            for (var observation : inputs[cameraIndex].poseObservations) {
+            for (var observation : apriltagInputs[cameraIndex].poseObservations) {
                 // Check whether to reject pose
                 boolean rejectPose = observation.tagCount() == 0 // Must have at least one tag
                         || (observation.tagCount() == 1
@@ -179,6 +208,14 @@ public class VisionSubsystem extends SubsystemBase {
             allRobotPosesRejected.addAll(robotPosesRejected);
         }
 
+        // loop over all object detection cameras
+        updatingDetections = true;
+        detections.clear();
+        for(var detectionInput : objectDetectionInputs) {
+            detections.addAll(List.of(detectionInput.detections));
+        }
+        updatingDetections = false;
+
         // Log summary data
         Logger.recordOutput(
                 "Vision/Summary/TagPoses", allTagPoses.toArray(new Pose3d[allTagPoses.size()]));
@@ -190,6 +227,13 @@ public class VisionSubsystem extends SubsystemBase {
         Logger.recordOutput(
                 "Vision/Summary/RobotPosesRejected",
                 allRobotPosesRejected.toArray(new Pose3d[allRobotPosesRejected.size()]));
+    }
+
+    // returns all the objects the cameras can see
+    // TODO: Add logic to compare results between both cameras and find duplicates
+    public List<Detection> getAllObjectDetections() {
+        while(updatingDetections);
+        return detections;
     }
 
     @FunctionalInterface

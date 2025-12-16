@@ -55,7 +55,9 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.Mode;
 import frc.robot.util.LocalADStarAK;
 
-public class Swerve extends SubsystemBase { // ODED WAS HERE
+public class Swerve extends SubsystemBase {
+    // ODED WAS HERE
+    // HELLO ODED, YOAV JOHN BARAK-MAURICE WAS ALSO HERE :)
     boolean goodVision = true;
     public static Lock odometryLock = new ReentrantLock();
     private final GyroIO gyroIO;
