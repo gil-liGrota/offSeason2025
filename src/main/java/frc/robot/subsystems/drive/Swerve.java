@@ -393,14 +393,13 @@ public class Swerve extends SubsystemBase {
             Pose2d visionRobotPoseMeters,
             double timestampSeconds,
             Matrix<N3, N1> visionMeasurementStdDevs) {
-        if (goodVision
-        // && !(DriverStation.isEnabled()
-        // &&
-        // visionRobotPoseMeters.getTranslation().getDistance(getPose().getTranslation())
-        // > 0.5)) {
-        ) {
-            poseEstimator.addVisionMeasurement(visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
-
+        odometryLock.lock();
+        try {
+            if(goodVision) {
+                poseEstimator.addVisionMeasurement(visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
+            }
+        } finally {
+            odometryLock.unlock();
         }
     }
 
