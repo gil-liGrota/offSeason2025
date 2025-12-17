@@ -50,22 +50,22 @@ public class AutoCommands {
                                 Commands.parallel(
                                                 reefCommands.L4(),
                                                 driveToPoseInCorrectAlliance(drive,
-                                                                new Pose2d(new Translation2d(6.45, 6.3),
-                                                                                new Rotation2d(-140))))
+                                                                new Pose2d(new Translation2d(11.01, 1.7),
+                                                                                new Rotation2d(Units.degreesToRadians(-140)))))
                                                 .until(() -> SwerveCommands.LocateToReefCommand.isAnyReefCloseEnough(
                                                                 drive.getPose(),
                                                                 false)),
                                 placeCoralInReef(4, false),
                                 Commands.parallel(
                                                 driveToPoseInCorrectAlliance(drive,
-                                                                new Pose2d(new Translation2d(4.1, 5.1),
+                                                                new Pose2d(new Translation2d(13.4, 2.9),
                                                                                 new Rotation2d(Units.degreesToRadians(
                                                                                                 -35))))),
                                 intakeFromLeftFeeder(),
                                 Commands.parallel(
                                                 driveToPoseInCorrectAlliance(drive,
-                                                                new Pose2d(new Translation2d(2, 6),
-                                                                                new Rotation2d(-44))))
+                                                                new Pose2d(new Translation2d(15.5, 2),
+                                                                                new Rotation2d(Units.degreesToRadians(-44)))))
                                                 .until(() -> SwerveCommands.LocateToReefCommand.isAnyReefCloseEnough(
                                                                 drive.getPose(),
                                                                 false)),
@@ -75,7 +75,7 @@ public class AutoCommands {
 
         public Command intakeFromLeftFeeder() {
                 return Commands.parallel(reefCommands.coralIntakePos(),
-                                driveToPoseInCorrectAlliance(drive, new Pose2d(new Translation2d(1.2, 7.2),
+                                driveToPoseInCorrectAlliance(drive, new Pose2d(new Translation2d(1.2, 0.8),
                                                 new Rotation2d(Units.degreesToRadians(-60)))));
         }
 

@@ -43,7 +43,7 @@ public final class Constants {
     public static Rotation3d l_camera_rotation = new Rotation3d(Degrees.of(0), Degrees.of(0),
         Degrees.of(13.92));
     public static Rotation3d r_camera_rotation = new Rotation3d(Degrees.of(0), Degrees.of(0),
-        Degrees.of(-13.92)); // TODO: check this is correct, maby 180 - [degrees]?
+        Degrees.of(-13.92)); // TODO: check this is correct, maybe 180 - [degrees]?
 
     // THE TRANSFORMATION FOR THE LEFT AND RIGHT CAM ERAS
     public static Transform3d l_camera_transform = new Transform3d(l_camera_translation, l_camera_rotation); // here
