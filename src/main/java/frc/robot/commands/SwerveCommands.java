@@ -654,7 +654,16 @@ public class SwerveCommands {
                         return true;
                 }
 
-                public Pose2d getClosestReef(Pose2d currentPose, boolean toLeft) throws Exception {
+                public static boolean isAnyReefCloseEnough(Pose2d currentPose, boolean toLeft) {
+                        try {
+                                getClosestReef(currentPose, toLeft);
+                                return true;
+                        } catch (Exception e) {
+                                return false;
+                        }
+                }
+
+                public static Pose2d getClosestReef(Pose2d currentPose, boolean toLeft) throws Exception {
                         Pose2d[] branches = /*
                                              * DriverStation.getAlliance().orElseGet(() -> Alliance.Red) == Alliance.Red
                                              */ currentPose

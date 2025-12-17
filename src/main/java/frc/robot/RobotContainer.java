@@ -35,8 +35,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.POM_lib.sensors.POMDigitalInput;
-import frc.robot.commands.AutonomousRoutinesBlue;
-import frc.robot.commands.AutonomousRoutinesRed;
+import frc.robot.commands.AutoCommands;
 import frc.robot.commands.CoralArmCommands;
 import frc.robot.commands.ElevatorCommands;
 import frc.robot.commands.LEDsCommands;
@@ -147,6 +146,7 @@ public class RobotContainer {
          * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
          */
         private void configureButtonBindings() {
+                AutoCommands autoCommands = new AutoCommands(drive, elevator, coralArm, transfer);
 
                 leds.setDefaultCommand(LEDsCommands.setAll(leds, Color.kPurple));
                 // TODO check`
@@ -184,12 +184,14 @@ public class RobotContainer {
                 // LEDsCommands.visionActive(leds).until(() ->
                 // !driverController.RB().getAsBoolean()));
 
-                driverController.L1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
-                                driverController,
-                                true));
+                // driverController.L1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
+                // driverController,
+                // true));
 
-                driverController.L1().onTrue(
-                                LEDsCommands.visionActive(leds).until(() -> !driverController.L1().getAsBoolean()));
+                // driverController.L1().onTrue(
+                // LEDsCommands.visionActive(leds).until(() ->
+                // !driverController.L1().getAsBoolean()));
+
                 // driverController.LB().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
                 // driverController,
                 // true));
@@ -207,10 +209,14 @@ public class RobotContainer {
                 // driverController.b().whileTrue(TransferCommands.riffOutake(transfer,
                 // coralArm));
 
-                driverController.L2().whileTrue(SwerveCommands.joystickDriveRobotRelative(drive,
-                                () -> driverController.getLeftY() * 0.35,
-                                () -> driverController.getLeftX() * 0.35,
-                                () -> driverController.getRightX() * 0.35));
+                // driverController.L2().whileTrue(SwerveCommands.joystickDriveRobotRelative(drive,
+                // () -> driverController.getLeftY() * 0.35,
+                // () -> driverController.getLeftX() * 0.35,
+
+                // () -> driverController.getRightX() * 0.35));
+
+                driverController.L2().whileTrue(autoCommands.leftSideAuto());
+
                 // driverController.leftTrigger().whileTrue(SwerveCommands.joystickDrive(
                 // drive,
                 // () -> driverController.getLeftY() * -0.4,
