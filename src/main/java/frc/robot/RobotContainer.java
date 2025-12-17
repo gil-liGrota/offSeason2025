@@ -134,23 +134,6 @@ public class RobotContainer {
 
                 autoChooser.addOption("none", null);
 
-                autoChooser.addOption("L4 RED NOT proccessor side",
-                                AutonomousRoutinesRed.putL4NotProccessorSideRED(drive, elevator, coralArm, transfer));
-
-                autoChooser.addOption("L4 RED proccessor side",
-                                AutonomousRoutinesRed.putL4ProccessorSideRED(drive, elevator, coralArm, transfer));
-
-                autoChooser.addOption("L4 RED middel",
-                                AutonomousRoutinesRed.putL4MiddelRED(drive, elevator, coralArm, transfer));
-
-                autoChooser.addOption("L4 BLUE NOT proccessor side",
-                                AutonomousRoutinesBlue.putL4NotProccessorSideBLUE(drive, elevator, coralArm, transfer));
-
-                autoChooser.addOption("L4 BLUE proccessor side",
-                                AutonomousRoutinesBlue.putL4ProccessorSideBLUE(drive, elevator, coralArm, transfer));
-
-                autoChooser.addDefaultOption("L4 BLUE middel",
-                                AutonomousRoutinesBlue.putL4MiddelBLUE(drive, elevator, coralArm, transfer));
                 // Configure the button bindings
                 configureButtonBindings();
         }
