@@ -102,7 +102,7 @@ public class RobotContainer {
                                 ApriltagVisionIOReal[] cameras = {
                                                 new ApriltagVisionIOReal("first_camera",
                                                                 Constants.VisionConstants.l_camera_transform),
-                                                new ApriltagVisionIOReal("second_camera",
+                                                new ApriltagVisionIOReal("seconde_camera",
                                                                 Constants.VisionConstants.r_camera_transform),
                                 };
 
