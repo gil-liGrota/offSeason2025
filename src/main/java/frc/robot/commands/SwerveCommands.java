@@ -162,7 +162,7 @@ public class SwerveCommands {
                                                         && DriverStation.getAlliance().get() == Alliance.Red;
                                         speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
                                                         speeds,
-                                                        isFlipped ? drive.getRotation().plus(new Rotation2d(Math.PI))
+                                                        !isFlipped ? drive.getRotation().plus(new Rotation2d(Math.PI))
                                                                         : drive.getRotation());
 
                                         // speeds = new ChassisSpeeds(0, 0.2, 0);

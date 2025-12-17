@@ -32,6 +32,7 @@ public class VisionConstants {
             return classId;
         }
     }
+
     // AprilTag layout
     public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 

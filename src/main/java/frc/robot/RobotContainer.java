@@ -101,7 +101,7 @@ public class RobotContainer {
                                 ApriltagVisionIOReal[] cameras = {
                                                 new ApriltagVisionIOReal("first_camera",
                                                                 Constants.VisionConstants.l_camera_transform),
-                                                new ApriltagVisionIOReal("second_camera",
+                                                new ApriltagVisionIOReal("seconde_camera",
                                                                 Constants.VisionConstants.r_camera_transform),
                                 };
 
@@ -184,9 +184,8 @@ public class RobotContainer {
                 // LEDsCommands.visionActive(leds).until(() ->
                 // !driverController.RB().getAsBoolean()));
 
-                // driverController.L1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
-                // driverController,
-                // true));
+                driverController.L1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
+                                driverController, true));
 
                 // driverController.L1().onTrue(
                 // LEDsCommands.visionActive(leds).until(() ->
@@ -225,10 +224,9 @@ public class RobotContainer {
 
                 driverController.R2().whileTrue(SwerveCommands.joystickDrive(
                                 drive,
-                                () -> driverController.getLeftY() * -1,
-                                () -> driverController.getLeftX() * -1,
-                                () -> driverController.getRightX() *
-                                                -1)
+                                () -> driverController.getLeftY() * 1,
+                                () -> driverController.getLeftX() * 1,
+                                () -> driverController.getRightX() * 1)
                                 .alongWith(LEDsCommands.boost(leds)));
                 // driverController.rightTrigger().whileTrue(SwerveCommands.joystickDrive(
                 // drive,

@@ -395,7 +395,7 @@ public class Swerve extends SubsystemBase {
             Matrix<N3, N1> visionMeasurementStdDevs) {
         odometryLock.lock();
         try {
-            if(goodVision) {
+            if (goodVision) {
                 poseEstimator.addVisionMeasurement(visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
             }
         } finally {
