@@ -35,8 +35,6 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.POM_lib.Joysticks.PomXboxController;
 import frc.robot.POM_lib.sensors.POMDigitalInput;
-import frc.robot.commands.AutonomousRoutinesBlue;
-import frc.robot.commands.AutonomousRoutinesRed;
 import frc.robot.commands.CoralArmCommands;
 import frc.robot.commands.ElevatorCommands;
 import frc.robot.commands.LEDsCommands;
@@ -134,23 +132,27 @@ public class RobotContainer {
 
                 autoChooser.addOption("none", null);
 
-                autoChooser.addOption("L4 RED NOT proccessor side",
-                                AutonomousRoutinesRed.putL4NotProccessorSideRED(drive, elevator, coralArm, transfer));
+                // autoChooser.addOption("L4 RED NOT proccessor side",
+                // AutonomousRoutinesRed.putL4NotProccessorSideRED(drive, elevator, coralArm,
+                // transfer));
 
-                autoChooser.addOption("L4 RED proccessor side",
-                                AutonomousRoutinesRed.putL4ProccessorSideRED(drive, elevator, coralArm, transfer));
+                // autoChooser.addOption("L4 RED proccessor side",
+                // AutonomousRoutinesRed.putL4ProccessorSideRED(drive, elevator, coralArm,
+                // transfer));
 
-                autoChooser.addOption("L4 RED middel",
-                                AutonomousRoutinesRed.putL4MiddelRED(drive, elevator, coralArm, transfer));
+                // autoChooser.addOption("L4 RED middel",
+                // AutonomousRoutinesRed.putL4MiddelRED(drive, elevator, coralArm, transfer));
 
-                autoChooser.addOption("L4 BLUE NOT proccessor side",
-                                AutonomousRoutinesBlue.putL4NotProccessorSideBLUE(drive, elevator, coralArm, transfer));
+                // autoChooser.addOption("L4 BLUE NOT proccessor side",
+                // AutonomousRoutinesBlue.putL4NotProccessorSideBLUE(drive, elevator, coralArm,
+                // transfer));
 
-                autoChooser.addOption("L4 BLUE proccessor side",
-                                AutonomousRoutinesBlue.putL4ProccessorSideBLUE(drive, elevator, coralArm, transfer));
+                // autoChooser.addOption("L4 BLUE proccessor side",
+                // AutonomousRoutinesBlue.putL4ProccessorSideBLUE(drive, elevator, coralArm,
+                // transfer));
 
-                autoChooser.addDefaultOption("L4 BLUE middel",
-                                AutonomousRoutinesBlue.putL4MiddelBLUE(drive, elevator, coralArm, transfer));
+                // autoChooser.addDefaultOption("L4 BLUE middel",
+                // AutonomousRoutinesBlue.putL4MiddelBLUE(drive, elevator, coralArm, transfer));
                 // Configure the button bindings
                 configureButtonBindings();
         }
@@ -174,12 +176,11 @@ public class RobotContainer {
                 // driver:
                 isRelative = true;
                 drive.setDefaultCommand(
-                                SwerveCommands.joystickDrive(
-                                                drive,
+                                SwerveCommands.joystickDriveRobotRelative(drive,
                                                 () -> driverController.getLeftY() * 0.35,
                                                 () -> driverController.getLeftX() * 0.35,
-                                                () -> driverController.getRightX() * 0.35));
-
+                                                () -> driverController.getRightX() * 0.35)
+                                                .alongWith(LEDsCommands.boost(leds)));
                 // driverController.y().onTrue(drive.resetGyroCommand());
 
                 driverController.triangle().onTrue(drive.resetGyroCommand());
@@ -191,22 +192,26 @@ public class RobotContainer {
                 // driverController,
                 // false).alongWith(LEDsCommands.visionActive(leds)));
 
-                driverController.R1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
-                                driverController,
-                                false).alongWith(LEDsCommands.visionActive(leds)));
-                driverController.R1().onTrue(
-                                LEDsCommands.visionActive(leds).until(() -> !driverController.R1().getAsBoolean()));
+                // VISION COMMANDS
+                // driverController.R1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
+                // driverController,
+                // false).alongWith(LEDsCommands.visionActive(leds)));
+                // driverController.R1().onTrue(
+                // LEDsCommands.visionActive(leds).until(() ->
+                // !driverController.R1().getAsBoolean()));
 
                 // driverController.RB().onTrue(
                 // LEDsCommands.visionActive(leds).until(() ->
                 // !driverController.RB().getAsBoolean()));
 
-                driverController.L1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
-                                driverController,
-                                true));
+                // VISION COMMANDS
+                // driverController.L1().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
+                // driverController,
+                // true));
 
-                driverController.L1().onTrue(
-                                LEDsCommands.visionActive(leds).until(() -> !driverController.L1().getAsBoolean()));
+                // driverController.L1().onTrue(
+                // LEDsCommands.visionActive(leds).until(() ->
+                // !driverController.L1().getAsBoolean()));
                 // driverController.LB().whileTrue(new SwerveCommands.LocateToReefCommand(drive,
                 // driverController,
                 // true));
@@ -218,29 +223,29 @@ public class RobotContainer {
                 // driverController.LB().or(driverController.RB()).onFalse(new
                 // InstantCommand(drive::stop, drive));
 
-                driverController.circle().whileTrue(TransferCommands.riffOutake(transfer,
-                                coralArm));
+                // driverController.circle().whileTrue(TransferCommands.riffOutake(transfer,
+                // coralArm));
 
                 // driverController.b().whileTrue(TransferCommands.riffOutake(transfer,
                 // coralArm));
 
-                driverController.L2().whileTrue(SwerveCommands.joystickDriveRobotRelative(drive,
-                                () -> driverController.getLeftY() * 0.35,
-                                () -> driverController.getLeftX() * 0.35,
-                                () -> driverController.getRightX() * 0.35));
+                // driverController.L2().whileTrue(SwerveCommands.joystickDriveRobotRelative(drive,
+                // () -> driverController.getLeftY() * 0.35,
+                // () -> driverController.getLeftX() * 0.35,
+                // () -> driverController.getRightX() * 0.35));
                 // driverController.leftTrigger().whileTrue(SwerveCommands.joystickDrive(
                 // drive,
                 // () -> driverController.getLeftY() * -0.4,
                 // () -> driverController.getLeftX() * -0.4,
                 // () -> driverController.getRightX() * -0.4));
 
-                driverController.R2().whileTrue(SwerveCommands.joystickDrive(
-                                drive,
-                                () -> driverController.getLeftY() * -1,
-                                () -> driverController.getLeftX() * -1,
-                                () -> driverController.getRightX() *
-                                                -1)
-                                .alongWith(LEDsCommands.boost(leds)));
+                // driverController.R2().whileTrue(SwerveCommands.joystickDrive(
+                // drive,
+                // () -> driverController.getLeftY() * -1,
+                // () -> driverController.getLeftX() * -1,
+                // () -> driverController.getRightX() *
+                // -1)
+                // .alongWith(LEDsCommands.boost(leds)));
                 // driverController.rightTrigger().whileTrue(SwerveCommands.joystickDrive(
                 // drive,
                 // () -> driverController.getLeftY() * -1,
