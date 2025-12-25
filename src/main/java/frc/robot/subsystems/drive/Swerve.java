@@ -95,6 +95,7 @@ public class Swerve extends SubsystemBase {
         OdometryThread.getInstance().start();
 
         // Configure AutoBuilder for PathPlanner
+        // TODO: Add the correct values for PID
         AutoBuilder.configure(
                 this::getPose,
                 this::setPose,

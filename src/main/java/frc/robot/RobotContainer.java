@@ -75,6 +75,9 @@ public class RobotContainer {
         // Dashboard inputs
         private final LoggedDashboardChooser<Command> autoChooser;
 
+        // path planner auto chooser
+        private final SendableChooser<Command> pathPlannerAutoChooser;
+
         private boolean isRelative;
         private POMDigitalInput brakeSwitch = new POMDigitalInput(BRAKE_SWITCH);
         RiffCommands riffCommands;
@@ -132,6 +135,12 @@ public class RobotContainer {
                 autoChooser = new LoggedDashboardChooser<>("Auto Choices", c); // TODO use auto builder
 
                 autoChooser.addOption("none", null);
+
+
+                pathPlannerAutoChooser = AutoBuilder.buildAutoChooser();
+                Logger.recordOutput("Path Planner Auto Chooser", pathPlannerAutoChooser.toString());
+
+                // TODO: Add named commands or triggers
 
                 // Configure the button bindings
                 configureButtonBindings();
